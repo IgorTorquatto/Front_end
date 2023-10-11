@@ -1,0 +1,25 @@
+/* navbar.css */
+.custom-navbar {
+  background-color: #0B2A45; 
+  font-family: 'Source Sans Pro', sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.center-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.center-nav-links a {
+  color: #FFFFFF; 
+  margin: 0 10px;
+  text-decoration: none; 
+  transition: color 0.2s; 
+}
+
+.center-nav-links a:hover {
+  color: #00E0FF; 
+}

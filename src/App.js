@@ -1,7 +1,9 @@
+import NavbarComp from './components/NavbarComp';
+
 function App() {
   return (
     <>
-    <p>Teste</p>
+    <NavbarComp/>
     </>
   );
 }
