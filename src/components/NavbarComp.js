@@ -26,7 +26,7 @@ function NavBarComp() {
       <Navbar className="custom-navbar" data-bs-theme="dark">
         <Container>
           <Navbar.Brand as={Link} to={ "/home"}>
-            <img src={logo}/>
+            <img src={logo}/> HermesIA
           </Navbar.Brand>
           <Nav className="center-nav-links">
             <Nav.Link as={Link} to={ "/sobre"}>Sobre Nós</Nav.Link>
