@@ -1,7 +1,11 @@
 import React from 'react'
+import { NavbarComp } from '../components/NavbarComp'
 
 export const Diagnostico = () => {
   return (
-    <div>Diagnostico</div>
+    <div>
+    <NavbarComp/>
+    Diagnostico
+    </div>
   )
 }

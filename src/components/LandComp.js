@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import videoFile from '../pexels-karolina-grabowska-7195710 (2160p).mp4'
+import videoFile from '../SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4'
 import './LandComp.css'
 import { Link } from 'react-router-dom';
 

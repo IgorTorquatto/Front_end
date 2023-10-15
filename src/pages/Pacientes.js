@@ -1,7 +1,11 @@
 import React from 'react'
+import { NavbarComp } from '../components/NavbarComp'
 
 export const Pacientes = () => {
   return (
-    <div>Pacientes</div>
+    <div>
+    <NavbarComp/>
+    Pacientes
+    </div>
   )
 }

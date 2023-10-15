@@ -1,7 +1,11 @@
 import React from 'react'
+import { NavbarComp } from '../components/NavbarComp'
 
 export const Historico = () => {
   return (
-    <div>Historico</div>
+    <div>
+    <NavbarComp/>
+    Historico
+    </div>
   )
 }

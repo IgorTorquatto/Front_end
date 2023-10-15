@@ -1,7 +1,11 @@
 import React from 'react'
+import { NavbarComp } from '../components/NavbarComp'
 
 export const Cadastro = () => {
   return (
-    <div>Cadastro</div>
+    <div>
+    <NavbarComp/>
+    Cadastro
+    </div>
   )
 }
