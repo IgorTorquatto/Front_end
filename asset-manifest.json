@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/Front_end/static/css/main.0207a196.css",
-    "main.js": "/Front_end/static/js/main.2629c94a.js",
+    "main.css": "/Front_end/static/css/main.127c49a8.css",
+    "main.js": "/Front_end/static/js/main.0afa14cb.js",
     "static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4": "/Front_end/static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).06a5b793898f485afdf5.mp4",
+    "static/media/img_backgorund_sobre.png": "/Front_end/static/media/img_backgorund_sobre.23ab762a9b1e8546d135.png",
     "index.html": "/Front_end/index.html",
-    "main.0207a196.css.map": "/Front_end/static/css/main.0207a196.css.map",
-    "main.2629c94a.js.map": "/Front_end/static/js/main.2629c94a.js.map"
+    "main.127c49a8.css.map": "/Front_end/static/css/main.127c49a8.css.map",
+    "main.0afa14cb.js.map": "/Front_end/static/js/main.0afa14cb.js.map"
   },
   "entrypoints": [
-    "static/css/main.0207a196.css",
-    "static/js/main.2629c94a.js"
+    "static/css/main.127c49a8.css",
+    "static/js/main.0afa14cb.js"
   ]
 }
