@@ -1,12 +1,10 @@
 import React from 'react';
 import { LandComp } from '../components/LandComp';
-import { NavbarComp } from '../components/NavbarComp';
 
 export const Home = () => {
 
   return (
     <>
-    <NavbarComp/>
     <LandComp />
     <br></br>
     <p className="text-left text-dark mt-4" style={{ fontSize: '20px' }}>

@@ -1,8 +1,8 @@
 import React from 'react'
 import {Navbar, Nav, Container} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import logo from '../noto_lungs.png'
-import user from '../lucide_user-circle-2.png'
+import logo from '../assets/noto_lungs.png'
+import user from '../assets/lucide_user-circle-2.png'
 import './NavBarComp.css'
 
 export const NavbarComp=() => {
@@ -11,7 +11,7 @@ export const NavbarComp=() => {
    <>
       <Navbar className="custom-navbar" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand as={Link} to={ "/home"}>
+          <Navbar.Brand as={Link} to={ "/"}>
             <img src={logo} alt="HermesIA Logo" /> HermesIA
           </Navbar.Brand>
           <Nav className="center-nav-links">
