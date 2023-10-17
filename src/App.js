@@ -1,12 +1,12 @@
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import {Sobre} from './pages/Sobre'
-import {Diagnostico} from './pages/Diagnostico'
-import {Historico} from './pages/Historico'
-import {Pacientes} from './pages/Pacientes'
-import {Home} from './pages/Home'
-import { Cadastro } from './pages/Cadastro'
+import {Sobre} from './pages/Sobre/Sobre'
+import {Diagnostico} from './pages/Diagnostico/Diagnostico'
+import {Historico} from './pages/Historico/Historico'
+import {Pacientes} from './pages/Pacientes/Pacientes'
+import {Home} from './pages/Home/Home'
+import { Cadastro } from './pages/Cadastro/Cadastro'
 import './App.css'
-import { NavbarComp } from './components/NavbarComp'
+import { NavbarComp } from './components/Header/NavbarComp'
 
 function App() {
   return (

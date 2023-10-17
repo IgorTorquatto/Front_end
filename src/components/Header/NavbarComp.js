@@ -1,8 +1,8 @@
 import React from 'react'
 import {Navbar, Nav, Container} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import logo from '../assets/noto_lungs.png'
-import user from '../assets/lucide_user-circle-2.png'
+import logo from '../../assets/noto_lungs.png'
+import user from '../../assets/lucide_user-circle-2.png'
 import './NavBarComp.css'
 
 export const NavbarComp=() => {
