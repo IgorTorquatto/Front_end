@@ -1,5 +1,6 @@
 import React from 'react';
 import { LandComp } from '../../components/LandComp/LandComp';
+import './Home.css'
 
 export const Home = () => {
 
