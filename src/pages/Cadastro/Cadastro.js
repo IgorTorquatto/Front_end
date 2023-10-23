@@ -1,9 +1,11 @@
 import React from 'react'
+import { NavbarComp } from '../../components/Header/NavbarComp'
 
 export const Cadastro = () => {
   return (
-    <div>
+    <>
+    <header><NavbarComp/></header>
     Cadastro
-    </div>
+    </>
   )
 }

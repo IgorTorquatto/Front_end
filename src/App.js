@@ -6,15 +6,13 @@ import {Pacientes} from './pages/Pacientes/Pacientes'
 import {Home} from './pages/Home/Home'
 import { Cadastro } from './pages/Cadastro/Cadastro'
 import './App.css'
-import { NavbarComp } from './components/Header/NavbarComp'
 
 function App() {
   return (
     <BrowserRouter>
     <>
-    <NavbarComp/>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="*" element={<Home />} />
       <Route path="/sobre" element={<Sobre />} />
       <Route path="/diagnostico" element={<Diagnostico />} />
       <Route path="/historico" element={<Historico />} />

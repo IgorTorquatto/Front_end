@@ -1,0 +1,50 @@
+.home-container {
+    position: relative;
+  }
+  
+.home-navbar {
+    position: absolute;
+    background: transparent;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+  }
+  
+.home-landcomp {
+    position: relative;
+    z-index: 1;
+  }
+
+.navbar-transparent {
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+.custom-paragraphs {
+    position: absolute;
+    top: 60%;
+    left: 0;
+    width: 100%;
+    text-align: center; 
+    background-color: transparent;
+    padding: 20px;
+    font-size: 20px;
+    z-index: 2; /* deve ser maior que o z index de landcomp*/
+    margin-left: 20px;
+}
+
+.custom-paragraphs p {
+    color: #FFFFFF !important;
+}
+
+.rectangle {
+    width: 9px; 
+    height: 100%; 
+    background-color: #FFFFFF; 
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+  
+
