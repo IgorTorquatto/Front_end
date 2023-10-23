@@ -1,9 +1,11 @@
 import React from 'react'
+import { NavbarComp } from '../../components/Header/NavbarComp'
 
 export const Diagnostico = () => {
   return (
-    <div>
+    <>
+    <header><NavbarComp/></header>
     Diagnostico
-    </div>
+    </>
   )
 }
