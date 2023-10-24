@@ -18,10 +18,12 @@ export const LandComp = () => {
 
   return (
     <div className="home-container">
-      <video id="background-video" autoPlay loop muted>
-        <source src={videoFile} type="video/mp4" />
-        Seu navegador não suporta vídeos em HTML5.
-      </video>
+      <div className="landcomp-video">
+        <video id="background-video" autoPlay loop muted>
+          <source src={videoFile} type="video/mp4" />
+          Seu navegador não suporta vídeos em HTML5.
+        </video>
+      </div>
       <div className="center-content">
       <Link to="/cadastro"><button>Entrar</button></Link>
       </div>

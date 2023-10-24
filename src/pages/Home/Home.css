@@ -21,9 +21,9 @@
     box-shadow: none;
   }
 
-.custom-paragraphs {
+.custom-title {
     position: absolute;
-    top: 60%;
+    top: 30%;
     left: 0;
     width: 100%;
     text-align: center; 
@@ -31,20 +31,26 @@
     padding: 20px;
     font-size: 20px;
     z-index: 2; /* deve ser maior que o z index de landcomp*/
-    margin-left: 20px;
 }
 
-.custom-paragraphs p {
+.custom-title h1 {
     color: #FFFFFF !important;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-.rectangle {
-    width: 9px; 
-    height: 100%; 
-    background-color: #FFFFFF; 
-    position: absolute;
-    top: 0;
-    left: 0;
+.card-container{
+  position: absolute;
+  background-color: #FFFFFF;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
 }
-  
 
+.card{
+  margin-right: 20px;
+}
+
+.card:last-child{
+  margin-right: 0;
+}
