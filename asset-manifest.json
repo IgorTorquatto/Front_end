@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/Front_end/static/css/main.1ad639b0.css",
-    "main.js": "/Front_end/static/js/main.f75342f0.js",
+    "main.css": "/Front_end/static/css/main.7006b439.css",
+    "main.js": "/Front_end/static/js/main.16d1cad2.js",
     "static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4": "/Front_end/static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).06a5b793898f485afdf5.mp4",
     "static/media/img_backgorund_sobre.png": "/Front_end/static/media/img_backgorund_sobre.42b4f033116e2c0e208c.png",
+    "static/media/umanoide-tHS9j3HWT1s-unsplash.jpg": "/Front_end/static/media/umanoide-tHS9j3HWT1s-unsplash.440bf061b2cc8eb0d180.jpg",
     "static/media/RedHatDisplay-Regular.ttf": "/Front_end/static/media/RedHatDisplay-Regular.dfe5c1e7502e7ee7e3a2.ttf",
     "index.html": "/Front_end/index.html",
-    "main.1ad639b0.css.map": "/Front_end/static/css/main.1ad639b0.css.map",
-    "main.f75342f0.js.map": "/Front_end/static/js/main.f75342f0.js.map"
+    "main.7006b439.css.map": "/Front_end/static/css/main.7006b439.css.map",
+    "main.16d1cad2.js.map": "/Front_end/static/js/main.16d1cad2.js.map"
   },
   "entrypoints": [
-    "static/css/main.1ad639b0.css",
-    "static/js/main.f75342f0.js"
+    "static/css/main.7006b439.css",
+    "static/js/main.16d1cad2.js"
   ]
 }
