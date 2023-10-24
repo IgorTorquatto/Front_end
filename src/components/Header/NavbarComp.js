@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import logo from '../../assets/noto_lungs.png'
 import './NavBarComp.css'
 
-export const NavbarComp=({ customClass }) => {
+export const NavbarComp=( { customClass, showEntrarButton } ) => {
 
   const navbarClassName = customClass ? `custom-navbar ${customClass}` : 'custom-navbar' 
 
@@ -24,7 +24,13 @@ export const NavbarComp=({ customClass }) => {
               <Nav.Link as={Link} to={ "/pacientes"}>Pacientes</Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <Button as={Link} to="/cadastro" variant="light" className="entrar-button">entrar</Button>
+          
+          {showEntrarButton && (
+            <Button as={Link} to="/cadastro" variant="light" className="entrar-button">
+              entrar
+            </Button>
+          )}
+
         </Container>
       </Navbar>
    </>

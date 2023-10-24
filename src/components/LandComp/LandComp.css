@@ -26,20 +26,19 @@
 
   button {
     background-color: transparent;
-    color: #FFFFFF;
-    padding: 10px 20px;
+    color: #D9D9D9;
+    padding: 10px 40px;
     font-size: 20px;
-    border: 2px solid #FFFFFF; /* Adicione uma borda branca */
+    border: 2px solid #D9D9D9; 
     border-radius: 15px;
     font-weight: 600;
     font-style: normal;
     cursor: pointer;
-    transition: cursor 0.3s; /* Efeito de transição suave apenas para o cursor */
+    transition: cursor 0.3s; 
   }
   
   button:hover {
-    cursor: pointer; /* Altere o cursor em hover, não mexa nas outras propriedades */
+    cursor: pointer; 
+    color: #FFFFFF;
+    border: 2px solid #FFFFFF;
   }
-  
-  
-  

@@ -4,7 +4,7 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 export const Diagnostico = () => {
   return (
     <>
-    <header><NavbarComp/></header>
+    <header><NavbarComp showEntrarButton={true}/></header>
     Diagnostico
     </>
   )
