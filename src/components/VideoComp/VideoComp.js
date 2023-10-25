@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import videoFile from '../../assets/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4'
-import './LandComp.css'
+import './VideoComp.css'
 import { Link } from 'react-router-dom';
 
-export const LandComp = () => {
+export const VideoComp = () => {
   const [videoPlaying, setVideoPlaying] = useState(true);
 
   const toggleVideo = () => {
@@ -17,15 +17,17 @@ export const LandComp = () => {
   };
 
   return (
-    <div className="home-container">
-      <div className="landcomp-video">
+    <div className="videocomp-container">
+      <div className="videocomp-video">
         <video id="background-video" autoPlay loop muted>
           <source src={videoFile} type="video/mp4" />
           Seu navegador não suporta vídeos em HTML5.
         </video>
       </div>
       <div className="center-content">
-      <Link to="/cadastro"><button>Entrar</button></Link>
+      <Link to="/cadastro">
+        <button>Entrar</button>
+      </Link>
       </div>
     </div>
   );
