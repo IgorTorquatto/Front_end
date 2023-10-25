@@ -1,6 +1,11 @@
+body{
+  font-family: 'Red hat',sans-serif;
+}
+
 .home-container {
     position: relative;
-  }
+    background-color: #1b4e60;
+}
   
 .home-navbar {
     position: absolute;
@@ -9,19 +14,19 @@
     left: 0;
     right: 0;
     z-index: 2;
-  }
+}
   
-.home-landcomp {
+.home-videocomp {
     position: relative;
     z-index: 1;
-  }
+}
 
-.navbar-transparent {
+.home-navbar-transparent {
     background-color: transparent;
     box-shadow: none;
   }
 
-.custom-title {
+.video-title {
     position: absolute;
     top: 30%;
     left: 0;
@@ -33,24 +38,21 @@
     z-index: 2; /* deve ser maior que o z index de landcomp*/
 }
 
-.custom-title h1 {
+.video-title h1 {
     color: #FFFFFF !important;
     text-transform: uppercase;
     font-weight: bold;
 }
 
+.section1-title{
+  margin-left: 20px;
+}
+
 .card-container{
-  position: absolute;
-  background-color: #FFFFFF;
+  margin-left: 60px;
+  background-color: transparent;
   display: flex;
   justify-content: space-between;
   z-index: 2;
-}
-
-.card{
-  margin-right: 20px;
-}
-
-.card:last-child{
-  margin-right: 0;
+  width: 90%;
 }

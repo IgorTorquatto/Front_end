@@ -1,0 +1,17 @@
+.card{
+    margin-right: 20px;
+    background-color: #123344;
+    color: #FFFFFF;
+    text-align: center;
+    width: 500px;
+}
+  
+.imageStyle{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card:last-child{
+    margin-right: 0;
+}
