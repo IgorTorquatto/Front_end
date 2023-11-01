@@ -33,9 +33,9 @@ export const Home = () => {
             <h1 className="text-white display-6 mb-5 mt-3">Por que contar com a dIAgnostica?</h1>
           </div>
           <div className="card-container">
-                <CardComp title={"Card 1"} description={"Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups"} imageSrc={require('../../assets/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg')}/>
-                <CardComp title={"Card 2"} description={"Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups"} imageSrc={require('../../assets/umanoide-tHS9j3HWT1s-unsplash.jpg')}/>
-                <CardComp title={"Card 3"} description={"Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for previewing layouts and visual mockups"} imageSrc={require('../../assets/umanoide-tHS9j3HWT1s-unsplash.jpg')}/>
+                <CardComp title={"Tecnologia"} description={"Técnicas avançadas da computação podem oferecer um importante auxílio no diagnóstico rápido de doenças como pneumonia, COVID-19, tuberculose e muitas outras. "} imageSrc={require('../../assets/rede-neural.jpg')}/>
+                <CardComp title={"Ferramenta"} description={"Somos uma aplicação para auxiliar médicos a detectar doenças pulmonares a partir de imagens de raio-x usando inteligência artificial."} imageSrc={require('../../assets/umanoide-tHS9j3HWT1s-unsplash.jpg')}/>
+                <CardComp title={"Resultados"} description={"Os resultados dos modelos se equiparam com os da literatura científica."} imageSrc={require('../../assets/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg')}/>
           </div>
         </section>
       

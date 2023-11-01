@@ -1,11 +1,17 @@
 import React from 'react'
-import { NavbarComp } from '../../components/Header/NavbarComp'
+import './Cadastro.css'
+import { FormComp } from '../../components/Form/FormComp'
 
 export const Cadastro = () => {
   return (
     <>
-    <header><NavbarComp showEntrarButton={true}/></header>
-    Cadastro
+    <div className="cadastro-container">
+        <div className="cadastro-backgorund-image"></div>
+        <div className="cadastro-medico">
+            <h4>Cadastro</h4>
+            <FormComp/>
+        </div>
+    </div>
     </>
   )
 }

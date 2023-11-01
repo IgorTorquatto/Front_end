@@ -29,6 +29,7 @@ export const VideoComp = () => {
         <button>Entrar</button>
       </Link>
       </div>
+      <div className="videocomp-gradient"></div>
     </div>
   );
 };
