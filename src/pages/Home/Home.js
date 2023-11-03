@@ -1,8 +1,8 @@
 import React from 'react';
-import { VideoComp } from '../../components/VideoComp/VideoComp';
+import { Video } from '../../components/Video/Video';
 import './Home.css'
 import { NavbarComp } from '../../components/Header/NavbarComp';
-import { CardComp } from '../../components/Cards/CardComp';
+import { Card } from '../../components/Cards/Card';
 
 export const Home = () => {
 
@@ -23,7 +23,7 @@ export const Home = () => {
               <div className="video-title">
                 <h1 className="font-weight-bold">ferramenta médica para análises de raio-x</h1>
               </div>
-              <VideoComp />
+              <Video />
               <br></br>
             </div>
         </section>
@@ -33,9 +33,9 @@ export const Home = () => {
             <h1 className="text-white display-6 mb-5 mt-3">Por que contar com a dIAgnostica?</h1>
           </div>
           <div className="card-container">
-                <CardComp title={"Tecnologia"} description={"Técnicas avançadas da computação podem oferecer um importante auxílio no diagnóstico rápido de doenças como pneumonia, COVID-19, tuberculose e muitas outras. "} imageSrc={require('../../assets/rede-neural.jpg')}/>
-                <CardComp title={"Ferramenta"} description={"Somos uma aplicação para auxiliar médicos a detectar doenças pulmonares a partir de imagens de raio-x usando inteligência artificial."} imageSrc={require('../../assets/umanoide-tHS9j3HWT1s-unsplash.jpg')}/>
-                <CardComp title={"Resultados"} description={"Os resultados dos modelos se equiparam com os da literatura científica."} imageSrc={require('../../assets/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg')}/>
+                <Card title={"Tecnologia"} description={"Técnicas avançadas da computação podem oferecer um importante auxílio no diagnóstico rápido de doenças como pneumonia, COVID-19, tuberculose e muitas outras. "} imageSrc={require('../../assets/rede-neural.jpg')}/>
+                <Card title={"Ferramenta"} description={"Somos uma aplicação para auxiliar médicos a detectar doenças pulmonares a partir de imagens de raio-x usando inteligência artificial."} imageSrc={require('../../assets/umanoide-tHS9j3HWT1s-unsplash.jpg')}/>
+                <Card title={"Resultados"} description={"Os resultados dos modelos se equiparam com os da literatura científica."} imageSrc={require('../../assets/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg')}/>
           </div>
         </section>
       

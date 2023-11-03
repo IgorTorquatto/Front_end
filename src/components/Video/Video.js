@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import videoFile from '../../assets/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4'
-import './VideoComp.css'
+import './Video.css'
 import { Link } from 'react-router-dom';
 
-export const VideoComp = () => {
+export const Video = () => {
   const [videoPlaying, setVideoPlaying] = useState(true);
 
   const toggleVideo = () => {
@@ -25,7 +25,7 @@ export const VideoComp = () => {
         </video>
       </div>
       <div className="center-content">
-      <Link to="/cadastro">
+      <Link to="/login">
         <button>Entrar</button>
       </Link>
       </div>
