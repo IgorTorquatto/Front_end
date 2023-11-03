@@ -4,6 +4,7 @@
   "homepage": "https://grupodiagnostica.github.io/Front_end",
   "private": true,
   "dependencies": {
+    "@mdi/font": "^7.3.67",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
