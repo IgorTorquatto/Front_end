@@ -1,5 +1,10 @@
 .formcomp-labels{
-    text-align: center;
+    text-align:center;
+}
+
+.form-control{
+    font-size: 15px;
+    color: #808080;
 }
 
 .formcomp-input{
@@ -7,5 +12,5 @@
     margin-left: 10%;
     border: 1px solid #ccc; 
     padding: 5px; 
-  }
+}
   

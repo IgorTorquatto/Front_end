@@ -2,7 +2,7 @@ import React from 'react'
 import {Navbar, Nav, Container, Button} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import logo from '../../assets/noto_lungs.png'
-import './NavBarComp.css'
+import './NavbarComp.css'
 
 export const NavbarComp=( { customClass, showEntrarButton } ) => {
 
@@ -26,7 +26,7 @@ export const NavbarComp=( { customClass, showEntrarButton } ) => {
           </Navbar.Collapse>
           
           {showEntrarButton && (
-            <Button as={Link} to="/cadastro" variant="light" className="entrar-button">
+            <Button as={Link} to="/login" variant="light" className="entrar-button">
               entrar
             </Button>
           )}

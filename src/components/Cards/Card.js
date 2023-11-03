@@ -1,7 +1,7 @@
 import React from 'react';
-import './CardComp.css'
+import './Card.css'
 
-export const CardComp = ({ title, description, imageSrc }) => {
+export const Card = ({ title, description, imageSrc }) => {
   return (
     <div className="card">
       <img src={imageSrc} className="card-img-top card-image" alt="card" />
