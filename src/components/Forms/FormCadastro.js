@@ -5,8 +5,8 @@ import './FormCadastro.css';
 export const FormCadastro = () => {
   return (
     <>
-      <form>
-        <div className="form-group mt-2 formcomp-labels">
+      <form className="mt-4">
+        <div className="form-group mt-2 ">
           <label htmlFor="exampleFormControlInput1">Nome</label>
           <input
             type="text"
@@ -16,10 +16,8 @@ export const FormCadastro = () => {
           />
         </div>
 
-        <div className="form-group mt-2 formcomp-labels">
-          <label htmlFor="exampleFormControlInput2">
-            <i className="mdi mdi-email"></i> Endereço de email
-          </label>
+        <div className="form-group mt-2 ">
+          <label htmlFor="exampleFormControlInput2"> Endereço de email</label>
           <input
             type="email"
             className="form-control formcomp-input"
@@ -28,10 +26,8 @@ export const FormCadastro = () => {
           />
         </div>
 
-        <div className="form-group mt-2 formcomp-labels">
-          <label htmlFor="exampleFormControlInput3">
-            <i className="mdi mdi-phone"></i> Telefone
-          </label>
+        <div className="form-group mt-2 ">
+          <label htmlFor="exampleFormControlInput3"> Telefone</label>
           <input
             type="tel"
             className="form-control formcomp-input"
@@ -42,7 +38,7 @@ export const FormCadastro = () => {
           />
         </div>
 
-        <div className="form-group mt-2 formcomp-labels">
+        <div className="form-group mt-2">
           <label htmlFor="exampleFormControlSelect1">Especialização</label>
           <select
             className="form-control formcomp-input"
@@ -59,7 +55,7 @@ export const FormCadastro = () => {
           </select>
         </div>
 
-        <div className="form-group mt-2 formcomp-labels">
+        <div className="form-group mt-2">
           <label htmlFor="exampleFormControlInput4">Senha</label>
           <input
             type="password"
@@ -70,10 +66,14 @@ export const FormCadastro = () => {
         </div>
       </form>
 
-      <button className="btn btn-primary mt-3">Cadastrar</button>
-      <p className="">
-        Já possui conta? <Link to="/login">Entrar</Link>
-      </p>
+      <div className="form-cadastro-text mt-5">
+        <Link to="/home">
+          <button className="btn btn-primary custom-btn">Cadastrar</button>
+        </Link>
+        <p>
+          Já possui conta? <Link to="/login">Entrar agora</Link>
+        </p>
+      </div>
     </>
   );
 };
