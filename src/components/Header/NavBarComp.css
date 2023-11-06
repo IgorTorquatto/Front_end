@@ -9,11 +9,10 @@
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
-  }
+}
 
 .center-nav-links {
   display: flex;
-  align-items: center;
   justify-content: center;
   text-align: center;
   width: 100%;
@@ -25,26 +24,11 @@
   color: #FFFFFF; 
   margin: 0 10px;
   text-decoration: none; 
-  transition: color 0.2s; 
 }
 
-.center-nav-links a:active,
-.center-nav-links a:focus {
+.center-nav-links a:hover {
   color: #00E0FF;
   border-bottom: 2px solid #00E0FF;
-}
-
-.no-underline-focus {
-  text-decoration: none !important; 
-}
-
-.no-underline-focus:hover,
-.no-underline-focus:active,
-.no-underline-focus:focus {
-  color: inherit !important; 
-  border: none !important; 
-  background-color: transparent !important; 
-  box-shadow: none !important; 
 }
 
 .navbar-toggler-icon {

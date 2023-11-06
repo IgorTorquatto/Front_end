@@ -1,3 +1,7 @@
-.formLogin-title h2{
-    font-weight: bold;
+.custom-btn{
+    width: 80%;
+}
+
+.form-login-text a{
+    text-decoration: none;
 }

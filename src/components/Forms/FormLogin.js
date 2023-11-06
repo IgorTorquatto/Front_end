@@ -6,13 +6,8 @@ export const FormLogin = () => {
   return (
     <>
     <form>
-        <div className="formLogin-title">
-          <h2>Seja Bem-Vindo</h2>
-        </div>
-        <div className="form-group mt-2 formcomp-labels">
-          <label htmlFor="exampleFormControl1">
-            <i className="mdi mdi-email"></i> Endereço de email
-          </label>
+        <div className="form-group mt-2 ">
+          <label htmlFor="exampleFormControl1">Endereço de email</label>
           <input
             type="email"
             className="form-control formcomp-input"
@@ -21,7 +16,7 @@ export const FormLogin = () => {
           />
         </div>
 
-        <div className="form-group mt-2 formcomp-labels">
+        <div className="form-group mt-2">
           <label htmlFor="exampleFormControl2">Senha</label>
           <input
             type="password"
@@ -30,12 +25,17 @@ export const FormLogin = () => {
             placeholder="Informe sua senha"
           />
         </div>
+
       </form>
 
-      <button className="btn btn-primary mt-3">Entrar</button>
-      <p className="">
-        Ainda não possui uma conta? <Link to="/cadastro">Cadastre-se agora</Link>
-      </p>
+      <div className="form-login-text">
+        <Link to="/home">
+          <button className="btn btn-primary custom-btn mt-5 mb-4">Entrar</button>
+        </Link>
+        <p>
+          Ainda não possui uma conta? <Link to="/cadastro">Cadastre-se agora</Link>
+        </p>
+      </div>
     </>
   )
 }

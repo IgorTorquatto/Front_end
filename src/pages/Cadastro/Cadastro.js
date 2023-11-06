@@ -7,9 +7,11 @@ export const Cadastro = () => {
     <>
     <div className="cadastro-container">
         <div className="cadastro-background-image"></div>
-        <div className="cadastro-medico">
-            <h4>Cadastro</h4>
-            <FormCadastro/>
+        <div className="cadastro-section">
+            <h2>Cadastro</h2>
+            <div className="cadastro-form">
+              <FormCadastro/>
+            </div>
         </div>
     </div>
     </>
