@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Front_end/static/css/main.5247a5a9.css",
-    "main.js": "/Front_end/static/js/main.b7da2c46.js",
+    "main.css": "/Front_end/static/css/main.8a6b6e30.css",
+    "main.js": "/Front_end/static/js/main.f66f14ec.js",
     "static/media/cdc-4U6qzwNu-Ns-unsplash.jpg": "/Front_end/static/media/cdc-4U6qzwNu-Ns-unsplash.0509582d1107acf0a31d.jpg",
     "static/media/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg": "/Front_end/static/media/national-cancer-institute-NFvdKIhxYlU-unsplash.ab591b8d1dd322a31e47.jpg",
     "static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4": "/Front_end/static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).06a5b793898f485afdf5.mp4",
@@ -14,11 +14,11 @@
     "static/media/rede-neural.jpg": "/Front_end/static/media/rede-neural.6beec0dafc858e34a1f4.jpg",
     "static/media/RedHatDisplay-Regular.ttf": "/Front_end/static/media/RedHatDisplay-Regular.dfe5c1e7502e7ee7e3a2.ttf",
     "index.html": "/Front_end/index.html",
-    "main.5247a5a9.css.map": "/Front_end/static/css/main.5247a5a9.css.map",
-    "main.b7da2c46.js.map": "/Front_end/static/js/main.b7da2c46.js.map"
+    "main.8a6b6e30.css.map": "/Front_end/static/css/main.8a6b6e30.css.map",
+    "main.f66f14ec.js.map": "/Front_end/static/js/main.f66f14ec.js.map"
   },
   "entrypoints": [
-    "static/css/main.5247a5a9.css",
-    "static/js/main.b7da2c46.js"
+    "static/css/main.8a6b6e30.css",
+    "static/js/main.f66f14ec.js"
   ]
 }
