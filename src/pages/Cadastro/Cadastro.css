@@ -17,7 +17,6 @@
 .cadastro-section{
     background-color: #FFFFFF;
     border-radius: 20px;
-    text-align: center;
     width: 60%;
     height: 600px;
     position: absolute;
@@ -32,4 +31,5 @@
     font-weight: bolder;
     margin-top: 2%;
     margin-bottom: 2%;
+    text-align: center;
 }

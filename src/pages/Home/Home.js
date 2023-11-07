@@ -38,6 +38,10 @@ export const Home = () => {
                 <Card title={"Resultados"} description={"Os resultados dos modelos se equiparam com os da literatura científica."} imageSrc={require('../../assets/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg')}/>
           </div>
         </section>
+
+        <footer>
+           footer
+        </footer>
       
       </main>
 

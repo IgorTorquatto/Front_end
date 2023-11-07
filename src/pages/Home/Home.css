@@ -3,7 +3,6 @@ body{
 }
 
 .home-container {
-    position: relative;
     background-color: #0B2A45;
 }
   
@@ -63,4 +62,8 @@ body{
   justify-content: space-between;
   z-index: 2;
   width: 90%;
+}
+
+footer{
+  color: transparent;
 }

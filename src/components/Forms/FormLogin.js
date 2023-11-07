@@ -5,7 +5,7 @@ import './FormLogin.css'
 export const FormLogin = () => {
   return (
     <>
-    <form>
+    <form className="custom-formcomp">
         <div className="form-group mt-2 ">
           <label htmlFor="exampleFormControl1">Endereço de email</label>
           <input
@@ -16,7 +16,7 @@ export const FormLogin = () => {
           />
         </div>
 
-        <div className="form-group mt-2">
+        <div className="form-group mt-3">
           <label htmlFor="exampleFormControl2">Senha</label>
           <input
             type="password"
@@ -26,14 +26,18 @@ export const FormLogin = () => {
           />
         </div>
 
+        <p className="login-forget-password mt-3">
+          <Link to="/">Esqueceu sua senha?</Link>
+        </p>
+
       </form>
 
       <div className="form-login-text">
         <Link to="/home">
-          <button className="btn btn-primary custom-btn mt-5 mb-4">Entrar</button>
+          <button className="btn btn-primary custom-btn mt-3 mb-4">Entrar</button>
         </Link>
         <p>
-          Ainda não possui uma conta? <Link to="/cadastro">Cadastre-se agora</Link>
+          Ainda não tem uma conta? <Link to="/cadastro">Cadastre-se agora</Link>
         </p>
       </div>
     </>

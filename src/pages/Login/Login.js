@@ -7,7 +7,10 @@ export const Login = () => {
     <>
     <div className="login-container">
         <div className="login-background-image"></div>
-        <div className="login-logo">d.IAgnostica</div>
+        <div className="login-logo">
+          <img src={require('../../assets/noto_lungs.png')}/>
+          d.IAgnostica
+          </div>
         <div className="login-section">
           <div className="login-welcome">
            <h2>Seja Bem-Vindo</h2>
