@@ -10,10 +10,22 @@
     padding: 10px; 
 }
 
+.custom-formcomp label{
+    margin-left: 10%;
+}
+
+.form-cadastro-text{
+    text-align: center;
+}
+
+.form-cadastro-text button{
+    width: 80%;
+}
+
 .form-cadastro-text a{
     text-decoration: none;
 }
 
 .form-cadastro-text p{
-    margin-top: 2%;
+    margin-top: 10px;
 }

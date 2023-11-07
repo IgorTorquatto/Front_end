@@ -5,7 +5,7 @@ import './FormCadastro.css';
 export const FormCadastro = () => {
   return (
     <>
-      <form className="mt-4">
+      <form className="custom-formcomp mt-4">
         <div className="form-group mt-2 ">
           <label htmlFor="exampleFormControlInput1">Nome</label>
           <input

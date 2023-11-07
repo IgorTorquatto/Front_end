@@ -2,6 +2,22 @@
     width: 80%;
 }
 
+.form-login-text{
+    text-align: center;
+}
+
+.form-login-text button{
+    width:80%;
+}
+
 .form-login-text a{
+    text-decoration: none;
+}
+
+.login-forget-password{
+    margin-left: 10%;
+}
+
+.login-forget-password a {
     text-decoration: none;
 }

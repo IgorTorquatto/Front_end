@@ -26,10 +26,10 @@
   text-decoration: none; 
 }
 
-.center-nav-links a:hover {
+/*.center-nav-links a:hover {
   color: #00E0FF;
   border-bottom: 2px solid #00E0FF;
-}
+}*/
 
 .navbar-toggler-icon {
   background-color: transparent; 
