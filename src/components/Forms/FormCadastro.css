@@ -14,6 +14,14 @@
     margin-left: 10%;
 }
 
+.custom-formcomp {
+    /* margin-left: 10%; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
 .form-cadastro-text{
     text-align: center;
 }
@@ -28,4 +36,29 @@
 
 .form-cadastro-text p{
     margin-top: 10px;
+}
+
+.inputbtn{
+    align-self: center;
+}
+
+.form-group div{
+    margin-left: 10%;
+    color: red;
+    display: flex;
+    align-items: center;
+    height: 1.25rem;
+}
+
+.form-group p{
+    margin-top: 1rem;    
+    margin-left: 0.5rem;
+}
+
+.showerror{
+    display: flex !important;
+}
+
+.hideerror{
+    display: none !important;
 }

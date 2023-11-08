@@ -2,7 +2,7 @@ import React from 'react'
 import {Navbar, Nav, Container, Button} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import logo from '../../assets/noto_lungs.png'
-import './NavbarComp.css'
+import './NavBarComp.css'
 
 export const NavbarComp=( { customClass, showEntrarButton } ) => {
 
