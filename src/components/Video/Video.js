@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import videoFile from '../../assets/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4'
 import './Video.css'
 import { Link } from 'react-router-dom';
+import { Button} from '@chakra-ui/react'
 
 export const Video = () => {
   const [videoPlaying, setVideoPlaying] = useState(true);
@@ -26,7 +27,7 @@ export const Video = () => {
       </div>
       <div className="center-content">
       <Link to="/login">
-        <button>Entrar</button>
+        <Button variant='outline' colorScheme='white'>Entrar</Button>
       </Link>
       </div>
       <div className="videocomp-gradient"></div>
