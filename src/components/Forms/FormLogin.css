@@ -21,3 +21,29 @@
 .login-forget-password a {
     text-decoration: none;
 }
+
+.inputbtn{
+    align-self: center;
+    margin-top: 1rem;
+}
+
+.form-group div{
+    margin-left: 10%;
+    color: red;
+    display: flex;
+    align-items: center;
+    height: 1.25rem;
+}
+
+.form-group p{
+    margin-top: 1rem;    
+    margin-left: 0.5rem;
+}
+
+.showerror{
+    display: flex !important;
+}
+
+.hideerror{
+    display: none !important;
+}

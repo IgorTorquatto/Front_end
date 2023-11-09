@@ -8,7 +8,7 @@ export enum TokensTypes {
   LOAD_SESSIONFAILURE = '@user/LOAD_SESSIONFAILURE',
 }
 
-/**
+/**   
  * Data types
  */
 export interface User {
@@ -45,4 +45,5 @@ export interface TokenState {
 
 export interface TokenStateFromback {
   readonly data: TokenData
+  readonly token: string
 }

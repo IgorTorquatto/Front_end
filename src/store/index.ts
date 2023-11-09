@@ -4,8 +4,6 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "./ducks/rootSaga";
-import { CarsState } from "./ducks/cars/types";
-import { idsState } from "./ducks/ids/types";
 import { TokenState } from "./ducks/tokens/types";
 
 const persistConfig = {
@@ -14,9 +12,7 @@ const persistConfig = {
 };
 
 export interface ApplicationState {
-  cars: CarsState
   tokens: TokenState
-  ids: idsState
 }
 
 const sagaMiddleware = createSagaMiddleware();

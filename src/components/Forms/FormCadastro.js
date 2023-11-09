@@ -7,6 +7,10 @@ import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { loadSession } from '../../store/ducks/tokens/actions.ts';
+import { api } from  '../../services/api.ts'
+import { useDispatch } from 'react-redux';
+
 // import { api } from '../../services/api'
 
 const schema = yup.object({
@@ -28,41 +32,41 @@ export const FormCadastro = () => {
   });
 
   const history = useNavigate()
+  const dispactch = useDispatch();
 
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
 
-  const onSubmit = async (data) => {
-    const user = {
-      crm: data.crm,
-      email: data.email,
-      senha: data.senha,
-      especialidade: data.especialidade,
-      pessoa: {
-        cpf: data.cpf,
-        data_nascimento: data.data_nascimento,
-        nome: data.nome,
-        telefone: data.telefone,
-      }
+  const onSubmit = async (user) => {
+   
+    const pessoa = {
+      cpf: user.cpf,
+      data_nascimento: user.data_nascimento,
+      nome: user.nome,
+      telefone: user.telefone,
+      cargo: 'Médico',
     }
-    await api.post('/pessoa', user).then(({ data }) => {
-      medico = {
-        'id_pessoa': data.id_pessoa,
-        'crm': data.crm,
-        'especialidade': data.especialidade,
-        'senha': data.senha,
-        'email': data.email,
-        'pessoa': data
+    await api.post('/pessoa', pessoa).then(({ data }) => {
+      console.log(data)
+      const medico = {
+        id_pessoa: data.data.id,
+        crm: user.crm,
+        especialidade: user.especialidade,
+        senha: user.senha,
+        email: user.email
       }
+      console.log(medico)
 
       api.post('/medico', medico).then(({ data }) => {
         dispactch(loadSession(data))
+      }).catch(({})=>{
+
       })
+
     }).catch(({ error }) => {
-      alert("Error ao cadastrar")
+      // alert("Error ao cadastrar")
     })
-    history('/login')
-    console.log(user)
+    // history('/sobre')
   };
 
   function visibleIcon() {
@@ -189,7 +193,7 @@ export const FormCadastro = () => {
             <option value="" disabled selected>
               Escolha um dos itens listados
             </option>
-            <option value="1">Opção 1</option>
+            <option value="adasd">Opção 1</option>
             <option value="2">Opção 2</option>
             <option value="3">Opção 3</option>
             <option value="4">Opção 4</option>
@@ -217,7 +221,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputConfirmarSenha">confirmar senha</label>
+          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha</label>
           <input
             type="password"
             className="form-control formcomp-input"

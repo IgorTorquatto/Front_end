@@ -14,21 +14,22 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
   try {
     const { data } = payload
     console.log(data)
-    let response: TokenStateFromback = yield call(api.post, `/login`, data)
+    // var response = data as any
+    let response: TokenStateFromback = yield call(api.post, `/medico/login`, data)
     console.log(response)
     var user: TokenData = {
       ...response.data,
       logged: true
     }
     localStorage.setItem(
-      "@crm",
-      response.data.crm
+      "@token",
+      response.token
     );
     yield put(loadSessionSucess(user));
   } catch (err) {
     console.log(err)
     localStorage.removeItem(
-      "@crm",
+      "@token",
     );
     yield put(loadSessionFailure());
   }
