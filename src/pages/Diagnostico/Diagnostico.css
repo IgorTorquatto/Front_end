@@ -1,0 +1,12 @@
+
+.page-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.page-content{
+    flex-grow: 1;
+}

@@ -1,6 +1,7 @@
 import React from 'react';
 import './Sobre.css';
 import { NavbarComp } from '../../components/Header/NavbarComp';
+import { MyFooter } from '../../components/Footer/Footer';
 
 export const Sobre = () => {
   return (
@@ -36,7 +37,8 @@ export const Sobre = () => {
           </section>
 
         </main>
-
+        
+        <MyFooter />
     </div>
 
     </>
