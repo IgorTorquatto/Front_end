@@ -2,6 +2,8 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Preview avaible in [GitHub Pages](https://grupodiagnostica.github.io/Front_end/).
+
 ## Available Scripts
 
 In the project directory, you can run:
