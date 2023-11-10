@@ -1,0 +1,63 @@
+.footer-container{
+    background-color: #0B2A45;
+    width: 100%;
+    height: 300px;
+    padding: 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content{
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo-context{
+    height: 100%;
+    width: 30%;
+}
+
+.company-info{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 40px;
+    padding-left: 20px;
+}
+
+.phone, .location, .email, .social-medias, .contact{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.copyright-context{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 20px;
+}
+
+.icon{
+    width: 20px;
+    height: 20px;
+    color: white;
+    margin: 10px;
+    margin-right: 5px;
+}
+
+.footer-text{
+    color: white;
+    font-family: 'Source San Pro', sans-serif;
+    font-size: small;
+}
+
+.copyright{
+    font-size: smaller; 
+}
