@@ -15,8 +15,12 @@
 }
 
 .logo-context{
+    display: flex;
+    flex-direction: column;
     height: 100%;
     width: 30%;
+    justify-content: center;
+    align-items: center;
 }
 
 .company-info{
@@ -28,11 +32,20 @@
     padding-left: 20px;
 }
 
-.phone, .location, .email, .social-medias, .contact{
+.phone, .email, .location{
     display: flex;
-    width: 100%;
+}
+
+.social-medias, .contact, .location{
+    display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.social-media-context{
+    display: flex;
 }
 
 .copyright-context{
@@ -48,8 +61,7 @@
     width: 20px;
     height: 20px;
     color: white;
-    margin: 10px;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .footer-text{
@@ -60,4 +72,10 @@
 
 .copyright{
     font-size: smaller; 
+    font-family: 'Assistant', sans-serif;
+}
+
+.social-media-context:hover, .location:hover{
+    cursor: pointer;
+    color: orangered !important;
 }

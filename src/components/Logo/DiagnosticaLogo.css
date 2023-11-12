@@ -1,4 +1,4 @@
-.logo-context{
+#logo-context{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,4 +14,8 @@
 
 .text-ia{
     color: #FAA620;
+}
+
+#logo-context:hover{
+    cursor: pointer;
 }

@@ -5,6 +5,10 @@ import { FaLocationDot, FaPhone, FaEnvelope, FaLinkedinIn, FaFacebook, FaInstagr
 
 
 export const MyFooter = () => {
+  const openLink = (url) => {
+    window.open(url, '_blank'); // Abre o link em uma nova aba
+  };
+
   return (
     <div className='footer-container'>
       
@@ -14,14 +18,22 @@ export const MyFooter = () => {
         </div>
         <div className='company-info'>
         <div className='social-medias'>
-            <span className='footer-text'>Redes Sociais:</span>
+          <span className='footer-text'>
+            Redes Sociais:
+          </span>
+          <div className='social-media-context' onClick={() => openLink('https://www.instagram.com/')}>
             <FaInstagram className='icon' />
             <span className='footer-text'>@exemplo</span>
+          </div>
+          <div className='social-media-context' onClick={() => openLink('https://www.linkedin.com/')}>
             <FaLinkedinIn className='icon' />
             <span className='footer-text'>Exemplo</span>
+          </div>
+          <div className='social-media-context' onClick={() => openLink('https://www.facebook.com/')}>  
             <FaFacebook className='icon' />
             <span className='footer-text'>Exemplo</span>
           </div>
+        </div>
           <div className='contact'>
             <div className='phone'>
               <FaPhone className='icon' />
@@ -32,7 +44,7 @@ export const MyFooter = () => {
               <span className='footer-text'>exemplodeemail@gmail.com</span>
             </div>
           </div>
-          <div className='location'>
+          <div className='location' onClick={() => openLink('https://maps.app.goo.gl/ocJoRj6kGdzqgTj59')}>
             <FaLocationDot className='icon'/> 
             <span className='footer-text'>Av. Ten. Raimundo Rocha, 1639 - Cidade Universitária, Juazeiro do Norte - CE</span>
           </div>
