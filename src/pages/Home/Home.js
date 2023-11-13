@@ -4,6 +4,7 @@ import './Home.css'
 import { NavbarComp } from '../../components/Header/NavbarComp';
 import { Card } from '../../components/Cards/Card';
 import { AccordionComp } from '../../components/Accordion/AccordionComp';
+import { MyFooter } from '../../components/Footer/Footer';
 
 export const Home = () => {
 
@@ -62,8 +63,8 @@ export const Home = () => {
           </div>
         </section>
 
-        <footer>
-           footer
+        <footer className="home-footer">
+           <MyFooter/>
         </footer>
       
       </main>
