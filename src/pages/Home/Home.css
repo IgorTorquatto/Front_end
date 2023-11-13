@@ -73,6 +73,6 @@ body{
   width: 90%;
 }
 
-footer{
-  color: transparent;
+.home-footer{
+  margin-top: 150px;
 }
