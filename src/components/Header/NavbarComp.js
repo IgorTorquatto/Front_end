@@ -25,7 +25,6 @@ import {
 export const NavbarComp = ({ customClass, showEntrarButton }) => {
   const { data: user } = useSelector((state) => state.tokens);
   const navbarClassName = customClass ? `custom-navbar ${customClass}` : 'custom-navbar'
-  console.log(user)
   const history = useNavigate();
   const dispactch = useDispatch();
 

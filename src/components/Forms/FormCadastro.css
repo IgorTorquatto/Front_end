@@ -43,14 +43,6 @@
     margin-top: 1rem;
 }
 
-.form-group div{
-    margin-left: 10%;
-    color: red;
-    display: flex;
-    align-items: center;
-    height: 1.25rem;
-}
-
 .form-group p{
     margin-top: 1rem;    
     margin-left: 0.5rem;
@@ -62,4 +54,12 @@
 
 .hideerror{
     display: none !important;
+}
+
+.errorDiv{
+    margin-left: 10%;
+    color: red;
+    display: flex;
+    align-items: center;
+    height: 1.25rem;
 }

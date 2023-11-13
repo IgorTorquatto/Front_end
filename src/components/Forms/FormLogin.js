@@ -49,7 +49,7 @@ export const FormLogin = () => {
             placeholder="exemplo@email.com"
             {...register("email")}
           />
-          <div className={errors.email ? 'showerror' : 'hideerror'}>
+          <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.email?.message}</p>
           </div>
@@ -64,7 +64,7 @@ export const FormLogin = () => {
             placeholder="Informe sua senha"
             {...register("senha")}
           />
-          <div className={errors.email ? 'showerror' : 'hideerror'}>
+          <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.email?.message}</p>
           </div>
