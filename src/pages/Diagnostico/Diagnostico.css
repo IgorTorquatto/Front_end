@@ -1,4 +1,23 @@
 
+#upload-container {
+    text-align: center;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    cursor: pointer;
+}
+
+#uploaded-image {
+    max-width: 100%;
+    max-height: 300px;
+    display: none;
+    margin-top: 20px;
+}
+
+.titleDragInput{
+    z-index: -99;
+    font-size: 0.5rem;
+    pointer-events: none;
+
 .page-container{
     display: flex;
     flex-direction: column;
