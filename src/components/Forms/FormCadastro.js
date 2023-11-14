@@ -11,7 +11,6 @@ import { loadSession } from '../../store/ducks/tokens/actions.ts';
 import { api } from  '../../services/api.ts'
 import { useDispatch } from 'react-redux';
 
-// import { api } from '../../services/api'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -102,7 +101,7 @@ export const FormCadastro = () => {
             placeholder="Digite seu nome completo"
             {...register("nome")}
           />
-          <div className={errors.nome ? 'showerror' : 'hideerror'}>
+          <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.nome?.message}</p>
           </div>
@@ -117,7 +116,7 @@ export const FormCadastro = () => {
             {...register("email")}
             placeholder="exemplo@email.com"
           />
-          <div className={errors.email ? 'showerror' : 'hideerror'}>
+          <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.email?.message}</p>
           </div>
@@ -131,7 +130,7 @@ export const FormCadastro = () => {
             placeholder="Digite seu nome completo"
             {...register("cpf")}
           />
-          <div className={errors.cpf ? 'showerror' : 'hideerror'}>
+          <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.cpf?.message}</p>
           </div>
@@ -145,7 +144,7 @@ export const FormCadastro = () => {
             placeholder="Digite seu nome completo"
             {...register("crm")}
           />
-          <div className={errors.crm ? 'showerror' : 'hideerror'}>
+          <div className={errors.crm ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.crm?.message}</p>
           </div>
@@ -159,7 +158,7 @@ export const FormCadastro = () => {
             placeholder="Digite seu nome completo"
             {...register("data_nascimento")}
           />
-          <div className={errors.data_nascimento ? 'showerror' : 'hideerror'}>
+          <div className={errors.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.data_nascimento?.message}</p>
           </div>
@@ -177,7 +176,7 @@ export const FormCadastro = () => {
             {...register("telefone")}
             title="Digite apenas números"
           />
-          <div className={errors.telefone ? 'showerror' : 'hideerror'}>
+          <div className={errors.telefone ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.telefone?.message}</p>
           </div>
@@ -199,7 +198,7 @@ export const FormCadastro = () => {
             <option value="4">Opção 4</option>
             <option value="5">Opção 5</option>
           </select>
-          <div className={errors.especialidade ? 'showerror' : 'hideerror'}>
+          <div className={errors.especialidade ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.especialidade?.message}</p>
           </div>
@@ -214,7 +213,7 @@ export const FormCadastro = () => {
             placeholder="Informe sua senha"
             {...register("senha")}
           />
-          <div className={errors.senha ? 'showerror' : 'hideerror'}>
+          <div className={errors.senha ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.senha?.message}</p>
           </div>
@@ -229,7 +228,7 @@ export const FormCadastro = () => {
             placeholder="Informe sua senha novamente"
             {...register("confirmarSenha")}
           />
-          <div className={errors.confirmarSenha ? 'showerror' : 'hideerror'}>
+          <div className={errors.confirmarSenha ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.confirmarSenha?.message}</p>
           </div>

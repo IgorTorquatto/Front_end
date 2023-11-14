@@ -27,7 +27,7 @@ export const Video = () => {
       </div>
       <div className="center-content">
       <Link to="/login">
-        <Button variant='outline' colorScheme='white'>Entrar</Button>
+        <Button className='videoButton' variant='outline' colorScheme='white'>Entrar</Button>
       </Link>
       </div>
       <div className="videocomp-gradient"></div>
