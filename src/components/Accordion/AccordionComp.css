@@ -1,51 +1,60 @@
 .accordion {
-    margin: 10px;
+  width: 100%;
+  margin-bottom: 10px;
 }
-  
+
 .accordion-header {
-    border-radius: 10px;
-    cursor: pointer;
-    background-color: #061218;
-    color:#FFFFFF;
-    font-size: 30px;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #061218;
+  color: #ffffff;
+  font-size: 30px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.accordion-header:hover{
-    color:#50B7A1;
+.accordion-header:hover {
+  color: #50b7a1;
 }
 
-.accordion-header h3{
-    font-size: 20px;
+.accordion-header h3 {
+  font-size: 20px;
 }
-
 
 .accordion-content {
-    padding: 20px;
-    background-color: #50b7a13a;
-    height: 20vh;
-    border-radius: 10px;
-    color:#fff;
+  padding: 20px;
+  background-color: #50b7a13a;
+  height: 20vh;
+  border-radius: 10px;
+  color: #fff;
 }
 
-.icon.closed{
-    display: flex;
-    align-items: center;
+.icon.closed {
+  display: flex;
+  align-items: center;
 }
 
 .icon::before {
-    content: '>';
-    transition: transform 0.3s;
+  content: ">";
+  transition: transform 0.3s;
 }
 
 .icon.open::before {
-    transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .icon.closed::before {
-    transform: rotate(0);
+  transform: rotate(0);
 }
-  
+
+@media (max-width: 529px) {
+  .accordion-content {
+    padding: 20px;
+    background-color: #50b7a13a;
+    height: 70vh;
+    border-radius: 10px;
+    color: #fff;
+  }
+}

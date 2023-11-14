@@ -1,78 +1,77 @@
-body{
-  font-family: 'Red hat',sans-serif;
+body {
+  font-family: "Red hat", sans-serif;
 }
 
 .home-container {
-    background-color: #0B2A45;
-}
-  
-.home-navbar {
-    position: absolute;
-    background: transparent;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
+  background-color: #0b2a45;
 }
 
-.home-navbar a{
+.home-navbar {
+  position: absolute;
+  background: transparent;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.home-navbar a {
   color: rgba(238, 236, 236, 0.966);
 }
 
-.home-navbar a:hover{
+.home-navbar a:hover {
   border-bottom: none;
 }
-  
+
 .home-videocomp {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .home-navbar-transparent {
-    background-color: transparent;
-    box-shadow: none;
-  }
+  background-color: transparent;
+  box-shadow: none;
+}
 
 .video-title {
-    position: absolute;
-    top: 30%;
-    left: 0;
-    width: 100%;
-    text-align: center; 
-    background-color: transparent;
-    padding: 20px;
-    font-size: 20px;
-    z-index: 2; /* deve ser maior que o z index de landcomp*/
+  position: absolute;
+  top: 25%;
+  width: 100%;
+  text-align: center;
+  background-color: transparent;
+  padding: 20px;
+  font-size: 20px;
+  z-index: 2; /* deve ser maior que o z index de landcomp*/
 }
 
 .video-title h1 {
-    color: #FFFFFF !important;
-    text-transform: uppercase;
-    font-weight: bold;
+  color: #ffffff !important;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
-.section-title{
-  margin-left: 60px;
+.section-title {
+  margin-left: 10%;
   margin-top: 20px;
 }
 
-.card-container{
-  margin-left: 60px;
+.card-container {
   background-color: transparent;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   z-index: 2;
-  width: 90%;
+  width: 100%;
   margin-bottom: 2rem;
 }
 
-.accordion-container{
-  margin-left: 60px;
+.accordion-container {
+  margin-left: 10%;
+  margin-right: 10%;
   background-color: transparent;
   z-index: 2;
-  width: 90%;
+  text-align: center;
 }
 
-.home-footer{
+.home-footer {
   margin-top: 150px;
 }

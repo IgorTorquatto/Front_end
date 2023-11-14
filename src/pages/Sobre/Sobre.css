@@ -69,9 +69,12 @@
 }
 
 .sobre-secao3 img {
-  width: 550px;
-  height: 400px;
+  width: 80%;
+  height: 350px;
   border-radius: 10px;
-  margin: 0 auto;
-  margin-left: 20px;
+  margin-left: 10%;
+}
+
+.sobre-secao3 figcaption {
+  text-align: center;
 }

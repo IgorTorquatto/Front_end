@@ -1,6 +1,6 @@
 .custom-navbar {
-  background-color: #0B2A45;
-  font-family: 'Source Sans Pro', sans-serif;
+  background-color: #0b2a45;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 20px;
   font-weight: bold;
   display: flex;
@@ -21,7 +21,7 @@
 }
 
 .center-nav-links a {
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 0 10px;
   text-decoration: none;
 }
@@ -30,17 +30,17 @@
   background-color: transparent;
 }
 
-.navbar-brand img{
-  margin: 0  auto;
+.navbar-brand img {
+  margin: 0 auto;
   height: 40px;
 }
 
-.brand-text-IA{
-  color: #FAA620;
+.brand-text-IA {
+  color: #0083ca;
 }
 
-a.nav-link:hover{
-  border-bottom: 2px solid #00E0FF;
+a.nav-link:hover {
+  border-bottom: 2px solid #0083ca;
 }
 
 .navbar-collapse {
@@ -71,12 +71,22 @@ a.nav-link:hover{
   .custom-navbar .navbar-brand .brand-text {
     display: none;
   }
+
+  .navbar-collapse {
+    height: 180px;
+    background-color: #000000;
+    border-radius: 10px;
+    z-index: 3;
+  }
+
+  .custom-navbar {
+    height: 100px;
+  }
 }
 
 .menulist button:hover {
-  background-color: #0B2A45 !important;
+  background-color: #0b2a45 !important;
   color: white !important;
-
 }
 
 .menulist button {
