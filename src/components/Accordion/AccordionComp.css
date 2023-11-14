@@ -1,0 +1,51 @@
+.accordion {
+    margin: 10px;
+}
+  
+.accordion-header {
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #061218;
+    color:#FFFFFF;
+    font-size: 30px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion-header:hover{
+    color:#50B7A1;
+}
+
+.accordion-header h3{
+    font-size: 20px;
+}
+
+
+.accordion-content {
+    padding: 20px;
+    background-color: #50b7a13a;
+    height: 20vh;
+    border-radius: 10px;
+    color:#fff;
+}
+
+.icon.closed{
+    display: flex;
+    align-items: center;
+}
+
+.icon::before {
+    content: '>';
+    transition: transform 0.3s;
+}
+
+.icon.open::before {
+    transform: rotate(45deg);
+}
+
+.icon.closed::before {
+    transform: rotate(0);
+}
+  

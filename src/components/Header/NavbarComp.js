@@ -39,7 +39,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
       <Navbar className={navbarClassName} expand="lg" data-bs-theme="dark">
         <Container>
           <Navbar.Brand as={Link} to={"/"}>
-            <img src={logo} alt="Logo" /><span className="brand-text">d.IAgnostica</span></Navbar.Brand>
+            <img src={logo} alt="Logo" /><span className="brand-text">d.<span className="brand-text-IA">IA</span>gnostica</span></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="center-nav-links">

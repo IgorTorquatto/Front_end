@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
+
 import './Diagnostico.css';
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Text, Button, Textarea, Checkbox } from '@chakra-ui/react'
@@ -12,6 +13,10 @@ import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link } from 'react-router-dom';
+
+import { MyFooter } from '../../components/Footer/Footer'
+import './Diagnostico.css'
+
 
 require('dayjs/locale/br')
 
@@ -326,7 +331,9 @@ export const Diagnostico = () => {
       }
 
 
-
+      <div>
+        <MyFooter />
+      </div>
 
     </body>
   )

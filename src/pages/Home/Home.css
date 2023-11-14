@@ -51,8 +51,9 @@ body{
     font-weight: bold;
 }
 
-.section1-title{
-  margin-left: 20px;
+.section-title{
+  margin-left: 60px;
+  margin-top: 20px;
 }
 
 .card-container{
@@ -65,6 +66,13 @@ body{
   margin-bottom: 2rem;
 }
 
-footer{
-  color: transparent;
+.accordion-container{
+  margin-left: 60px;
+  background-color: transparent;
+  z-index: 2;
+  width: 90%;
+}
+
+.home-footer{
+  margin-top: 150px;
 }

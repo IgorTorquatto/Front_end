@@ -1,0 +1,17 @@
+.logo-context{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand-name{
+    margin-left: 10px;
+    font-family: 'Source Sans Pro', sans-serif ;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+}
+
+.text-ia{
+    color: #FAA620;
+}

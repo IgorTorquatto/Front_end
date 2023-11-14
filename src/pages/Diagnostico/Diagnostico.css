@@ -1,3 +1,4 @@
+
 #upload-container {
     text-align: center;
     border: 2px dashed #ccc;
@@ -16,4 +17,15 @@
     z-index: -99;
     font-size: 0.5rem;
     pointer-events: none;
+
+.page-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.page-content{
+    flex-grow: 1;
 }
