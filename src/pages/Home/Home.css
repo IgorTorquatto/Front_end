@@ -1,9 +1,6 @@
-body {
-  font-family: "Red hat", sans-serif;
-}
-
 .home-container {
   background-color: #0b2a45;
+  width: fit-content;
 }
 
 .home-navbar {
@@ -74,4 +71,20 @@ body {
 
 .home-footer {
   margin-top: 150px;
+}
+
+@media (max-width: 991px) {
+  .card-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-container {
+    flex-direction: column;
+  }
+
+  .section-title {
+    margin-left: 5%;
+  }
 }

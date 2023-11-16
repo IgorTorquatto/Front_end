@@ -1,3 +1,6 @@
+.sobre-container {
+  width: fit-content;
+}
 .sobre-imagem {
   background-image: url("../../assets/img_backgorund_sobre.png");
   width: 100%;
@@ -64,7 +67,7 @@
   max-width: 50%;
   margin: 0 auto;
   height: 600px;
-  width: 600px;
+  width: 50%;
   align-items: center;
 }
 
@@ -77,4 +80,72 @@
 
 .sobre-secao3 figcaption {
   text-align: center;
+}
+
+@media (max-width: 991px) {
+  .sobre-secao1 {
+    margin-left: 10px;
+  }
+  .secao1-retangulo {
+    width: 5px;
+  }
+  .secao1-h1 {
+    font-weight: bolder;
+    margin-left: 10px;
+    font-size: 25px;
+  }
+  .sobre-secoes {
+    flex-direction: column;
+    align-items: normal;
+  }
+  .sobre-secao2 {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .sobre-secao2-lista {
+    margin-left: 5px;
+  }
+
+  .sobre-secao3 {
+    max-width: 100%;
+    width: 100%;
+    justify-content: center;
+  }
+  .sobre-secao3 img {
+    width: 100%;
+    margin-left: 0%;
+    border-radius: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sobre-secao1 {
+    margin-left: 5px;
+  }
+  .secao1-retangulo {
+    width: 5px;
+  }
+  .secao1-h1 {
+    font-weight: bolder;
+    margin-left: 10px;
+    font-size: 25px;
+  }
+  .sobre-secoes {
+    flex-direction: column;
+    align-items: normal;
+  }
+  .sobre-secao2 {
+    max-width: 100%;
+  }
+  .sobre-secao2-lista {
+    margin-left: 5px;
+  }
+  .sobre-secao3 {
+    max-width: 100%;
+    width: 100%;
+  }
+  .sobre-secao3 img {
+    border-radius: 0;
+  }
 }

@@ -26,6 +26,11 @@
   text-decoration: none;
 }
 
+.center-nav-links a:hover {
+  color: #ffffff;
+  border-bottom: 2px solid #0083ca;
+}
+
 .navbar-toggler-icon {
   background-color: transparent;
 }
@@ -37,10 +42,6 @@
 
 .brand-text-IA {
   color: #0083ca;
-}
-
-a.nav-link:hover {
-  border-bottom: 2px solid #0083ca;
 }
 
 .navbar-collapse {
@@ -61,15 +62,44 @@ a.nav-link:hover {
   color: #fff;
 }
 
+.menulist button:hover {
+  background-color: #0b2a45 !important;
+  color: white !important;
+}
+
+.menulist button {
+  border-color: white;
+  border-radius: 0;
+  margin: 0.25rem 0;
+  transition: 200ms all ease-in-out !important;
+}
+
 @media (max-width: 991.98px) {
   .entrar-button {
     display: none;
+  }
+
+  .navbar-collapse {
+    height: 180px;
+    background-color: #000000;
+    border-radius: 10px;
+    z-index: 3;
+  }
+  .custom-navbar {
+    height: 100px;
   }
 }
 
 @media (max-width: 529px) {
   .custom-navbar .navbar-brand .brand-text {
     display: none;
+  }
+
+  .container {
+    margin-left: 70px;
+  }
+
+  .navbar-toggler-icon {
   }
 
   .navbar-collapse {
@@ -82,17 +112,4 @@ a.nav-link:hover {
   .custom-navbar {
     height: 100px;
   }
-}
-
-.menulist button:hover {
-  background-color: #0b2a45 !important;
-  color: white !important;
-}
-
-.menulist button {
-  border-color: white;
-  border-radius: 0;
-  margin: 0.25rem 0;
-
-  transition: 200ms all ease-in-out !important;
 }
