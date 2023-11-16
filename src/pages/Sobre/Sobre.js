@@ -56,14 +56,16 @@ export const Sobre = () => {
                   pessoas.
                 </p>
 
-                <h3>Equipe dIAgnóstica:</h3>
-                <ul>
-                  <li>Carlos Eduardo</li>
-                  <li>Victor Lima</li>
-                  <li>Diego Souza</li>
-                  <li>Raphael Pinheiro</li>
-                  <li>Cicero Igor</li>
-                </ul>
+                <div className="sobre-secao2-lista">
+                  <h3>Equipe dIAgnóstica:</h3>
+                  <ul>
+                    <li>Carlos Eduardo</li>
+                    <li>Victor Lima</li>
+                    <li>Diego Souza</li>
+                    <li>Raphael Pinheiro</li>
+                    <li>Cicero Igor</li>
+                  </ul>
+                </div>
               </div>
             </section>
 
