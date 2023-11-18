@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/noto_lungs.png";
 import "./NavBarComp.css";
 
@@ -28,8 +28,11 @@ import {
   MenuOptionGroup,
   MenuDivider,
 } from "@chakra-ui/react";
+import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
 
 export const NavbarComp = ({ customClass, showEntrarButton }) => {
+
+  const location = useLocation();
   const { data: user } = useSelector((state) => state.tokens);
   const navbarClassName = customClass
     ? `custom-navbar ${customClass}`
@@ -47,25 +50,30 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
       <Navbar className={navbarClassName} expand="lg" data-bs-theme="dark">
         <Container>
           <Navbar.Brand as={Link} to={"/"}>
-            <img src={logo} alt="Logo" />
-            <span className="brand-text">
-              d.<span className="brand-text-IA">IA</span>gnóstica
-            </span>
+            <DiagnosticaLogo />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="center-nav-links">
-              <Nav.Link as={Link} to={"/sobre"}>
-                Sobre Nós
+              <Nav.Link as={Link} to={"/sobre"} className={location.pathname === "/sobre" ? "active" : ""}>
+                <div className={location.pathname === "/sobre" ? "active" : ""}>
+                  Sobre Nós
+                </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/diagnostico"}>
+              <Nav.Link as={Link} to={"/diagnostico"} className={location.pathname === "/diagnostico" ? "active" : ""}>
+              <div className={location.pathname === "/diagnostico" ? "active" : ""}>
                 Diagnóstico
+                </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/historico"}>
+              <Nav.Link as={Link} to={"/historico"} className={location.pathname === "/historico" ? "active" : ""}>
+              <div className={location.pathname === "/historico" ? "active" : ""}>
                 Histórico
+                </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/pacientes"}>
+              <Nav.Link as={Link} to={"/pacientes"} className={location.pathname === "/pacientes" ? "active" : ""}>
+              <div className={location.pathname === "/pacientes" ? "active" : ""}>
                 Pacientes
+                </div>
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

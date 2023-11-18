@@ -26,9 +26,13 @@
   text-decoration: none;
 }
 
-.center-nav-links a:hover {
-  color: #ffffff;
-  border-bottom: 2px solid #0083ca;
+.active{
+  color: #0083ca /*#FAA620*/;
+}
+
+.center-nav-links a:hover, .center-nav-links a.active{
+  color: #0083ca /*#FAA620*/;
+  border-bottom: 2px solid #0083ca /*#FAA620*/;
 }
 
 .navbar-toggler-icon {
@@ -40,16 +44,12 @@
   height: 40px;
 }
 
-.brand-text-IA {
-  color: #0083ca;
-}
-
 .navbar-collapse {
   height: 50px;
 }
 
 .entrar-button {
-  background-color: #0083ca;
+  background-color: #0083ca /*#FAA620*/;
   text-transform: uppercase;
   color: #fff;
   font-weight: bold;
@@ -58,7 +58,7 @@
 }
 
 .entrar-button:hover {
-  background-color: #006caa;
+  background-color: #0083ca9f /*#faa62050*/;
   color: #fff;
 }
 
@@ -97,9 +97,6 @@
 
   .container {
     margin-left: 70px;
-  }
-
-  .navbar-toggler-icon {
   }
 
   .navbar-collapse {
