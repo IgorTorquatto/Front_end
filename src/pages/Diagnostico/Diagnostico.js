@@ -44,7 +44,8 @@ export const Diagnostico = () => {
   ]
 
   async function loadPatients() {
-    await api.get('/paciente').then(({ data }) => {
+    await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
+      console.log(data)
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
