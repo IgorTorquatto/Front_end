@@ -1,7 +1,10 @@
 {
   "files": {
-    "main.css": "/Front_end/static/css/main.8df7229e.css",
-    "main.js": "/Front_end/static/js/main.102b09bb.js",
+    "main.css": "/Front_end/static/css/main.f738143e.css",
+    "main.js": "/Front_end/static/js/main.47b5cde5.js",
+    "static/js/498.453ded65.chunk.js": "/Front_end/static/js/498.453ded65.chunk.js",
+    "static/js/703.487ff306.chunk.js": "/Front_end/static/js/703.487ff306.chunk.js",
+    "static/js/513.b1c841ea.chunk.js": "/Front_end/static/js/513.b1c841ea.chunk.js",
     "static/media/cdc-4U6qzwNu-Ns-unsplash.jpg": "/Front_end/static/media/cdc-4U6qzwNu-Ns-unsplash.0509582d1107acf0a31d.jpg",
     "static/media/national-cancer-institute-NFvdKIhxYlU-unsplash.jpg": "/Front_end/static/media/national-cancer-institute-NFvdKIhxYlU-unsplash.ab591b8d1dd322a31e47.jpg",
     "static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4": "/Front_end/static/media/SaveTube.io-4k background footage Ae plugin plexus-(1080p).06a5b793898f485afdf5.mp4",
@@ -13,13 +16,15 @@
     "static/media/materialdesignicons-webfont.woff2?v=7.3.67": "/Front_end/static/media/materialdesignicons-webfont.f97b38e4afe65388b4f0.woff2",
     "static/media/rede-neural.jpg": "/Front_end/static/media/rede-neural.6beec0dafc858e34a1f4.jpg",
     "static/media/federal-do-cariri.webp": "/Front_end/static/media/federal-do-cariri.8eda8c754d52954c992a.webp",
-    "static/media/RedHatDisplay-Regular.ttf": "/Front_end/static/media/RedHatDisplay-Regular.dfe5c1e7502e7ee7e3a2.ttf",
     "index.html": "/Front_end/index.html",
-    "main.8df7229e.css.map": "/Front_end/static/css/main.8df7229e.css.map",
-    "main.102b09bb.js.map": "/Front_end/static/js/main.102b09bb.js.map"
+    "main.f738143e.css.map": "/Front_end/static/css/main.f738143e.css.map",
+    "main.47b5cde5.js.map": "/Front_end/static/js/main.47b5cde5.js.map",
+    "498.453ded65.chunk.js.map": "/Front_end/static/js/498.453ded65.chunk.js.map",
+    "703.487ff306.chunk.js.map": "/Front_end/static/js/703.487ff306.chunk.js.map",
+    "513.b1c841ea.chunk.js.map": "/Front_end/static/js/513.b1c841ea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8df7229e.css",
-    "static/js/main.102b09bb.js"
+    "static/css/main.f738143e.css",
+    "static/js/main.47b5cde5.js"
   ]
 }
