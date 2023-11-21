@@ -40,13 +40,13 @@ export const HistoricoCard = ({data}) => {
     }
 
   return (
-    <Box className='card-container' onClick={() => {handleCardClick()}}>
+    <Box className='historico-card-container' onClick={() => {handleCardClick()}} cursor={'pointer'} >
         <Box className='card-title-context'>
             <span>ID do exame: {data.exameID}</span>
             <span>Tipo de exame: {data.exameType}</span>
             <span>Data e Hora: {formatoData.format(data.dateTime)}</span>
         </Box>
-        <Box className='card-body'>
+        <Box className='historico-card-body'>
             <Box id='paciente-info'>
                 <span>Paciente: {data.nomePaciente}</span>
                 <span>CPF: {data.cpf}</span>

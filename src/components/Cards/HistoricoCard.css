@@ -1,4 +1,4 @@
-.card-container{
+.historico-card-container{
     height: 100%;
     width: 100%;
     background-color: #3B83C3 !important;
@@ -18,7 +18,7 @@
     border-radius: 15px;
 }
 
-.card-body{
+.historico-card-body{
     display: flex;
     justify-content: space-around;
     padding: 0px 10px;
