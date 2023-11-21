@@ -35,12 +35,14 @@ export const Diagnostico = () => {
   const [pdfDataUri, setPdfDataUri] = useState(null);
   const [termo, setTermo] = useState(false);
   const [downloadLaudo, setDownloadLaudo] = useState(false);
+  const [observacoes, setObservacoes] = useState('Suas observações virão aqui...');
 
   const { data: user } = useSelector((state) => state.tokens);
 
   const models = [
     { value: '1', label: 'Pneumonia - Crianças de até 5 anos' },
     { value: '2', label: 'Pneumonia - Crianças, de 5 a 10 anos' },
+    { value: '3', label: 'Pneumonia, Covid, Tuberculose' },
   ]
 
   async function loadPatients() {
@@ -179,8 +181,15 @@ export const Diagnostico = () => {
     doc.text(`Observações do Profissional`, 20, 120);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'italic');
-    doc.text(`Suas observações viram aqui...`, 20, 130);
+    doc.text(`${observacoes}`, 20, 130);
 
+    doc.addPage();
+
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Mapa de calor", 85, 30)
+    doc.addImage(uploadedImage, 'JPEG', 4, 50, 100, 80);
+    doc.addImage(uploadedImage, 'JPEG', 106, 50, 100, 80);
     // Adicione mais informações conforme necessário
 
     // Converte o PDF para base64
@@ -311,7 +320,7 @@ export const Diagnostico = () => {
               <Text>
                 Adicione uma observação
               </Text>
-              <Textarea />
+              <Textarea onChange={(e)=>setObservacoes(e.target.value)}/>
               
             </Box>
             <Box display='flex' alignItems='center' mt='1rem'>
