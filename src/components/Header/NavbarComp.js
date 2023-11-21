@@ -55,23 +55,23 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="center-nav-links">
-              <Nav.Link as={Link} to={"/sobre"} className={location.pathname === "/sobre" ? "active" : ""}>
-                <div className={location.pathname === "/sobre" ? "active" : ""}>
+              <Nav.Link as={Link} to={"/sobre"} className={location.pathname.includes("/sobre") ? "active" : ""}>
+                <div className={location.pathname.includes("/sobre") ? "active" : ""}>
                   Sobre Nós
                 </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/diagnostico"} className={location.pathname === "/diagnostico" ? "active" : ""}>
-              <div className={location.pathname === "/diagnostico" ? "active" : ""}>
+              <Nav.Link as={Link} to={"/diagnostico"} className={location.pathname.includes("/diagnostico") ? "active" : ""}>
+              <div className={location.pathname.includes("/diagnostico") ? "active" : ""}>
                 Diagnóstico
                 </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/historico"} className={location.pathname === "/historico" ? "active" : ""}>
-              <div className={location.pathname === "/historico" ? "active" : ""}>
+              <Nav.Link as={Link} to={"/historico"} className={location.pathname.includes("/historico") ? "active" : ""}>
+              <div className={location.pathname.includes("/historico") ? "active" : ""}>
                 Histórico
                 </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/pacientes"} className={location.pathname === "/pacientes" ? "active" : ""}>
-              <div className={location.pathname === "/pacientes" ? "active" : ""}>
+              <Nav.Link as={Link} to={"/pacientes"} className={location.pathname.includes("/pacientes") ? "active" : ""}>
+              <div className={location.pathname.includes("/pacientes") ? "active" : ""}>
                 Pacientes
                 </div>
               </Nav.Link>
