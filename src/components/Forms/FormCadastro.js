@@ -46,7 +46,6 @@ export const FormCadastro = () => {
       cargo: 'Médico',
     }
     await api.post('/pessoa', pessoa).then(({ data }) => {
-      console.log(data)
       const medico = {
         id_pessoa: data.data.id,
         crm: user.crm,
@@ -54,10 +53,14 @@ export const FormCadastro = () => {
         senha: user.senha,
         email: user.email
       }
-      console.log(medico)
 
       api.post('/medico', medico).then(({ data }) => {
-        dispactch(loadSession(data))
+        const login = {
+          email: user.email,
+          senha: user.senha
+        }
+        dispactch(loadSession(login))
+        history('/sobre')
       }).catch(({})=>{
 
       })
@@ -65,7 +68,6 @@ export const FormCadastro = () => {
     }).catch(({ error }) => {
       // alert("Error ao cadastrar")
     })
-    // history('/sobre')
   };
 
   function visibleIcon() {
