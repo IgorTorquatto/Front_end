@@ -143,7 +143,7 @@ export const FormCadastro = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCRM"
-            placeholder="Digite seu nome completo"
+            placeholder="Digite seu CRM"
             {...register("crm")}
           />
           <div className={errors.crm ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -243,7 +243,7 @@ export const FormCadastro = () => {
         {/* <Link to="/home">
           <button className="btn btn-primary custom-btn">Cadastrar</button>
         </Link> */}
-        <p>
+        <p className="cadastro-login-link">
           Já possui conta? <Link to="/login">Entrar agora</Link>
         </p>
       </div>
