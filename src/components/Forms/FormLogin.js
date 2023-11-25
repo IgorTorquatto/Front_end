@@ -77,8 +77,7 @@ export const FormLogin = () => {
       </form>
 
       <div className="form-login-text">
-      
-        <p>
+        <p className="login-register-now">
           Ainda não tem uma conta? <Link to="/cadastro">Cadastre-se agora</Link>
         </p>
       </div>
