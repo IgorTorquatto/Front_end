@@ -46,7 +46,6 @@ export const FormCadastro = () => {
       cargo: 'Médico',
     }
     await api.post('/pessoa', pessoa).then(({ data }) => {
-      console.log(data)
       const medico = {
         id_pessoa: data.data.id,
         crm: user.crm,
@@ -54,10 +53,14 @@ export const FormCadastro = () => {
         senha: user.senha,
         email: user.email
       }
-      console.log(medico)
 
       api.post('/medico', medico).then(({ data }) => {
-        dispactch(loadSession(data))
+        const login = {
+          email: user.email,
+          senha: user.senha
+        }
+        dispactch(loadSession(login))
+        history('/sobre')
       }).catch(({})=>{
 
       })
@@ -65,7 +68,6 @@ export const FormCadastro = () => {
     }).catch(({ error }) => {
       // alert("Error ao cadastrar")
     })
-    // history('/sobre')
   };
 
   function visibleIcon() {
@@ -141,7 +143,7 @@ export const FormCadastro = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCRM"
-            placeholder="Digite seu nome completo"
+            placeholder="Digite seu CRM"
             {...register("crm")}
           />
           <div className={errors.crm ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -241,7 +243,7 @@ export const FormCadastro = () => {
         {/* <Link to="/home">
           <button className="btn btn-primary custom-btn">Cadastrar</button>
         </Link> */}
-        <p>
+        <p className="cadastro-login-link">
           Já possui conta? <Link to="/login">Entrar agora</Link>
         </p>
       </div>
