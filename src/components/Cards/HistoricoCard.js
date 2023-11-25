@@ -28,7 +28,7 @@ export const HistoricoCard = ({data}) => {
             <Box id='icon-context'>
                 {positivo === true ? <ImCheckmark color='green' size={'22px'}/> : <ImCross color='red' size={'22px'}/>}
             </Box>
-            <span>
+            <span className='hcard-text'>
                 {positivo === true ? 'Positivo' : 'Negativo'} Para A Doença
             </span>
            </Box> 
@@ -42,17 +42,17 @@ export const HistoricoCard = ({data}) => {
   return (
     <Box className='historico-card-container' onClick={() => {handleCardClick()}} cursor={'pointer'} >
         <Box className='card-title-context'>
-            <span>ID do exame: {data.exameID}</span>
-            <span>Tipo de exame: {data.exameType}</span>
-            <span>Data e Hora: {formatoData.format(data.dateTime)}</span>
+            <span className='hcard-text'>ID do exame: {data.exameID}</span>
+            <span className='hcard-text'>Tipo de exame: {data.exameType}</span>
+            <span className='hcard-text'>Data e Hora: {formatoData.format(data.dateTime)}</span>
         </Box>
         <Box className='historico-card-body'>
             <Box id='paciente-info'>
-                <span>Paciente: {data.nomePaciente}</span>
-                <span>CPF: {data.cpf}</span>
+                <span className='hcard-text'>Paciente: {data.nomePaciente}</span>
+                <span className='hcard-text'>CPF: {data.cpf}</span>
             </Box>
             <Box id='resultado-exame'>
-                <span>Resultado:</span>
+                <span className='hcard-text'>Resultado:</span>
 
                 {mostrarResultadoExame(data.examePositivo)} 
     
