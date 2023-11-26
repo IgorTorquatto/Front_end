@@ -3,5 +3,5 @@ const headers = {
   'Access-Control-Allow-Origin': '*', 
 };
 export const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://168.138.247.57:5000',
 });

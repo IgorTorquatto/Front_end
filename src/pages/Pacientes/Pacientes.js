@@ -160,7 +160,8 @@ export const Pacientes = () => {
       console.log(paciente)
 
       api.post('/paciente', paciente).then(({ data }) => {
-        history('/pacientes')
+        onClose()
+        loadPatients()
       }).catch(({ }) => {
 
       })
