@@ -31,6 +31,7 @@ export const Diagnostico = () => {
   const [patients, setPatients] = useState([]);
   const [patientsArray, setPatientsArray] = useState([]);
   const [prediction, setPrediction] = useState(null);
+  const [imageCam, setImageCam] = useState(null);
   const [error, setError] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState(null);
   const [termo, setTermo] = useState(false);
@@ -117,6 +118,30 @@ export const Diagnostico = () => {
     }
   };
 
+  function base64ToBlob(base64) {
+    var parts = base64.split(';base64,');
+    var contentType = parts[0].split(':')[1];
+    var raw = window.atob(parts[1]);
+    var rawLength = raw.length;
+    var uInt8Array = new Uint8Array(rawLength);
+
+    for (var i = 0; i < rawLength; ++i) {
+      uInt8Array[i] = raw.charCodeAt(i);
+    }
+
+    return new Blob([uInt8Array], { type: contentType });
+  }
+
+  function arrayToBase64(subarray) {
+    // Converte o subarray para um ArrayBuffer
+    var buffer = new Float32Array(subarray).buffer;
+
+    // Converte o ArrayBuffer para uma string base64
+    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)));
+
+    return base64String;
+  }
+
   async function onSubmitImage() {
     if (patient === null) {
       setError(true)
@@ -137,8 +162,12 @@ export const Diagnostico = () => {
         'Content-Type': 'multipart/form-data',
       }
     }).then(({ data }) => {
-      console.log(data.predictions[0][0])
-      setPrediction(data.predictions[0][0])
+      console.log(data)
+
+      var imageData = data.image;
+      
+      setImageCam(imageData)
+      setPrediction(data.predictions)
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -188,8 +217,15 @@ export const Diagnostico = () => {
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
     doc.text("Mapa de calor", 85, 30)
-    doc.addImage(uploadedImage, 'JPEG', 4, 50, 100, 80);
-    doc.addImage(uploadedImage, 'JPEG', 106, 50, 100, 80);
+    doc.addImage(uploadedImage, 'JPEG', 4, 30, 100, 80);
+    doc.addImage(imageCam, 'JPEG', 106, 30, 100, 80);
+
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Laudo do modelo:`, 20, 140);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'regular');
+    doc.text('Hermes.IA', 20, 20);
     // Adicione mais informações conforme necessário
 
     // Converte o PDF para base64
@@ -203,7 +239,7 @@ export const Diagnostico = () => {
     // const pdfContainer = document.getElementById('pdf-container');
     // pdfContainer.innerHTML = `<embed src="${pdfDataUri}" width="100%" height="500px" type="application/pdf" />`;
   };
-    return (
+  return (
     <body>
       <header><NavbarComp showEntrarButton={true} /></header>
       {!prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
@@ -276,7 +312,13 @@ export const Diagnostico = () => {
                 style={{ maxWidth: '100%', maxHeight: '300px' }}
               />
             )}
+
+
+
           </Box>
+          {imageCam && (
+            <img src={`data:image/jpeg;base64,${imageCam}`} />
+          )}
           <Button w='100%' colorScheme={error ? 'red' : 'blue'} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
           <Box display='flex' justifyContent='space-between'>
             <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
@@ -320,15 +362,15 @@ export const Diagnostico = () => {
               <Text>
                 Adicione uma observação
               </Text>
-              <Textarea onChange={(e)=>setObservacoes(e.target.value)}/>
-              
-            </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e)=>setTermo(e)}/> <Text as='span' >Declaro que li e os termo ai   <Text as='span' color='blue'><Link to='/termos'>Termos ai`</Link></Text> </Text> 
+              <Textarea onChange={(e) => setObservacoes(e.target.value)} />
 
             </Box>
             <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e)=>setTermo(e)}/><Text as='span'>Baixar o  laudo com a previsão do modelo</Text> 
+              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os termo ai   <Text as='span' color='blue'><Link to='/termos'>Termos ai`</Link></Text> </Text>
+
+            </Box>
+            <Box display='flex' alignItems='center' mt='1rem'>
+              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
 
             </Box>
             <Box display='flex' mt='2rem' justifyContent='space-around'>
