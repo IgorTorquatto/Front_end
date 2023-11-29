@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Front_end/static/css/main.3b1bb71b.css",
-    "main.js": "/Front_end/static/js/main.47b5cde5.js",
+    "main.css": "/Front_end/static/css/main.8c4121d3.css",
+    "main.js": "/Front_end/static/js/main.901a6629.js",
     "static/js/498.453ded65.chunk.js": "/Front_end/static/js/498.453ded65.chunk.js",
     "static/js/703.487ff306.chunk.js": "/Front_end/static/js/703.487ff306.chunk.js",
     "static/js/513.b1c841ea.chunk.js": "/Front_end/static/js/513.b1c841ea.chunk.js",
@@ -17,14 +17,14 @@
     "static/media/rede-neural.jpg": "/Front_end/static/media/rede-neural.6beec0dafc858e34a1f4.jpg",
     "static/media/federal-do-cariri.webp": "/Front_end/static/media/federal-do-cariri.8eda8c754d52954c992a.webp",
     "index.html": "/Front_end/index.html",
-    "main.3b1bb71b.css.map": "/Front_end/static/css/main.3b1bb71b.css.map",
-    "main.47b5cde5.js.map": "/Front_end/static/js/main.47b5cde5.js.map",
+    "main.8c4121d3.css.map": "/Front_end/static/css/main.8c4121d3.css.map",
+    "main.901a6629.js.map": "/Front_end/static/js/main.901a6629.js.map",
     "498.453ded65.chunk.js.map": "/Front_end/static/js/498.453ded65.chunk.js.map",
     "703.487ff306.chunk.js.map": "/Front_end/static/js/703.487ff306.chunk.js.map",
     "513.b1c841ea.chunk.js.map": "/Front_end/static/js/513.b1c841ea.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.3b1bb71b.css",
-    "static/js/main.47b5cde5.js"
+    "static/css/main.8c4121d3.css",
+    "static/js/main.901a6629.js"
   ]
 }
