@@ -67,7 +67,7 @@ export const Home = () => {
 
           <section>
             <div className="section-title">
-              <h1 className="text-white display-6 mb-5 mt-5">Diagósticos</h1>
+              <h1 className="text-white display-6 mb-5 mt-5">Diagnósticos</h1>
             </div>
             <div className="accordion-container">
               <AccordionComp

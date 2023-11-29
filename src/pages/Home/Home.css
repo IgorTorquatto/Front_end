@@ -54,6 +54,7 @@
 
 .card-container {
   background-color: transparent;
+  cursor: default !important;
   display: flex;
   justify-content: center;
   z-index: 2;
