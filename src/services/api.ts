@@ -5,10 +5,10 @@ const headersAuth = {
 };
 
 export const apiUnAuth = axios.create({
-  baseURL: 'http://127.0.0.1:5000',
+  baseURL: 'http://168.138.247.57:5000',
 });
 
 export const api = axios.create({
-  baseURL: 'http://127.0.0.1:5000',
+  baseURL: 'http://168.138.247.57:5000',
   headers: headersAuth
 });
