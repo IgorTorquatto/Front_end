@@ -142,6 +142,59 @@ export const Diagnostico = () => {
     return base64String;
   }
 
+  function downloadPDF() {
+    // Seu PDF em formato Data URI (substitua isso pelo seu próprio Data URI)
+    var pdfDataUri = "data:application/pdf;base64, ...";
+
+    // Cria um link <a> temporário
+    var link = document.createElement('a');
+    link.href = pdfDataUri;
+
+    // Define o atributo 'download' para indicar que é um download
+    link.download = 'seu_arquivo.pdf';
+
+    // Adiciona o link ao documento
+    document.body.appendChild(link);
+
+    // Simula um clique no link para iniciar o download
+    link.click();
+
+    // Remove o link do documento
+    document.body.removeChild(link);
+}
+
+  async function submitLaudo() {
+    const diagnostico = {
+      modelo: selectedModel.label,
+      id_medico: user.data.id,
+      id_paciente: patient.id,
+      resultado: prediction,
+      laudo_medico: pdfDataUri
+
+    }
+
+    console.log(diagnostico)
+    // const formData = new FormData();
+    // formData.append('file', pdfDataUri);
+    // var pdfName = patient?.pessoa?.nome + new Date().getSeconds()*Math.PI + '.pdf'; 
+    // console.log(pdfName);
+
+    // await api.post('/pdf', {pdfName, pdfDataUri }, {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    // }).then(({data})=>{
+    //   console.log(data)
+    // })
+    // console.log('PDF enviado com sucesso para o backend');
+
+    await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
+      console.log(data)
+    }).catch(({ err }) => {
+      console.log(err)
+    })
+  }
+
   async function onSubmitImage() {
     if (patient === null) {
       setError(true)
@@ -165,7 +218,7 @@ export const Diagnostico = () => {
       console.log(data)
 
       var imageData = data.image;
-      
+
       setImageCam(imageData)
       setPrediction(data.predictions)
     }).catch(({ err }) => {
@@ -188,8 +241,6 @@ export const Diagnostico = () => {
 
     return idade;
   }
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
 
   const createPDF = async () => {
     const doc = new jsPDF();
@@ -199,7 +250,7 @@ export const Diagnostico = () => {
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 30);
     doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 40);
     doc.text(`Sexo: ${patient?.sexo}`, 20, 50);
-    doc.text(`Idade: ${user?.data?.pessoa?.nome}`, 120, 30);
+    doc.text(`Medico: ${user?.data?.pessoa?.nome}`, 120, 30);
     doc.text(`Idade: ${dayjs().format('DD/MM/YYYY')}`, 120, 40);
 
     doc.setFontSize(18);
@@ -232,7 +283,6 @@ export const Diagnostico = () => {
     const pdfDataUri = doc.output('datauristring');
 
     // Atualizar o número de páginas para exibição no visor de PDF
-    setNumPages(1);
     setPdfDataUri(pdfDataUri)
 
     // Exibe o PDF diretamente na página
@@ -316,9 +366,9 @@ export const Diagnostico = () => {
 
 
           </Box>
-          {imageCam && (
+          {/* {imageCam && (
             <img src={`data:image/jpeg;base64,${imageCam}`} />
-          )}
+          )} */}
           <Button w='100%' colorScheme={error ? 'red' : 'blue'} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
           <Box display='flex' justifyContent='space-between'>
             <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
@@ -354,7 +404,6 @@ export const Diagnostico = () => {
             <Box padding='0.5rem' background='#323639'>
               <div>
                 <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
-
               </div>
             </Box>
 
@@ -375,7 +424,7 @@ export const Diagnostico = () => {
             </Box>
             <Box display='flex' mt='2rem' justifyContent='space-around'>
               <Button colorScheme='red' borderRadius='1rem'>Revogar Laudo</Button>
-              <Button colorScheme='green' borderRadius='1rem'>Confirmar Laudo</Button>
+              <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
             </Box>
           </Box>
 

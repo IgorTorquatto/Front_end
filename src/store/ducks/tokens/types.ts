@@ -30,7 +30,7 @@ export interface User {
 
 export interface TokenData {
   user: User,
-  crm: string,
+  token: string,
   logged: boolean,
 }
 

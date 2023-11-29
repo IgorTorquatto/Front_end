@@ -4,7 +4,7 @@ import { TokenData, TokenState, TokensTypes, User } from './types';
 const INITIAL_STATE: TokenState = {
   data: {
     user: {} as User,
-    crm: "",
+    token: "",
     logged: false
   },
   error: false,
@@ -13,7 +13,7 @@ const INITIAL_STATE: TokenState = {
 
 const error = {
   user: {} as User,
-  crm: "",
+  token: "",
   logged: false
 }
 const reducer: Reducer<TokenState> = (state = INITIAL_STATE, action) => {

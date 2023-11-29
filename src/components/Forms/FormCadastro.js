@@ -8,7 +8,7 @@ import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loadSession } from '../../store/ducks/tokens/actions.ts';
-import { api } from  '../../services/api.ts'
+import { api, apiUnAuth } from  '../../services/api.ts'
 import { useDispatch } from 'react-redux';
 
 
@@ -45,7 +45,7 @@ export const FormCadastro = () => {
       telefone: user.telefone,
       cargo: 'Médico',
     }
-    await api.post('/pessoa', pessoa).then(({ data }) => {
+    await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
         crm: user.crm,
@@ -54,7 +54,7 @@ export const FormCadastro = () => {
         email: user.email
       }
 
-      api.post('/medico', medico).then(({ data }) => {
+      apiUnAuth.post('/medico', medico).then(({ data }) => {
         const login = {
           email: user.email,
           senha: user.senha
