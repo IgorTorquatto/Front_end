@@ -82,8 +82,8 @@ export const Pacientes = () => {
   const [patients, setPatiens] = useState([]);
   const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
-
-  async function loadPatients() {
+  
+async function loadPatients() {
     await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)

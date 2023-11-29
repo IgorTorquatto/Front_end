@@ -2,7 +2,7 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import { loadSessionSucess, loadSessionFailure, loadSession } from './actions';
 import { TokenData, TokenState, TokenStateFromback, TokensTypes, User } from './types';
-import { api } from '../../../services/api';
+import { api, apiUnAuth } from '../../../services/api';
 
 interface loadProps {
   payload: {
@@ -13,17 +13,15 @@ interface loadProps {
 export function* load({ payload }: ReturnType<typeof loadSession>) {
   try {
     const { data } = payload
-    console.log(data)
     // var response = data as any
-    let response: TokenStateFromback = yield call(api.post, `/medico/login`, data)
-    console.log(response)
+    let response: TokenStateFromback = yield call(apiUnAuth.post, `/medico/login`, data)
     var user: TokenData = {
       ...response.data,
       logged: true
     }
     localStorage.setItem(
       "@token",
-      response.token
+      response.data.token
     );
     yield put(loadSessionSucess(user));
   } catch (err) {
