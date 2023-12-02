@@ -32,5 +32,11 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
     yield put(loadSessionFailure());
   }
 }
+export function* logout() {
+  localStorage.removeItem("@token");
+}
 
-export default all([takeLatest(TokensTypes.LOAD_SESSION, load)]);
+export default all([
+  takeLatest(TokensTypes.LOAD_SESSION, load),
+  takeLatest(TokensTypes.LOAD_LOGOUT, logout)
+]);

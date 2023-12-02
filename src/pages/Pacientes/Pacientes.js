@@ -82,6 +82,7 @@ export const Pacientes = () => {
   const [patients, setPatiens] = useState([]);
   const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
+  const [loadingCadastro, setLoadingCadastro] = useState(false);
   
 async function loadPatients() {
     await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
@@ -143,7 +144,7 @@ async function loadPatients() {
       cargo: 'Paciente',
     }
 
-
+    setLoadingCadastro(true)
     await api.post('/pessoa', pessoa).then(({ data }) => {
       const paciente = {
         id_pessoa: data.data.id,
@@ -160,6 +161,7 @@ async function loadPatients() {
       console.log(paciente)
 
       api.post('/paciente', paciente).then(({ data }) => {
+        setLoadingCadastro(false)
         onClose()
         loadPatients()
       }).catch(({ }) => {
@@ -484,8 +486,8 @@ async function loadPatients() {
                     <p>{errors.estado?.message}</p>
                   </div>
                 </div>
-                <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" />
-
+                {/* <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" /> */}
+                <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} className="inputbtn btn btn-primary custom-btn" >Cadastrar</Button>
               </form>
             </ModalBody>
 
@@ -696,7 +698,8 @@ async function loadPatients() {
                     <p>{errorsEdit.estado?.message}</p>
                   </div>
                 </div>
-                <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" />
+
+                <Button type="submit" isLoading={loadingCadastro} >Cadastrar</Button>
 
               </form>
             </ModalBody>

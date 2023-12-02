@@ -37,6 +37,8 @@ export const Diagnostico = () => {
   const [termo, setTermo] = useState(false);
   const [downloadLaudo, setDownloadLaudo] = useState(false);
   const [observacoes, setObservacoes] = useState('Suas observações virão aqui...');
+  const [loadingLaudo, setLoadingLaudo] = useState(false)
+  
 
   const { data: user } = useSelector((state) => state.tokens);
 
@@ -73,7 +75,7 @@ export const Diagnostico = () => {
       createPDF()
 
     }
-  }, [prediction])
+  }, [prediction, observacoes])
 
 
   const handleFileChange = (e) => {
@@ -142,9 +144,8 @@ export const Diagnostico = () => {
     return base64String;
   }
 
-  function downloadPDF() {
+  function downloadPDF(pdfDataUri) {
     // Seu PDF em formato Data URI (substitua isso pelo seu próprio Data URI)
-    var pdfDataUri = "data:application/pdf;base64, ...";
 
     // Cria um link <a> temporário
     var link = document.createElement('a');
@@ -169,27 +170,13 @@ export const Diagnostico = () => {
       id_medico: user.data.id,
       id_paciente: patient.id,
       resultado: prediction,
-      laudo_medico: pdfDataUri
-
+      laudo_medico: pdfDataUri,
+      data_hora: new Date()
     }
-
-    console.log(diagnostico)
-    // const formData = new FormData();
-    // formData.append('file', pdfDataUri);
-    // var pdfName = patient?.pessoa?.nome + new Date().getSeconds()*Math.PI + '.pdf'; 
-    // console.log(pdfName);
-
-    // await api.post('/pdf', {pdfName, pdfDataUri }, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    // }).then(({data})=>{
-    //   console.log(data)
-    // })
-    // console.log('PDF enviado com sucesso para o backend');
 
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
       console.log(data)
+      downloadPDF(data.data.laudo_medico)
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -210,15 +197,14 @@ export const Diagnostico = () => {
     }
     const formData = new FormData();
     formData.append('image', uploadedImageData);
+    setLoadingLaudo(true)
     await api.post(`/predict/${selectedModel.value}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       }
     }).then(({ data }) => {
-      console.log(data)
-
+      setLoadingLaudo(false)
       var imageData = data.image;
-
       setImageCam(imageData)
       setPrediction(data.predictions)
     }).catch(({ err }) => {
@@ -369,7 +355,7 @@ export const Diagnostico = () => {
           {/* {imageCam && (
             <img src={`data:image/jpeg;base64,${imageCam}`} />
           )} */}
-          <Button w='100%' colorScheme={error ? 'red' : 'blue'} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
+          <Button w='100%' colorScheme={error ? 'red' : 'blue'} isLoading={loadingLaudo} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
           <Box display='flex' justifyContent='space-between'>
             <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
               <AiOutlineInfoCircle />
