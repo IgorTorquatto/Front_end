@@ -31,7 +31,6 @@ import {
 import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
 
 export const NavbarComp = ({ customClass, showEntrarButton }) => {
-
   const location = useLocation();
   const { data: user } = useSelector((state) => state.tokens);
   const navbarClassName = customClass
@@ -45,6 +44,10 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
     history("/");
   }
 
+  function PerfilPage() {
+    history("/perfil");
+  }
+
   return (
     <>
       <Navbar className={navbarClassName} expand="lg" data-bs-theme="dark">
@@ -55,24 +58,62 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="center-nav-links">
-              <Nav.Link as={Link} to={"/sobre"} className={location.pathname.includes("/sobre") ? "active" : ""}>
-                <div className={location.pathname.includes("/sobre") ? "active" : ""}>
+              <Nav.Link
+                as={Link}
+                to={"/sobre"}
+                className={location.pathname.includes("/sobre") ? "active" : ""}
+              >
+                <div
+                  className={
+                    location.pathname.includes("/sobre") ? "active" : ""
+                  }
+                >
                   Sobre Nós
                 </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/diagnostico"} className={location.pathname.includes("/diagnostico") ? "active" : ""}>
-              <div className={location.pathname.includes("/diagnostico") ? "active" : ""}>
-                Diagnóstico
+              <Nav.Link
+                as={Link}
+                to={"/diagnostico"}
+                className={
+                  location.pathname.includes("/diagnostico") ? "active" : ""
+                }
+              >
+                <div
+                  className={
+                    location.pathname.includes("/diagnostico") ? "active" : ""
+                  }
+                >
+                  Diagnóstico
                 </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/historico"} className={location.pathname.includes("/historico") ? "active" : ""}>
-              <div className={location.pathname.includes("/historico") ? "active" : ""}>
-                Histórico
+              <Nav.Link
+                as={Link}
+                to={"/historico"}
+                className={
+                  location.pathname.includes("/historico") ? "active" : ""
+                }
+              >
+                <div
+                  className={
+                    location.pathname.includes("/historico") ? "active" : ""
+                  }
+                >
+                  Histórico
                 </div>
               </Nav.Link>
-              <Nav.Link as={Link} to={"/pacientes"} className={location.pathname.includes("/pacientes") ? "active" : ""}>
-              <div className={location.pathname.includes("/pacientes") ? "active" : ""}>
-                Pacientes
+              <Nav.Link
+                as={Link}
+                to={"/pacientes"}
+                className={
+                  location.pathname.includes("/pacientes") ? "active" : ""
+                }
+              >
+                <div
+                  className={
+                    location.pathname.includes("/pacientes") ? "active" : ""
+                  }
+                >
+                  Pacientes
                 </div>
               </Nav.Link>
             </Nav>
@@ -105,7 +146,12 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   padding="0.5rem 0"
                   color="#0B2A45"
                 >
-                  <MenuItem icon={<AiOutlineProfile />} command="Em produção">
+                  <MenuItem
+                    icon={<AiOutlineProfile />}
+                    onClick={() => {
+                      PerfilPage();
+                    }}
+                  >
                     Perfil
                   </MenuItem>
 
