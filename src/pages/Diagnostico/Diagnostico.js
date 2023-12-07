@@ -230,39 +230,50 @@ export const Diagnostico = () => {
 
   const createPDF = async () => {
     const doc = new jsPDF();
+    doc.setFontSize(25);
+    doc.setFont('georgia', 'bold');
+    doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
+
+    doc.rect(15, 35, 180, 30); 
     doc.setFontSize(14);
-    doc.setFont('helvetica', 'regular');
-    doc.text('Hermes.IA', 20, 20);
-    doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 30);
-    doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 40);
-    doc.text(`Sexo: ${patient?.sexo}`, 20, 50);
-    doc.text(`Medico: ${user?.data?.pessoa?.nome}`, 120, 30);
-    doc.text(`Idade: ${dayjs().format('DD/MM/YYYY')}`, 120, 40);
+    doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
+    doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 52);
+    doc.text(`Sexo: ${patient?.sexo}`, 20, 62);
+    doc.text(`Medico: ${user?.data?.pessoa?.nome}`, 120, 42);
+    doc.text(`Idade: ${dayjs().format('DD/MM/YYYY')}`, 120, 52);
+
+    doc.rect(15, 70, 180, 16); 
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Tipo de exame: ${selectedModel.label}`, 20, 100);
+    doc.text(`Tipo de exame: ${selectedModel.label}`, 20, 80);
+
+    doc.rect(15, 90, 180, 170); 
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Observações do Profissional`, 20, 120);
+    doc.text(`Observações do Profissional`, 20, 100);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'italic');
-    doc.text(`${observacoes}`, 20, 130);
+    doc.text(`${observacoes}`, 20, 120);
 
     doc.addPage();
 
+    doc.rect(15, 28, 180, 10)
+
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text("Mapa de calor", 85, 30)
-    doc.addImage(uploadedImage, 'JPEG', 4, 30, 100, 80);
-    doc.addImage(imageCam, 'JPEG', 106, 30, 100, 80);
+    doc.text("Mapa de Calor", 20, 35);
 
-    doc.setFontSize(16);
+
+    doc.setFillColor(0, 0, 0); 
+    doc.rect(15, 45, 180, 90, 'F');
+    doc.addImage(uploadedImage, 'JPEG', 20, 55, 90, 72);
+    doc.addImage(imageCam, 'JPEG', 100, 55, 90, 72);
+
+    doc.rect(15, 140, 180, 140)
+    doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Laudo do modelo:`, 20, 140);
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'regular');
-    doc.text('Hermes.IA', 20, 20);
+    doc.text(`Laudo do Modelo:`, 20, 150);
     // Adicione mais informações conforme necessário
 
     // Converte o PDF para base64
