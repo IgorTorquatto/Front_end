@@ -35,12 +35,12 @@ const schema = yup.object({
   telefone: yup.string().required('Informe um telefone valido'),
   cpf: yup.string().required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  sexo: yup.string().required('Informe um sexo valido'),
+  sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
-  cidade: yup.string().required('Informe um cidade valido'),
+  cidade: yup.string().required('Informe uma cidade valida'),
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
@@ -50,19 +50,20 @@ const schemaEdit = yup.object({
   telefone: yup.string().required('Informe um telefone valido'),
   cpf: yup.string().required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  sexo: yup.string().required('Informe um sexo valido'),
+  sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
-  cidade: yup.string().required('Informe um cidade valido'),
+  cidade: yup.string().required('Informe uma cidade valida'),
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
 export const Pacientes = () => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    shouldUnregister:true
   });
 
   const { register: resgisterEdit, handleSubmit: handleSubmitEdit, formState: { errors: errorsEdit }, setValue } = useForm({
@@ -73,8 +74,9 @@ export const Pacientes = () => {
   const history = useNavigate()
   const dispactch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure()
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
 
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
@@ -134,8 +136,14 @@ async function loadPatients() {
   }, [patient]);
 
   const openEdit = (paciente) => {
-    setPatient(paciente)
-    onOpenEdit()
+    setPatient(paciente);
+    setIsEditOpen(true);
+  }
+
+  const onCloseEdit = () => {
+    setPatient(null);
+    console.log("Boa noite karalho");
+    setIsEditOpen(false);
   }
 
   const openInfo = (paciente) => {
@@ -520,7 +528,7 @@ async function loadPatients() {
           </ModalContent>
         </Modal>
 
-        <Modal isOpen={isOpenEdit} onClose={onCloseEdit}>
+        <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Editar Informações</ModalHeader>
@@ -724,8 +732,8 @@ async function loadPatients() {
                     <p>{errorsEdit.estado?.message}</p>
                   </div>
                 </div>
-
-                <Button type="submit" isLoading={loadingCadastro} >Cadastrar</Button>
+                
+                <Button type="submit" isLoading={loadingCadastro} mt = '0.8rem' >Editar</Button>
 
               </form>
             </ModalBody>

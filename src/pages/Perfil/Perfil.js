@@ -9,6 +9,8 @@ import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
 import { Avatar } from "@chakra-ui/react";
 import { useState } from "react";
+import  logo  from "../../assets/noto_lungs.png";
+import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 
 export const Perfil = () => {
   const { data: user } = useSelector((state) => state.tokens);
@@ -69,6 +71,9 @@ export const Perfil = () => {
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
+            <div style={{float:'left', marginLeft:'10px', marginTop:'10px', marginBottom:'30px'}}>            
+              <DiagnosticaLogo/>
+            </div>
             <MenuItem icon={<FaUser />} onClick={reloadPage}>
               Perfil
             </MenuItem>
