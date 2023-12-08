@@ -267,7 +267,7 @@ async function loadPatients() {
       <header><NavbarComp showEntrarButton={true} /></header>
       <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
         <Box display='flex' w='100%' >
-          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>}>
+          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem'>
             <option value='nome'>Nome</option>
             <option value='cpf'>CPF</option>
           </Select>
@@ -280,17 +280,23 @@ async function loadPatients() {
           h='80%'
         >
           {patients.map(paciente => (
-            <Box color='white' className='patientBox'  padding='1rem 2rem' borderRadius='1rem' margin='1rem 0' display='flex' justifyContent='space-between' alignItems='center' background='#3b83c3'   border='3px solid #1a4b7b'>
+            <Box color='white' className='patientBox'  padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
               <Box display='flex' padding='0.5rem' w='100%'>
-                <Box mr='5%'>
-                  <Text fontSize='larger' pb='0.5rem'>
-                    Paciente: <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
-                  </Text>
-                  <Text fontSize='larger' pb='0.5rem'>
-                    CPF: <span style={{ fontSize: 'larger'}}>{paciente.pessoa.cpf}</span>
-                  </Text>
-                </Box>
-            </Box>
+                <div id='patientInformations'>
+                  <div>
+                    <p>
+                      PACIENTE: 
+                    </p>
+                      <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
+                  </div>
+                  <div>
+                    <p>
+                      CPF: 
+                    </p>
+                    <span style={{ fontSize: 'larger'}}>{paciente.pessoa.cpf}</span>
+                </div>
+                </div>
+              </Box>
             <Stack spacing={3}>
               <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
                 Informações
