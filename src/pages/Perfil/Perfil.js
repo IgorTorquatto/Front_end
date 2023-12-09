@@ -14,12 +14,12 @@ export const Perfil = () => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
-  const [showChangePassword, setShowChangePassword] = useState(false);
-  const [showUpdateData, setShowUpdateData] = useState(false);
 
   function LoggoutAccount() {
-    const confirmLogout = window.confirm("Você realmente quer se desconectar do site?");
-  
+    const confirmLogout = window.confirm(
+      "Você realmente quer se desconectar do site?"
+    );
+
     if (confirmLogout) {
       dispatch(loadLogout());
       history("/");
@@ -27,41 +27,9 @@ export const Perfil = () => {
       window.location.reload();
     }
   }
-  
-
-  function reloadPage() {
-    window.location.reload(); // Recarregar a página
-  }
 
   function goBack() {
     history(-1); // Navegar de volta para a página anterior
-  }
-
-  function changePassword() {
-    setShowChangePassword(true);
-    setShowUpdateData(false); // Esconde o formulário de atualização de dados, se estiver visível
-  }
-
-  function updateData() {
-    setShowUpdateData(true);
-    setShowChangePassword(false); // Esconde o formulário de alterar senha, se estiver visível
-  }
-
-  function cancelChangePassword() {
-    setShowChangePassword(false);
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    // Lógica para salvar a nova senha
-    setShowChangePassword(false); // Oculta o formulário após salvar a senha
-  }
-
-  // Lógica para atualizar dados
-  function handleUpdate(event) {
-    event.preventDefault();
-    // Lógica para atualizar dados
-    setShowUpdateData(false); // Oculta o formulário após atualizar os dados
   }
 
   return (
@@ -69,51 +37,33 @@ export const Perfil = () => {
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
-            <MenuItem icon={<FaUser />} onClick={reloadPage}>
-              Perfil
-            </MenuItem>
-            <MenuItem icon={<FaKey />} onClick={changePassword}>
-              Alterar Senha
-            </MenuItem>
-            <MenuItem icon={<FaSyncAlt />} onClick={updateData}>
-              Atualizar Dados
-            </MenuItem>
-            <MenuItem icon={<BiArrowBack />} onClick={goBack}>
-              Voltar
-            </MenuItem>
-            <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
-              Sair da conta
-            </MenuItem>
+            <div className="perfil-avatar">
+              <Avatar
+                className="perfil-avatar-custom"
+                name={user.data.pessoa.nome}
+                src="https://bit.ly/broken-link"
+                size="lg"
+              />
+              <span>{user.data.pessoa.nome}</span>
+            </div>
+            <div className="perfil-menu-items">
+              <MenuItem icon={<FaKey />}>Alterar Senha</MenuItem>
+              <MenuItem icon={<FaSyncAlt />}>Atualizar Dados</MenuItem>
+              <MenuItem icon={<BiArrowBack />} onClick={goBack}>
+                Voltar
+              </MenuItem>
+              <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
+                Sair da conta
+              </MenuItem>
+            </div>
           </Menu>
         </div>
 
         <div className="perfil-settings">
           <div className="perfil-section">
-            <h1>Configurações</h1>
-            {showChangePassword && (
-              <form onSubmit={handleSubmit} className="perfil-password-form">
-                {/* Formulário de alteração de senha */}
-                <label htmlFor="currentPassword">Senha Atual:</label>
-                <input
-                  type="password"
-                  id="currentPassword"
-                  name="currentPassword"
-                />
+            <h1>Informações do perfil</h1>
 
-                <label htmlFor="newPassword">Nova Senha:</label>
-                <input type="password" id="newPassword" name="newPassword" />
-
-                <label htmlFor="confirmNewPassword">
-                  Confirmar Nova Senha:
-                </label>
-                <input
-                  type="password"
-                  id="confirmNewPassword"
-                  name="confirmNewPassword"
-                />
-
-                {/*Botões*/}
-                <div className="perfil-buttons">
+            {/*<div className="perfil-buttons">
                   <button type="submit" className="btn-salvar">
                     Salvar Mudanças
                   </button>
@@ -124,45 +74,7 @@ export const Perfil = () => {
                   >
                     Cancelar
                   </button>
-                </div>
-              </form>
-            )}
-
-            {showUpdateData && (
-              <form onSubmit={handleUpdate} className="perfil-update-form">
-                {/* ...seu formulário de atualização de dados */}
-                {/*Botões*/}
-                <div className="perfil-buttons">
-                  <button type="submit" className="btn-salvar">
-                    Salvar Mudanças
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cancelar"
-                    onClick={cancelChangePassword}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {!showChangePassword && !showUpdateData && (
-              <div className="perfil-initial">
-                <div className="perfil-avatar">
-                  <Avatar
-                    name={user.data.pessoa.nome}
-                    src="https://bit.ly/broken-link"
-                    size="lg"
-                  />
-                </div>
-                <p>
-                  {" "}
-                  Olá, {user.data.pessoa.nome} você está na seção de
-                  configurações do seu perfil.
-                </p>
-              </div>
-            )}
+                </div>*/}
           </div>
         </div>
       </div>
