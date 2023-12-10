@@ -34,6 +34,11 @@
   align-items: center;
   text-align: center;
 }
+
+.perfil-menu .perfil-avatar:hover {
+ cursor: pointer;
+}
+
 .perfil-menu .perfil-avatar .perfil-avatar-custom {
   width: 100px;
   height: 100px;

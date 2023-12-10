@@ -88,113 +88,122 @@ export const AtualizarDados = () => {
         // alert("Error ao cadastrar")
       });
   };
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp mt-4">
-        <div className="row">
-          <div className="col-md-6">
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputNome">Nome: </label>
-              <input
-                type="text"
-                className="form-control formcomp-input"
-                id="FormControlInputNome"
-                placeholder=""
-                {...register("nome")}
-                defaultValue={user.data.pessoa.nome}
-              />
+      <div className="atualizarDados-container">
+        <h2>Atualizar Dados</h2>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="custom-formcomp mt-4"
+        >
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputNome">Nome: </label>
+                <input
+                  type="text"
+                  className="form-control formcomp-input"
+                  id="FormControlInputNome"
+                  placeholder=""
+                  {...register("nome")}
+                  defaultValue={user.data.pessoa.nome}
+                />
+              </div>
+
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputEmail">
+                  {" "}
+                  Endereço de email:{" "}
+                </label>
+                <input
+                  type="email"
+                  className="form-control formcomp-input"
+                  id="FormControlInputEmail"
+                  {...register("email")}
+                  placeholder="novoemail@email.com"
+                />
+              </div>
+
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputCPF">CPF: </label>
+                <input
+                  type="text"
+                  className="form-control formcomp-input"
+                  id="FormControlInputCPF"
+                  placeholder="Atualize o seu CPF"
+                  {...register("cpf")}
+                />
+              </div>
+
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputCRM">CRM: </label>
+                <input
+                  type="text"
+                  className="form-control formcomp-input"
+                  id="FormControlInputCRM"
+                  placeholder="Atualize o seu CRM"
+                  {...register("crm")}
+                />
+              </div>
             </div>
 
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputEmail">
-                {" "}
-                Endereço de email:{" "}
-              </label>
-              <input
-                type="email"
-                className="form-control formcomp-input"
-                id="FormControlInputEmail"
-                {...register("email")}
-                placeholder="novoemail@email.com"
-              />
-            </div>
+            <div className="col-md-6">
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputData">
+                  Data de Nascimento:{" "}
+                </label>
+                <input
+                  type="date"
+                  className="form-control formcomp-input"
+                  id="FormControlInputData"
+                  placeholder="Digite seu nome completo"
+                  {...register("data_nascimento")}
+                />
+              </div>
 
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputCPF">CPF: </label>
-              <input
-                type="text"
-                className="form-control formcomp-input"
-                id="FormControlInputCPF"
-                placeholder="Atualize o seu CPF"
-                {...register("cpf")}
-              />
-            </div>
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputTel"> Telefone: </label>
+                <input
+                  type="tel"
+                  className="form-control formcomp-input"
+                  id="FormControlInputTel"
+                  placeholder="(99) 9 9999-9999"
+                  pattern="[0-9]*"
+                  {...register("telefone")}
+                  title="Digite apenas números"
+                />
+              </div>
 
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputCRM">CRM: </label>
-              <input
-                type="text"
-                className="form-control formcomp-input"
-                id="FormControlInputCRM"
-                placeholder="Atualize o seu CRM"
-                {...register("crm")}
-              />
+              <div className="form-group mt-2 ">
+                <label htmlFor="FormControlInputEsp">Especialização: </label>
+                <select
+                  className="form-control formcomp-input"
+                  id="FormControlInputEsp"
+                  {...register("especialidade")}
+                >
+                  <option value="" disabled selected>
+                    Escolha um dos itens listados
+                  </option>
+                  <option value="adasd">Opção 1</option>
+                  <option value="2">Opção 2</option>
+                  <option value="3">Opção 3</option>
+                  <option value="4">Opção 4</option>
+                  <option value="5">Opção 5</option>
+                </select>
+              </div>
             </div>
           </div>
-
-          <div className="col-md-6">
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputData">Data de Nascimento: </label>
-              <input
-                type="date"
-                className="form-control formcomp-input"
-                id="FormControlInputData"
-                placeholder="Digite seu nome completo"
-                {...register("data_nascimento")}
-              />
-            </div>
-
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputTel"> Telefone: </label>
-              <input
-                type="tel"
-                className="form-control formcomp-input"
-                id="FormControlInputTel"
-                placeholder="(99) 9 9999-9999"
-                pattern="[0-9]*"
-                {...register("telefone")}
-                title="Digite apenas números"
-              />
-            </div>
-
-            <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputEsp">Especialização: </label>
-              <select
-                className="form-control formcomp-input"
-                id="FormControlInputEsp"
-                {...register("especialidade")}
-              >
-                <option value="" disabled selected>
-                  Escolha um dos itens listados
-                </option>
-                <option value="adasd">Opção 1</option>
-                <option value="2">Opção 2</option>
-                <option value="3">Opção 3</option>
-                <option value="4">Opção 4</option>
-                <option value="5">Opção 5</option>
-              </select>
-            </div>
+          <div className="atualizarDados-buttons">
+            <button type="submit" className="btn-salvar">
+              Atualizar dados
+            </button>
+            <button type="button" className="btn-cancelar">
+              Cancelar
+            </button>
           </div>
-        </div>
-        <div className="atualizarDados-buttons">
-          <button type="submit" className="btn-salvar">
-            Atualizar dados
-          </button>
-          <button type="button" className="btn-cancelar">
-            Cancelar
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </>
   );
 };
