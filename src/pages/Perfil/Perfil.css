@@ -9,7 +9,7 @@
 
 .perfil-menu {
   width: 18%;
-  background-color:#0b2a45;
+  background-color: #0b2a45;
   height: 100vh;
   color: #ffffff;
   font-size: 20px;
@@ -34,6 +34,11 @@
   align-items: center;
   text-align: center;
 }
+
+.perfil-menu .perfil-avatar:hover {
+ cursor: pointer;
+}
+
 .perfil-menu .perfil-avatar .perfil-avatar-custom {
   width: 100px;
   height: 100px;

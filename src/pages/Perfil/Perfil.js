@@ -17,9 +17,11 @@ import { api, apiUnAuth } from "../../services/api.ts";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import { AtualizarDados } from "../../components/Perfil/AtualizarDados";
 import { AlterarSenha } from "../../components/Perfil/AlterarSenha";
+import { InfosUser } from "../../components/Perfil/InfosUser";
 
 export const Perfil = () => {
   const { data: user } = useSelector((state) => state.tokens);
+  const [navigationSection, setNavigationSection] = useState("info");
   const history = useNavigate();
   const dispatch = useDispatch();
   const [showAtualizarDados, setShowAtualizarDados] = useState(false);
@@ -110,13 +112,21 @@ export const Perfil = () => {
   }
 
   const attData = () => {
+    setNavigationSection("updateData");
     setShowAtualizarDados(true);
     setShowAlterarSenha(false);
   };
 
   const alterarSenha = () => {
+    setNavigationSection("changePassword");
     setShowAtualizarDados(false);
     setShowAlterarSenha(true);
+  };
+
+  const handleAvatarClick = () => {
+    setNavigationSection("info"); // Define a seção de navegação de volta para as informações iniciais
+    setShowAtualizarDados(false); // Esconde as seções de atualização de dados e alteração de senha
+    setShowAlterarSenha(false);
   };
 
   return (
@@ -124,7 +134,7 @@ export const Perfil = () => {
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
-            <div className="perfil-avatar">
+          <div className="perfil-avatar" onClick={handleAvatarClick}>
               <Avatar
                 className="perfil-avatar-custom"
                 name={user.data.pessoa.nome}
@@ -154,11 +164,13 @@ export const Perfil = () => {
         </div>
 
         <div className="perfil-settings">
-          <div className="perfil-settings-title">
-            <h1>Informações do perfil</h1>
-            {showAtualizarDados && <AtualizarDados />}
-            {showAlterarSenha && <AlterarSenha />}
-          </div>
+          {navigationSection === "info" && (
+            <div className="infosuser">
+              <InfosUser />
+            </div>
+          )}
+          {showAtualizarDados && <AtualizarDados />}
+          {showAlterarSenha && <AlterarSenha />}
         </div>
       </div>
     </>
