@@ -9,19 +9,95 @@ import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
 import { Avatar } from "@chakra-ui/react";
 import { useState } from "react";
-import  logo  from "../../assets/noto_lungs.png";
+import logo from "../../assets/noto_lungs.png";
 import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
+import * as yup from "yup";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { api, apiUnAuth } from "../../services/api.ts";
+import { loadSession } from "../../store/ducks/tokens/actions.ts";
+import { AtualizarDados } from "../../components/Perfil/AtualizarDados";
+import { AlterarSenha } from "../../components/Perfil/AlterarSenha";
 
 export const Perfil = () => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
-  const [showChangePassword, setShowChangePassword] = useState(false);
-  const [showUpdateData, setShowUpdateData] = useState(false);
+  const [showAtualizarDados, setShowAtualizarDados] = useState(false);
+  const [showAlterarSenha, setShowAlterarSenha] = useState(false);
+  const schema = yup
+    .object({
+      nome: yup.string().required("Informe seu nome"),
+      email: yup
+        .string()
+        .email("Informe um email valido")
+        .required("Informe um email valido"),
+      telefone: yup.string().required("Informe um telefone valido"),
+      cpf: yup.string().required("Informe um cpf valido"),
+      data_nascimento: yup
+        .string()
+        .required("Informe uma data de nascimento valida"),
+      crm: yup.string().required("Informe um crm valido"),
+      especialidade: yup.string().required("Informe uma especialidade valida"),
+      senha: yup
+        .string()
+        .min(8, "a senha deve conter 8 caracteres")
+        .required("Digite uma senha"),
+      confirmarSenha: yup
+        .string()
+        .required("Digite sua senha novamente")
+        .oneOf([yup.ref("senha")], "As senhas devem ser iguais"),
+    })
+    .required();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = async (user) => {
+    const pessoa = {
+      cpf: user.cpf,
+      data_nascimento: user.data_nascimento,
+      nome: user.nome,
+      telefone: user.telefone,
+      cargo: "Médico",
+    };
+    await apiUnAuth
+      .post("/pessoa", pessoa)
+      .then(({ data }) => {
+        const medico = {
+          id_pessoa: data.data.id,
+          crm: user.crm,
+          especialidade: user.especialidade,
+          senha: user.senha,
+          email: user.email,
+        };
+
+        apiUnAuth
+          .post("/medico", medico)
+          .then(({ data }) => {
+            const login = {
+              email: user.email,
+              senha: user.senha,
+            };
+            dispatch(loadSession(login));
+            history("/sobre");
+          })
+          .catch(({}) => {});
+      })
+      .catch(({ error }) => {
+        // alert("Error ao cadastrar")
+      });
+  };
 
   function LoggoutAccount() {
-    const confirmLogout = window.confirm("Você realmente quer se desconectar do site?");
-  
+    const confirmLogout = window.confirm(
+      "Você realmente quer se desconectar do site?"
+    );
+
     if (confirmLogout) {
       dispatch(loadLogout());
       history("/");
@@ -29,145 +105,60 @@ export const Perfil = () => {
       window.location.reload();
     }
   }
-  
-
-  function reloadPage() {
-    window.location.reload(); // Recarregar a página
-  }
 
   function goBack() {
     history(-1); // Navegar de volta para a página anterior
   }
 
-  function changePassword() {
-    setShowChangePassword(true);
-    setShowUpdateData(false); // Esconde o formulário de atualização de dados, se estiver visível
-  }
+  const attData = () => {
+    setShowAtualizarDados(true);
+    setShowAlterarSenha(false);
+  };
 
-  function updateData() {
-    setShowUpdateData(true);
-    setShowChangePassword(false); // Esconde o formulário de alterar senha, se estiver visível
-  }
-
-  function cancelChangePassword() {
-    setShowChangePassword(false);
-  }
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    // Lógica para salvar a nova senha
-    setShowChangePassword(false); // Oculta o formulário após salvar a senha
-  }
-
-  // Lógica para atualizar dados
-  function handleUpdate(event) {
-    event.preventDefault();
-    // Lógica para atualizar dados
-    setShowUpdateData(false); // Oculta o formulário após atualizar os dados
-  }
+  const alterarSenha = () => {
+    setShowAtualizarDados(false);
+    setShowAlterarSenha(true);
+  };
 
   return (
     <>
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
-            <div style={{float:'left', marginLeft:'10px', marginTop:'10px', marginBottom:'30px'}}>            
-              <DiagnosticaLogo/>
+            <div className="perfil-avatar">
+              <Avatar
+                className="perfil-avatar-custom"
+                name={user.data.pessoa.nome}
+                src="https://bit.ly/broken-link"
+                size="lg"
+              />
+              <span>{user.data.pessoa.nome}</span>
             </div>
-            <MenuItem icon={<FaUser />} onClick={reloadPage}>
-              Perfil
-            </MenuItem>
-            <MenuItem icon={<FaKey />} onClick={changePassword}>
-              Alterar Senha
-            </MenuItem>
-            <MenuItem icon={<FaSyncAlt />} onClick={updateData}>
-              Atualizar Dados
-            </MenuItem>
-            <MenuItem icon={<BiArrowBack />} onClick={goBack}>
-              Voltar
-            </MenuItem>
-            <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
-              Sair da conta
-            </MenuItem>
+            <div className="perfil-menu-items">
+              <MenuItem icon={<FaKey />} onClick={alterarSenha}>
+                Alterar Senha
+              </MenuItem>
+              <MenuItem icon={<FaSyncAlt />} onClick={attData}>
+                Atualizar Dados
+              </MenuItem>
+              <MenuItem icon={<BiArrowBack />} onClick={goBack}>
+                Voltar
+              </MenuItem>
+              <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
+                Sair da conta
+              </MenuItem>
+            </div>
           </Menu>
+          <div className="perfil-logo-section">
+            <DiagnosticaLogo className="perfil-logo" />
+          </div>
         </div>
 
         <div className="perfil-settings">
-          <div className="perfil-section">
-            <h1>Configurações</h1>
-            {showChangePassword && (
-              <form onSubmit={handleSubmit} className="perfil-password-form">
-                {/* Formulário de alteração de senha */}
-                <label htmlFor="currentPassword">Senha Atual:</label>
-                <input
-                  type="password"
-                  id="currentPassword"
-                  name="currentPassword"
-                />
-
-                <label htmlFor="newPassword">Nova Senha:</label>
-                <input type="password" id="newPassword" name="newPassword" />
-
-                <label htmlFor="confirmNewPassword">
-                  Confirmar Nova Senha:
-                </label>
-                <input
-                  type="password"
-                  id="confirmNewPassword"
-                  name="confirmNewPassword"
-                />
-
-                {/*Botões*/}
-                <div className="perfil-buttons">
-                  <button type="submit" className="btn-salvar">
-                    Salvar Mudanças
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cancelar"
-                    onClick={cancelChangePassword}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {showUpdateData && (
-              <form onSubmit={handleUpdate} className="perfil-update-form">
-                {/* ...seu formulário de atualização de dados */}
-                {/*Botões*/}
-                <div className="perfil-buttons">
-                  <button type="submit" className="btn-salvar">
-                    Salvar Mudanças
-                  </button>
-                  <button
-                    type="button"
-                    className="btn-cancelar"
-                    onClick={cancelChangePassword}
-                  >
-                    Cancelar
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {!showChangePassword && !showUpdateData && (
-              <div className="perfil-initial">
-                <div className="perfil-avatar">
-                  <Avatar
-                    name={user.data.pessoa.nome}
-                    src="https://bit.ly/broken-link"
-                    size="lg"
-                  />
-                </div>
-                <p>
-                  {" "}
-                  Olá, {user.data.pessoa.nome} você está na seção de
-                  configurações do seu perfil.
-                </p>
-              </div>
-            )}
+          <div className="perfil-settings-title">
+            <h1>Informações do perfil</h1>
+            {showAtualizarDados && <AtualizarDados />}
+            {showAlterarSenha && <AlterarSenha />}
           </div>
         </div>
       </div>
