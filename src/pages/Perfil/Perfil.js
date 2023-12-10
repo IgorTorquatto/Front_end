@@ -9,7 +9,6 @@ import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
 import { Avatar } from "@chakra-ui/react";
 import { useState } from "react";
-import logo from "../../assets/noto_lungs.png";
 import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 import * as yup from "yup";
 import { useForm, SubmitHandler } from "react-hook-form";
