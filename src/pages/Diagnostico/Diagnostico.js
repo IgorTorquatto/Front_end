@@ -3,7 +3,7 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Text, Button, Textarea, Checkbox } from '@chakra-ui/react'
+import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack  } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -27,6 +27,7 @@ export const Diagnostico = () => {
   const [patients, setPatients] = useState([]);
   const [patientsArray, setPatientsArray] = useState([]);
   const [prediction, setPrediction] = useState(null);
+  const [resultReal, setResultReal] = useState(null);
   const [imageCam, setImageCam] = useState(null);
   const [error, setError] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState(null);
@@ -34,7 +35,8 @@ export const Diagnostico = () => {
   const [downloadLaudo, setDownloadLaudo] = useState(false);
   const [observacoes, setObservacoes] = useState('Suas observações virão aqui...');
   const [loadingLaudo, setLoadingLaudo] = useState(false)
-  
+  const [resultLaudo, setResultLaudo] = useState(null)
+
 
   const { data: user } = useSelector((state) => state.tokens);
 
@@ -160,7 +162,7 @@ export const Diagnostico = () => {
 
     // Remove o link do documento
     document.body.removeChild(link);
-}
+  }
 
   async function submitLaudo() {
     const diagnostico = {
@@ -169,7 +171,10 @@ export const Diagnostico = () => {
       id_paciente: patient.id,
       resultado: prediction,
       laudo_medico: pdfDataUri,
-      data_hora: new Date()
+      data_hora: new Date(),
+      mapa_calor: imageCam,
+      resultado_modelo: prediction,
+      resultado_real: resultReal
     }
 
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
@@ -202,6 +207,7 @@ export const Diagnostico = () => {
       }
     }).then(({ data }) => {
       setLoadingLaudo(false)
+      console.log(data)
       var imageData = data.image;
       setImageCam(imageData)
       setPrediction(data.predictions)
@@ -232,7 +238,7 @@ export const Diagnostico = () => {
     doc.setFont('georgia', 'bold');
     doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
 
-    doc.rect(15, 35, 180, 30); 
+    doc.rect(15, 35, 180, 30);
     doc.setFontSize(14);
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
     doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 52);
@@ -240,16 +246,16 @@ export const Diagnostico = () => {
     doc.text(`Medico: ${user?.data?.pessoa?.nome}`, 120, 42);
     doc.text(`Idade: ${dayjs().format('DD/MM/YYYY')}`, 120, 52);
 
-    doc.rect(15, 70, 180, 16); 
+    doc.rect(15, 70, 180, 16);
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
     doc.text(`Tipo de exame: ${selectedModel.label}`, 20, 80);
 
-    doc.rect(15, 90, 180, 170); 
+    doc.rect(15, 90, 180, 170);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Observações do Profissional`, 20, 100);
+    doc.text(`Laudo Médico`, 20, 100);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'italic');
     doc.text(`${observacoes}`, 20, 120);
@@ -263,7 +269,7 @@ export const Diagnostico = () => {
     doc.text("Mapa de Calor", 20, 35);
 
 
-    doc.setFillColor(0, 0, 0); 
+    doc.setFillColor(0, 0, 0);
     doc.rect(15, 45, 180, 90, 'F');
     doc.addImage(uploadedImage, 'JPEG', 20, 55, 90, 72);
     doc.addImage(imageCam, 'JPEG', 100, 55, 90, 72);
@@ -284,6 +290,11 @@ export const Diagnostico = () => {
     // const pdfContainer = document.getElementById('pdf-container');
     // pdfContainer.innerHTML = `<embed src="${pdfDataUri}" width="100%" height="500px" type="application/pdf" />`;
   };
+
+  const changeRealResult = (value)=>{
+    console.log(value)
+    setResultLaudo(value)
+  }
   return (
     <body>
       <header><NavbarComp showEntrarButton={true} /></header>
@@ -401,10 +412,23 @@ export const Diagnostico = () => {
                 <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
               </div>
             </Box>
+            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
+              justifyContent='left' alignItems='center' mt='1.5rem'>
+              <Text justifySelf='center'>
+                O Laudo do modelo está correto?
+              </Text>
+              <RadioGroup onChange={changeRealResult} value={resultLaudo}>
+                <Stack direction='row'>
+                  <Radio value='1'>Sim</Radio>
+                  <Radio value='2'>Não</Radio>
+                </Stack>
+              </RadioGroup>
+            </Box>
+
 
             <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='center' mt='1.5rem'>
               <Text>
-                Adicione uma observação
+                Escreva seu laudo
               </Text>
               <Textarea onChange={(e) => setObservacoes(e.target.value)} />
 
