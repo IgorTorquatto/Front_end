@@ -24,6 +24,7 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
       response.data.token
     );
     yield put(loadSessionSucess(user));
+    window.location.reload()
   } catch (err) {
     console.log(err)
     localStorage.removeItem(
