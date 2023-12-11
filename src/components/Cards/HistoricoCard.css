@@ -1,0 +1,70 @@
+.historico-card-container{
+    height: 100%;
+    width: 100%;
+    background-color: #3B83C3 !important;
+    flex-direction: column;
+    display: flex;
+    padding: 15px 10px;
+    border-radius: 15px;
+}
+
+.card-title-context{
+    background-color: #002F59;
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 20px;
+    border-radius: 15px;
+}
+
+.historico-card-body{
+    display: flex;
+    justify-content: space-around;
+    padding: 0px 10px;
+}
+
+.hcard-text{
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+#download-button-context{
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+    display: flex;
+    z-index: 99;
+}
+
+#paciente-info{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#resultado-exame{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#result-icon-context{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-container:hover{
+    cursor: pointer;
+}
+
+#icon-context{
+    border: 1px dashed rgba(255, 255, 255, 0.705);
+    margin-right: 4px;
+    height: 24px;
+    width: 24px;
+}

@@ -1,6 +1,6 @@
 .custom-navbar {
-  background-color: #0B2A45;
-  font-family: 'Source Sans Pro', sans-serif;
+  background-color: #0b2a45;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 20px;
   font-weight: bold;
   display: flex;
@@ -21,26 +21,27 @@
 }
 
 .center-nav-links a {
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 0 10px;
   text-decoration: none;
+}
+
+.active{
+  color: #0083ca /*#FAA620*/;
+}
+
+.center-nav-links a:hover, .center-nav-links a.active{
+  color: #0083ca /*#FAA620*/;
+  border-bottom: 2px solid #0083ca /*#FAA620*/;
 }
 
 .navbar-toggler-icon {
   background-color: transparent;
 }
 
-.navbar-brand img{
-  margin: 0  auto;
+.navbar-brand img {
+  margin: 0 auto;
   height: 40px;
-}
-
-.brand-text-IA{
-  color: #FAA620;
-}
-
-a.nav-link:hover{
-  border-bottom: 2px solid #00E0FF;
 }
 
 .navbar-collapse {
@@ -48,7 +49,7 @@ a.nav-link:hover{
 }
 
 .entrar-button {
-  background-color: #0083ca;
+  background-color: #0083ca /*#FAA620*/;
   text-transform: uppercase;
   color: #fff;
   font-weight: bold;
@@ -57,13 +58,35 @@ a.nav-link:hover{
 }
 
 .entrar-button:hover {
-  background-color: #006caa;
+  background-color: #0083ca9f /*#faa62050*/;
   color: #fff;
+}
+
+.menulist button:hover {
+  background-color: #0b2a45 !important;
+  color: white !important;
+}
+
+.menulist button {
+  border-color: white;
+  border-radius: 0;
+  margin: 0.25rem 0;
+  transition: 200ms all ease-in-out !important;
 }
 
 @media (max-width: 991.98px) {
   .entrar-button {
     display: none;
+  }
+
+  .navbar-collapse {
+    height: 180px;
+    background-color: #000000;
+    border-radius: 10px;
+    z-index: 3;
+  }
+  .custom-navbar {
+    height: 100px;
   }
 }
 
@@ -71,18 +94,19 @@ a.nav-link:hover{
   .custom-navbar .navbar-brand .brand-text {
     display: none;
   }
-}
 
-.menulist button:hover {
-  background-color: #0B2A45 !important;
-  color: white !important;
+  .container {
+    margin-left: 70px;
+  }
 
-}
+  .navbar-collapse {
+    height: 180px;
+    background-color: #000000;
+    border-radius: 10px;
+    z-index: 3;
+  }
 
-.menulist button {
-  border-color: white;
-  border-radius: 0;
-  margin: 0.25rem 0;
-
-  transition: 200ms all ease-in-out !important;
+  .custom-navbar {
+    height: 100px;
+  }
 }

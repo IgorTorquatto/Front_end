@@ -6,6 +6,7 @@ import './Pacientes.css'
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
 import { CiEdit } from "react-icons/ci";
+import { FaBars  } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -24,7 +25,8 @@ import {
   useDisclosure,
   Text,
   Input,
-  Select
+  Select,
+  Stack
 } from '@chakra-ui/react'
 import { Container } from 'react-bootstrap';
 
@@ -33,12 +35,12 @@ const schema = yup.object({
   telefone: yup.string().required('Informe um telefone valido'),
   cpf: yup.string().required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  sexo: yup.string().required('Informe um sexo valido'),
+  sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
-  cidade: yup.string().required('Informe um cidade valido'),
+  cidade: yup.string().required('Informe uma cidade valida'),
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
@@ -48,19 +50,20 @@ const schemaEdit = yup.object({
   telefone: yup.string().required('Informe um telefone valido'),
   cpf: yup.string().required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  sexo: yup.string().required('Informe um sexo valido'),
+  sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
-  cidade: yup.string().required('Informe um cidade valido'),
+  cidade: yup.string().required('Informe uma cidade valida'),
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
 export const Pacientes = () => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
+    shouldUnregister:true
   });
 
   const { register: resgisterEdit, handleSubmit: handleSubmitEdit, formState: { errors: errorsEdit }, setValue } = useForm({
@@ -71,7 +74,9 @@ export const Pacientes = () => {
   const history = useNavigate()
   const dispactch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure()
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
 
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
@@ -83,7 +88,8 @@ export const Pacientes = () => {
   const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
   const [loadingCadastro, setLoadingCadastro] = useState(false);
-  
+  const [selectedPatient, setSelectedPatient] = useState(null);
+
 async function loadPatients() {
     await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
       setPatientsArray(data)
@@ -130,9 +136,28 @@ async function loadPatients() {
   }, [patient]);
 
   const openEdit = (paciente) => {
-    setPatient(paciente)
-    onOpenEdit()
+    setPatient(paciente);
+    setIsEditOpen(true);
   }
+
+  const onCloseEdit = () => {
+    setPatient(null);
+    console.log("Boa noite karalho");
+    setIsEditOpen(false);
+  }
+
+  const openInfo = (paciente) => {
+    if (paciente) 
+    {
+      setSelectedPatient(paciente)
+    }
+    setIsInfoOpen(true);
+  }
+
+  const closeInfo = () => {
+    setSelectedPatient(null);
+    setIsInfoOpen(false);
+  };
 
   const onSubmit = async (novopaciente) => {
 
@@ -250,7 +275,7 @@ async function loadPatients() {
       <header><NavbarComp showEntrarButton={true} /></header>
       <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
         <Box display='flex' w='100%' >
-          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>}>
+          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem'>
             <option value='nome'>Nome</option>
             <option value='cpf'>CPF</option>
           </Select>
@@ -263,24 +288,33 @@ async function loadPatients() {
           h='80%'
         >
           {patients.map(paciente => (
-            <Box color='white' className='patientBox'  padding='1rem 2rem' borderRadius='1rem' margin='1rem 0' display='flex' justifyContent='space-between' alignItems='center' background='#3b83c3'>
-              <Box display='flex' padding='1rem' w='100%'>
-                <Box mr='20%'>
-                  <Text>Paciente: {paciente.pessoa.nome}</Text>
-                  <Text>CPF: {paciente.pessoa.cpf}</Text>
-                </Box>
-
-                <Box>
-                  <Text>Telefone: {paciente.pessoa.telefone}</Text>
-                  <Text>Sexo: {paciente.sexo}</Text>
-                </Box>
+            <Box color='white' className='patientBox'  padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
+              <Box display='flex' padding='0.5rem' w='100%'>
+                <div id='patientInformations'>
+                  <div>
+                    <p>
+                      PACIENTE: 
+                    </p>
+                      <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
+                  </div>
+                  <div>
+                    <p>
+                      CPF: 
+                    </p>
+                    <span style={{ fontSize: 'larger'}}>{paciente.pessoa.cpf}</span>
+                </div>
+                </div>
               </Box>
-
-
-              <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='orange' variant='solid'>
+            <Stack spacing={3}>
+              <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
+                Informações
+              </Button>
+              <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
                 Editar
               </Button>
+            </Stack>
             </Box>
+
           ))}
 
 
@@ -294,12 +328,12 @@ async function loadPatients() {
               <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
 
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputNome">Nome</label>
+                  <label htmlFor="FormControlInputNome">Nome*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputNome"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Digite seu nome completo*"
                     {...register("nome")}
                   />
                   <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -309,12 +343,12 @@ async function loadPatients() {
                 </div>
 
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputCPF">CPF</label>
+                  <label htmlFor="FormControlInputCPF">CPF*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputCPF"
-                    placeholder="Digite seu nome completo"
+                    placeholder="000.000.000-00"
                     {...register("cpf")}
                   />
                   <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -324,12 +358,12 @@ async function loadPatients() {
                 </div>
 
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputData">Data de Nascimento</label>
+                  <label htmlFor="FormControlInputData">Data de Nascimento*</label>
                   <input
                     type="date"
                     className="form-control formcomp-input"
                     id="FormControlInputData"
-                    placeholder="Digite seu nome completo"
+                    placeholder="DD/MM/AAAA"
                     {...register("data_nascimento")}
                   />
                   <div className={errors.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -340,7 +374,7 @@ async function loadPatients() {
                 </div>
 
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputTel"> Telefone</label>
+                  <label htmlFor="FormControlInputTel"> Telefone*</label>
                   <input
                     type="tel"
                     className="form-control formcomp-input"
@@ -357,7 +391,7 @@ async function loadPatients() {
                 </div>
 
                 <div className="form-group mt-2">
-                  <label htmlFor="FormControlSexo">Sexo</label>
+                  <label htmlFor="FormControlSexo">Sexo*</label>
                   <select
                     className="form-control formcomp-input"
                     id="FormControlSexo"
@@ -376,12 +410,12 @@ async function loadPatients() {
                 </div>
 
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputTipoSanguineo">Tipo sanguíneo</label>
+                  <label htmlFor="FormControlInputTipoSanguineo">Tipo sanguíneo*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Ex: A+"
                     {...register("tipo_sanguineo")}
                   />
                   <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -399,7 +433,7 @@ async function loadPatients() {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputDetalhes"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Informações adicionais do paciente"
                     {...register("detalhes_clinicos")}
                   />
                   <div className={errors.detalhes_clinicos ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -410,7 +444,7 @@ async function loadPatients() {
                 </div>
 
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputLogradouro">Logradouro</label>
+                  <label htmlFor="FormControlInputLogradouro">Logradouro*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
@@ -424,7 +458,7 @@ async function loadPatients() {
                   </div>
                 </div>
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputBairro">Bairro</label>
+                  <label htmlFor="FormControlInputBairro">Bairro*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
@@ -438,7 +472,7 @@ async function loadPatients() {
                   </div>
                 </div>
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputCidade">Cidade</label>
+                  <label htmlFor="FormControlInputCidade">Cidade*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
@@ -452,7 +486,7 @@ async function loadPatients() {
                   </div>
                 </div>
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputNumero">Numero</label>
+                  <label htmlFor="FormControlInputNumero">Numero*</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
@@ -466,7 +500,7 @@ async function loadPatients() {
                   </div>
                 </div>
                 <div className="form-group mt-2">
-                  <label htmlFor="FormControlEstado">Estado</label>
+                  <label htmlFor="FormControlEstado">Estado*</label>
                   <select
                     className="form-control formcomp-input"
                     id="FormControlEstado"
@@ -494,10 +528,10 @@ async function loadPatients() {
           </ModalContent>
         </Modal>
 
-        <Modal isOpen={isOpenEdit} onClose={onCloseEdit}>
+        <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Modal Title</ModalHeader>
+            <ModalHeader>Editar Informações</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp">
@@ -526,7 +560,7 @@ async function loadPatients() {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputCPF"
-                    placeholder="Digite seu nome completo"
+                    placeholder="000.000.000-00"
                     {...resgisterEdit("cpf")}
                   />
                   <div className={errorsEdit.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -541,7 +575,7 @@ async function loadPatients() {
                     type="date"
                     className="form-control formcomp-input"
                     id="FormControlInputData"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Digite sua data de nascimento"
                     {...resgisterEdit("data_nascimento")}
                   />
                   <div className={errorsEdit.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -593,7 +627,7 @@ async function loadPatients() {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Ex: A+"
                     {...resgisterEdit("tipo_sanguineo")}
                   />
                   <div className={errorsEdit.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -611,7 +645,7 @@ async function loadPatients() {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputDetalhes"
-                    placeholder="Digite seu nome completo"
+                    placeholder="Informe os detalhes aqui"
                     {...resgisterEdit("detalhes_clinicos")}
                   />
                   <div className={errorsEdit.detalhes_clinicos ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -698,13 +732,29 @@ async function loadPatients() {
                     <p>{errorsEdit.estado?.message}</p>
                   </div>
                 </div>
-
-                <Button type="submit" isLoading={loadingCadastro} >Cadastrar</Button>
+                
+                <Button type="submit" isLoading={loadingCadastro} mt = '0.8rem' >Editar</Button>
 
               </form>
             </ModalBody>
 
           </ModalContent>
+        </Modal>
+        <Modal isOpen={isInfoOpen} onClose={closeInfo}>
+          <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Informações do Paciente</ModalHeader>
+                <ModalCloseButton />
+                  <ModalBody>
+                    <Text>Name: {selectedPatient?.pessoa.nome}</Text>
+                    <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
+                    <Text>Telefone: {selectedPatient?.telefone}</Text>
+                    <Text>Rua: {selectedPatient?.logradouro}</Text>
+                    <Text>Bairro: {selectedPatient?.bairro}</Text>
+                    <Text>Número: {selectedPatient?.numero}</Text>
+                    <Text>Cidade: {selectedPatient?.cidade}</Text>
+                  </ModalBody>
+            </ModalContent>
         </Modal>
       </Box>
 

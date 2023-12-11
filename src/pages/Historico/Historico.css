@@ -1,0 +1,67 @@
+.historico-container{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#historico-body{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    background-color: #F8F8FF;
+}
+
+#main-content{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+#searchbar-context{
+    display: flex;
+    padding: 10px 10px;
+}
+
+#result-context{
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.historico-line{
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 10px;
+}
+
+#historico-searchbar{
+    border-radius: 0px;
+    flex-grow: 1;
+
+}
+
+.search-icon{
+    display: flex;
+    background-color: white;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0px  10px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0px 10px 10px 0px;
+}
+
+.search-text{
+    color: black;
+    font-weight: 900px;
+
+}
+
+.icone-lupa{
+    margin-right: 5px;
+}

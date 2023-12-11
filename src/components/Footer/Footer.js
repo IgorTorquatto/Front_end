@@ -1,46 +1,55 @@
-import React from 'react'
-import './Footer.css'
-import { DiagnosticaLogo } from '../Logo/DiagnosticaLogo'
-import { FaLocationDot, FaPhone, FaEnvelope, FaLinkedinIn, FaFacebook, FaInstagram} from 'react-icons/fa6'
-
+import React from "react";
+import "./Footer.css";
+import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
+import { FaEnvelope, FaGithub } from "react-icons/fa6";
 
 export const MyFooter = () => {
   return (
-    <div className='footer-container'>
-      
-      <div className='main-content'>
-        <div className='logo-context'>
+    <div className="container-fluid footer_container pt-5">
+      <div className="row justify-content-around mb-5">
+        <div className="col-md-auto d-flex my-3 f-logo_context">
           <DiagnosticaLogo />
         </div>
-        <div className='company-info'>
-        <div className='social-medias'>
-            <span className='footer-text'>Redes Sociais:</span>
-            <FaInstagram className='icon' />
-            <span className='footer-text'>@exemplo</span>
-            <FaLinkedinIn className='icon' />
-            <span className='footer-text'>Exemplo</span>
-            <FaFacebook className='icon' />
-            <span className='footer-text'>Exemplo</span>
+
+        <div className="col-md-auto my-3">
+          <h5 style={{ color: "#F8F8FF" }}>Informações</h5>
+          <div className="footer_item">
+            <FaEnvelope className="f_icon" />
+            <span className="footer_text">residenciaticgia@gmail.com</span>
           </div>
-          <div className='contact'>
-            <div className='phone'>
-              <FaPhone className='icon' />
-              <span className='footer-text'>(88) 98888-8888</span>
-            </div>
-            <div className='email'>
-              <FaEnvelope className='icon' />
-              <span className='footer-text'>exemplodeemail@gmail.com</span>
-            </div>
-          </div>
-          <div className='location'>
-            <FaLocationDot className='icon'/> 
-            <span className='footer-text'>Av. Ten. Raimundo Rocha, 1639 - Cidade Universitária, Juazeiro do Norte - CE</span>
-          </div>
+          <a
+            className="footer_item"
+            href="https://github.com/grupodiagnostica"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <FaGithub className="f_icon" />
+            <span className="footer_text">GitHub/Diagnóstica</span>
+          </a>
+        </div>
+
+        <div className="col-md-auto mr-10 my-3">
+          <h5 style={{ color: "#F8F8FF" }}>Grupo Diagnóstica</h5>
+          <a
+            className="f_location"
+            href="https://maps.app.goo.gl/ocJoRj6kGdzqgTj59"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="footer_text">
+              Av. Tenente Raimundo Rocha Nº 1639,
+            </span>
+            <span className="footer_text">Bairro Cidade Universitária,</span>
+            <span className="footer_text">Juazeiro do Norte - Ceará</span>
+          </a>
         </div>
       </div>
-      <div className='copyright-context'>
-        <span className='footer-text copyright'>Copyright © 2023 • Alguma Empresa</span>
+      <div
+        className="col-md text-center"
+        style={{ color: "#f8f8ffb0", fontSize: "smaller" }}
+      >
+        Copyright © 2023
       </div>
     </div>
-  )
-}
+  );
+};

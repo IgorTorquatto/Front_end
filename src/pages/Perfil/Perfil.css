@@ -1,0 +1,81 @@
+.perfil-container {
+  background-color: #eef1f3;
+  height: 100vh;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.perfil-menu {
+  width: 18%;
+  background-color: #0b2a45;
+  height: 100vh;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.perfil-settings {
+  width: 82%;
+  height: 100vh;
+  padding: 20px;
+}
+.perfil-settings-title {
+  margin-top: 20px;
+}
+.perfil-settings-title h1 {
+  font-size: 30px;
+}
+
+.perfil-menu .perfil-avatar {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.perfil-menu .perfil-avatar:hover {
+ cursor: pointer;
+}
+
+.perfil-menu .perfil-avatar .perfil-avatar-custom {
+  width: 100px;
+  height: 100px;
+}
+.perfil-avatar span {
+  margin-top: 20px;
+}
+
+.perfil-menu .perfil-menu-items {
+  margin-top: 50px;
+}
+
+.perfil-menu .chakra-menu__menuitem {
+  position: relative;
+  transition: all 0.5s ease;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: transparent;
+}
+
+.perfil-menu .chakra-menu__menuitem:hover {
+  color: #50b7a1;
+}
+
+.perfil-menu .chakra-menu__menuitem:hover::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #50b7a1;
+}
+
+.perfil-logo-section {
+  display: flex;
+  height: 140px;
+  justify-content: center;
+  align-items: flex-end;
+}
