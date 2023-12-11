@@ -25,6 +25,7 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
     );
     yield put(loadSessionSucess(user));
     window.location.reload()
+    window.location.pathname = '/diagnostico'
   } catch (err) {
     console.log(err)
     localStorage.removeItem(
