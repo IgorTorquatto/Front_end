@@ -134,6 +134,10 @@ export const Perfil = () => {
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
+          <div className="perfil-logo-section">
+            <DiagnosticaLogo className="perfil-logo" />
+          </div>
+          <hr></hr>
           <div className="perfil-avatar" onClick={handleAvatarClick}>
               <Avatar
                 className="perfil-avatar-custom"
@@ -144,23 +148,25 @@ export const Perfil = () => {
               <span>{user.data.pessoa.nome}</span>
             </div>
             <div className="perfil-menu-items">
+              <hr></hr>
               <MenuItem icon={<FaKey />} onClick={alterarSenha}>
                 Alterar Senha
               </MenuItem>
+              <hr></hr>
               <MenuItem icon={<FaSyncAlt />} onClick={attData}>
                 Atualizar Dados
               </MenuItem>
+              <hr></hr>
               <MenuItem icon={<BiArrowBack />} onClick={goBack}>
                 Voltar
               </MenuItem>
+              <hr></hr>
               <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
                 Sair da conta
               </MenuItem>
+              <hr></hr>
             </div>
           </Menu>
-          <div className="perfil-logo-section">
-            <DiagnosticaLogo className="perfil-logo" />
-          </div>
         </div>
 
         <div className="perfil-settings">
