@@ -21,9 +21,9 @@
     width: 90%;
 }
 
-#searchbar-context{
+#hist-searchbar-context{
     display: flex;
-    padding: 10px 3%;
+    padding: 10px 5%;
 }
 
 #result-context{

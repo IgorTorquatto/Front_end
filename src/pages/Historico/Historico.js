@@ -83,7 +83,7 @@ export const Historico = () => {
       </Box>
       <Box id='historico-body'>
         <Box id='main-content'>
-          <Box id='searchbar-context'>
+          <Box id='hist-searchbar-context'>
             <Box>
 
             </Box>
