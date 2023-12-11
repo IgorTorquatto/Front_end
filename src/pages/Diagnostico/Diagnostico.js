@@ -8,7 +8,7 @@ import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import PDFReport from '../../components/Pdf/PdfViewer'
-import { Document, Page, pdfjs } from 'react-pdf';
+import { Document, Page } from 'react-pdf';
 import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
@@ -17,10 +17,6 @@ import { Link } from 'react-router-dom';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
 
-
-require('dayjs/locale/br')
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 export const Diagnostico = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
   const [uploadedImageData, setUploadedImageData] = useState(null);
@@ -69,7 +65,9 @@ export const Diagnostico = () => {
   }
 
   useEffect(() => {
-    loadPatients()
+    (async () => {
+      await loadPatients()
+    })()
   }, [])
 
   useEffect(() => {
