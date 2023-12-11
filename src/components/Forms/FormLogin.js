@@ -45,8 +45,7 @@ export const FormLogin = () => {
   const onSubmit = async (user) => {
     console.log(user);
     try {
-      dispactch(loadSession(user));
-      history("/diagnostico");
+      dispactch(loadSession(user))
     } catch {}
   };
   return (

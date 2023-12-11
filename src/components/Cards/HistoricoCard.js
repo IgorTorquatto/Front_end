@@ -42,7 +42,6 @@ export const HistoricoCard = ({data}) => {
   return (
     <Box className='historico-card-container' onClick={() => {handleCardClick()}} cursor={'pointer'} >
         <Box className='card-title-context'>
-            <span className='hcard-text'>ID do exame: {data.exameID}</span>
             <span className='hcard-text'>Tipo de exame: {data.exameType}</span>
             <span className='hcard-text'>Data e Hora: {formatoData.format(data.dateTime)}</span>
         </Box>
