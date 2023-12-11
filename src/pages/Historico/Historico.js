@@ -1,21 +1,22 @@
-import React from 'react'
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { Box, border } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { MyFooter } from '../../components/Footer/Footer'
 import { HistoricoCard } from '../../components/Cards/HistoricoCard'
-import { LuSearch } from "react-icons/lu";
-import { api } from '../../services/api.ts'
 import { useDispatch, useSelector } from 'react-redux';
+import { api } from '../../services/api.ts'
 import { Input } from '@chakra-ui/react'
+
 import './Historico.css'
 
-
 export const Historico = () => {
+  const { data: user } = useSelector((state) => state.tokens);
 
   const [diagnosticosArray, setDiagnosticosArray] = useState([]);
   const [diagnosticosOnDisplay, setDiagnosticosOnDisplay] = useState([]);
-  const { data: user } = useSelector((state) => state.tokens);
+
+  const [diagnosticos, setDiagnosticos] = useState([]);
+
 
   const diagnosticosExemple = [{
     exameID: '213213',
@@ -48,12 +49,13 @@ export const Historico = () => {
     }
     setDiagnosticosArray(diagnosticosExemple)
     setDiagnosticosOnDisplay(diagnosticosExemple)
-    console.log('Tamanho: ', diagnosticosArray.length)
   }
 
-  async function loadDiagnosticos() {
+  async function loadHistorico() {
     await api.get(`/diagnostico?id_medico=${user.data.id}`).then(({ data }) => {
+      setDiagnosticos(data)
       console.log(data)
+
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -67,21 +69,12 @@ export const Historico = () => {
       return nome.includes(searched) || cpf.includes(searched) || exameID.includes(searched)
     })
     setDiagnosticosOnDisplay(diagnosticos)
-
-    console.log('Diagnosticos Array: ', diagnosticosArray.length)
-    console.log('OnDisplay: ', diagnosticosOnDisplay.length)
   }
 
   useEffect(() => {
-    console.log('useEffect is running');
-    const fetchData = async () => {
-      console.log('Fetching data...');
-      await initExemple();
-      await loadDiagnosticos();
-    };
-  
-    fetchData();
-  }, []);
+    initExemple();
+    loadHistorico()
+  }, [])
 
   return (
     <Box className='historico-container'>
