@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import { ImCross, ImCheckmark} from "react-icons/im";
 import { LuDownload } from "react-icons/lu";
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const HistoricoCard = ({data}) => {
     
+    const [downloadIconColor, setDownloadIconColor] = useState('white')
     const navigate = useNavigate();
 
     const options = {
@@ -21,6 +22,10 @@ export const HistoricoCard = ({data}) => {
       };
       
     const formatoData = new Intl.DateTimeFormat('pt-BR', options);
+    
+    const changeIconColor = (mouseEvent) => {
+       mouseEvent === 'out' ? setDownloadIconColor('white') : setDownloadIconColor('#3B83C3')
+    }
 
     const mostrarResultadoExame = (positivo) => {
         return(
@@ -56,12 +61,16 @@ export const HistoricoCard = ({data}) => {
                 {mostrarResultadoExame(data.examePositivo)} 
     
             </Box>
-            <Box id='download-button-context'>
-                <LuDownload color='white' size={'24px'} onClick={(event) => {
+            <Box id='hist-download-button-context'>
+            <button type="button" className="btn btn-outline-light"  onClick={(event) => {
                     event.stopPropagation();
                     window.alert('download pdf do exame')
                     }}
-                />
+                    onMouseEnter={() => changeIconColor("in")} 
+                    onMouseLeave={() => changeIconColor("out")}>
+                <LuDownload color={downloadIconColor} size={'24px'}/>
+            </button>
+                
             </Box>
         </Box>
     </Box>
