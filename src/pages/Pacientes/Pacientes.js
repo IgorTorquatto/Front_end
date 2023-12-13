@@ -11,7 +11,6 @@ import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { loadSession } from '../../store/ducks/tokens/actions.ts';
 import { api } from '../../services/api.ts'
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -72,8 +71,8 @@ export const Pacientes = () => {
   const { data: user } = useSelector((state) => state.tokens);
 
   const history = useNavigate()
-  const dispactch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure()
+  // const { isOpen: isOpenEdit, onOpen:onOpenEdit, onClose: onCloseEdit } = useDisclosure()
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
 
@@ -142,7 +141,6 @@ async function loadPatients() {
 
   const onCloseEdit = () => {
     setPatient(null);
-    console.log("Boa noite karalho");
     setIsEditOpen(false);
   }
 
