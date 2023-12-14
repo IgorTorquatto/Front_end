@@ -13,7 +13,7 @@ import "./InfosUser.css";
 
 export const InfosUser = () => {
   const { data: user } = useSelector((state) => state.tokens);
-
+  console.log(user)
   return (
     <>
       <div className="infosuser-info">
@@ -26,12 +26,12 @@ export const InfosUser = () => {
             </div>
             <div>
               <FaEnvelope />
-              <strong>Email:</strong> {user.data.pessoa.email}
+              <strong>Email:</strong> {user.data.email}
             </div>
             <div>
               <FaCalendarAlt />
               <strong>Data de Nascimento:</strong>{" "}
-              {user.data.pessoa.dataNascimento}
+              {user.data.pessoa.data_nascimento}
             </div>
             <div>
               <FaPhone />
@@ -45,15 +45,15 @@ export const InfosUser = () => {
           <div className="column">
               <div>
                 <FaRegIdCard />
-                <strong>CRM:</strong> {user.data.pessoa.crm}
+                <strong>CRM:</strong> {user.data.crm}
               </div>
               <div>
                 <FaRegIdCard />
-                <strong>CPF:</strong> {user.data.pessoa.crm}
+                <strong>CPF:</strong> {user.data.crm}
               </div>
               <div>
                 <FaCalendarAlt />
-                <strong>Especialidade:</strong> {user.data.pessoa.especialidade}
+                <strong>Especialidade:</strong> {user.data.especialidade}
               </div>
               <div>
                 <FaBuilding />

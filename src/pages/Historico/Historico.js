@@ -5,7 +5,19 @@ import { MyFooter } from '../../components/Footer/Footer'
 import { HistoricoCard } from '../../components/Cards/HistoricoCard'
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../../services/api.ts'
-import { Input } from '@chakra-ui/react'
+import {
+  Input, 
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Text,
+  Container
+} from '@chakra-ui/react'
 
 import './Historico.css'
 
@@ -14,42 +26,10 @@ export const Historico = () => {
 
   const [diagnosticosArray, setDiagnosticosArray] = useState([]);
   const [diagnosticosOnDisplay, setDiagnosticosOnDisplay] = useState([]);
-
   const [diagnosticos, setDiagnosticos] = useState([]);
+  const [diagnostico, setDiagnostico] = useState(null);
 
-
-  const diagnosticosExemple = [{
-    exameID: '213213',
-    exameType: 'Pneumonia', 
-    dateTime: Date.now(), 
-    nomePaciente: 'Robert Carmos Sobreira', 
-    cpf: '987.654.432-12',
-    examePositivo: true,
-    nascimento: '11/11/1999',
-    sexo: 'Masculino',
-    telefone: '(88) 98888-8888',
-    bloodType: 'AB+'
-  },
-  {
-  exameID: '243213',
-  exameType: 'Pneumonia', 
-  dateTime: Date.now(), 
-  nomePaciente: 'Maria Joaquina Soares', 
-  cpf: '927.614.432-12',
-  examePositivo: false,
-  nascimento: '11/11/1999',
-  sexo: 'Feminino',
-  telefone: '(88) 98888-8888',
-  bloodType: 'AB+'
-  }]
-
-  function initExemple(){
-    for (var index = 0; diagnosticosExemple.length < 30; index++) {
-      diagnosticosExemple.push(diagnosticosExemple[index%2]);
-    }
-    setDiagnosticosArray(diagnosticosExemple)
-    setDiagnosticosOnDisplay(diagnosticosExemple)
-  }
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   async function loadHistorico() {
     await api.get(`/diagnostico?id_medico=${user.data.id}`).then(({ data }) => {
@@ -71,15 +51,19 @@ export const Historico = () => {
     setDiagnosticosOnDisplay(diagnosticos)
   }
 
+  const handleModal = (diagnosticoSelecionado)=>{
+    setDiagnostico(diagnosticoSelecionado)
+    onOpen()
+  }
+
   useEffect(() => {
-    initExemple();
     loadHistorico()
   }, [])
 
   return (
     <Box className='historico-container'>
       <Box>
-        <NavbarComp showEntrarButton={true}/>
+        <NavbarComp showEntrarButton={true} />
       </Box>
       <Box id='historico-body'>
         <Box id='main-content'>
@@ -87,20 +71,51 @@ export const Historico = () => {
             <Box>
 
             </Box>
-            <Input placeholder='Busque Por: Nome, CPF ou Número do Exame'  mr='0.5rem' onChange={searchOnHistory} backgroundColor={'white'}/>
-              {/*
+            <Input placeholder='Busque Por: Nome, CPF ou Número do Exame' mr='0.5rem' onChange={searchOnHistory} backgroundColor={'white'} />
+            {/*
               <Box className='search-icon' cursor={'pointer'} onClick={() => window.alert("Botão de buscar clicado")}>
                 <LuSearch className='icone-lupa' />
                 <span className='search-text'>Buscar</span>
               </Box>  
               */}
           </Box>
+          <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Informações do Paciente</ModalHeader>
+                <ModalCloseButton />
+                  <ModalBody>
+                    <Container display='flex' justifyContent='space-between'>
+                    <Box>
+                    <Text>Name: {diagnostico?.paciente.pessoa.nome}</Text>
+                    <Text>CPF: {diagnostico?.paciente.pessoa.cpf}</Text>
+                    <Text>Telefone: {diagnostico?.paciente.telefone}</Text>
+                    <Text>Rua: {diagnostico?.paciente.logradouro}</Text>
+                    <Text>Bairro: {diagnostico?.paciente.bairro}</Text>
+                    <Text>Número: {diagnostico?.paciente.numero}</Text>
+                    <Text>Cidade: {diagnostico?.paciente.cidade}</Text>
+                    </Box>
+                    <Box>
+                    <Text>Name: {diagnostico?.paciente.pessoa.nome}</Text>
+                    <Text>CPF: {diagnostico?.paciente.pessoa.cpf}</Text>
+                    <Text>Telefone: {diagnostico?.paciente.telefone}</Text>
+                    <Text>Rua: {diagnostico?.paciente.logradouro}</Text>
+                    <Text>Bairro: {diagnostico?.paciente.bairro}</Text>
+                    <Text>Número: {diagnostico?.paciente.numero}</Text>
+                    <Text>Cidade: {diagnostico?.paciente.cidade}</Text>
+                    </Box>
+
+                    </Container>
+                  
+                  </ModalBody>
+            </ModalContent>
+        </Modal>
           <Box id='result-context'>
             {
-              diagnosticosOnDisplay.map((user, index) => {
-                return(
-                  <Box className='historico-line' key={index}>
-                    <HistoricoCard data={user}/>
+              diagnosticos.map((user, index) => {
+                return (
+                  <Box className='historico-line' onClick={()=>handleModal(user)} key={index}>
+                    <HistoricoCard data={user} />
                   </Box>
                 );
               })

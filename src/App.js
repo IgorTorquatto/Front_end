@@ -10,23 +10,27 @@ import { Perfil } from './pages/Perfil/Perfil'
 import './App.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import { HistoricoDetalhes } from './pages/Historico/HistoricoDetalhes'
+import { HistoricoProvider } from './hooks/useHistorico'
 
 function App() {
   return (
     <ChakraProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="*" element={<Home />} />
-          <Route path="/sobre" element={<Sobre />} />
-          <Route path="/diagnostico" element={<Diagnostico />} />
-          <Route path="/historico" element={<Historico />} />
-          <Route path='/historico/detalhes' element={<HistoricoDetalhes />} />
-          <Route path="/pacientes" element={<Pacientes />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/perfil" element={<Perfil />} />
-        </Routes>
-      </BrowserRouter>
+      <HistoricoProvider>
+
+        <BrowserRouter>
+          <Routes>
+            <Route path="*" element={<Home />} />
+            <Route path="/sobre" element={<Sobre />} />
+            <Route path="/diagnostico" element={<Diagnostico />} />
+            <Route path="/historico" element={<Historico />} />
+            <Route path='/historico/detalhes' element={<HistoricoDetalhes />} />
+            <Route path="/pacientes" element={<Pacientes />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/perfil" element={<Perfil />} />
+          </Routes>
+        </BrowserRouter>
+      </HistoricoProvider>
     </ChakraProvider>
 
   );
