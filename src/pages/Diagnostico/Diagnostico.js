@@ -299,12 +299,9 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text("Mapa de Calor", 20, 35);
 
+    doc.addImage(imageCam, 'JPEG', 35, 40, 140, 280);
 
-    doc.setFillColor(0, 0, 0);
-    doc.rect(15, 45, 180, 200, 'F');
-    doc.addImage(imageCam, 'JPEG', -5, 55, 210, 180);
-
-    // Converte o PDF para base64
+    // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
 
     // Atualizar o número de páginas para exibição no visor de PDF
