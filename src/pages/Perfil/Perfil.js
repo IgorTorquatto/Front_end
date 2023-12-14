@@ -129,16 +129,20 @@ export const Perfil = () => {
     setShowAlterarSenha(false);
   };
 
+  const handleEditData = () => {
+    attData();
+  };
+
   return (
     <>
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
-          <div className="perfil-logo-section">
-            <DiagnosticaLogo className="perfil-logo" />
-          </div>
-          <hr></hr>
-          <div className="perfil-avatar" onClick={handleAvatarClick}>
+            <div className="perfil-logo-section">
+              <DiagnosticaLogo className="perfil-logo" />
+            </div>
+            <hr></hr>
+            <div className="perfil-avatar" onClick={handleAvatarClick}>
               <Avatar
                 className="perfil-avatar-custom"
                 name={user.data.pessoa.nome}
@@ -153,10 +157,6 @@ export const Perfil = () => {
                 Alterar Senha
               </MenuItem>
               <hr></hr>
-              <MenuItem icon={<FaSyncAlt />} onClick={attData}>
-                Atualizar Dados
-              </MenuItem>
-              <hr></hr>
               <MenuItem icon={<BiArrowBack />} onClick={goBack}>
                 Voltar
               </MenuItem>
@@ -164,7 +164,6 @@ export const Perfil = () => {
               <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
                 Sair da conta
               </MenuItem>
-              <hr></hr>
             </div>
           </Menu>
         </div>
@@ -173,6 +172,9 @@ export const Perfil = () => {
           {navigationSection === "info" && (
             <div className="infosuser">
               <InfosUser />
+              <div className="editar-dados-button">
+                <button onClick={handleEditData} className="btn-salvar">Editar Dados</button>
+              </div>
             </div>
           )}
           {showAtualizarDados && <AtualizarDados />}
