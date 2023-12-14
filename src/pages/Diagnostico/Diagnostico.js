@@ -426,16 +426,6 @@ export const Diagnostico = () => {
       </Box> :
         <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
           <Box margin='4rem 0' w='50%'>
-            <Box display='flex' justifyContent='space-between'>
-              <Box>
-                <Text>Nome: {patient?.pessoa?.nome}</Text>
-                <Text>CPF: {patient?.pessoa?.cpf}</Text>
-              </Box>
-              <Box>
-                <Text>Idade: {calcularIdade(patient?.pessoa?.data_nascimento)}</Text>
-              </Box>
-
-            </Box>
             <Box padding='0.5rem' background='#323639'>
               <div>
                 <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
