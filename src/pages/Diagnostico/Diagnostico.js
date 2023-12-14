@@ -193,9 +193,9 @@ export const Diagnostico = () => {
     let resultModelo = calcularPredicao(prediction)
     const diagnostico = {
       modelo: selectedModel.label,
+      raio_x: uploadedImage,
       id_medico: user.data.id,
       id_paciente: patient.id,
-      resultado: prediction,
       laudo_medico: pdfDataUri,
       data_hora: new Date(),
       mapa_calor: "data:image/jpeg;base64," + imageCam,
