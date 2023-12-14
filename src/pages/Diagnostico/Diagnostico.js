@@ -13,9 +13,6 @@ import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
-
-
-import { Link } from 'react-router-dom';
 import {imagemDeFundo} from '../../assets/logo d.png';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
