@@ -12,7 +12,7 @@ import { Document, Page } from 'react-pdf';
 import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
@@ -27,6 +27,7 @@ export const Diagnostico = () => {
   const [patients, setPatients] = useState([]);
   const [patientsArray, setPatientsArray] = useState([]);
   const [prediction, setPrediction] = useState(null);
+  const [predictionLabel, setPredictionLabel] = useState(null);
   const [imageCam, setImageCam] = useState(null);
   const [error, setError] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState(null);
@@ -37,8 +38,9 @@ export const Diagnostico = () => {
   const [resultLaudo, setResultLaudo] = useState(null)
   const [resultReal, setResultReal] = useState(null);
   const [laudoError, setLaudoError] = useState(false);
-  
 
+  const history = useNavigate()
+  
   const { data: user } = useSelector((state) => state.tokens);
 
   const models = [
@@ -190,7 +192,6 @@ export const Diagnostico = () => {
     }else{
       setLaudoError(false)
     }
-    let resultModelo = calcularPredicao(prediction)
     const diagnostico = {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
@@ -199,8 +200,8 @@ export const Diagnostico = () => {
       laudo_medico: pdfDataUri,
       data_hora: new Date(),
       mapa_calor: "data:image/jpeg;base64," + imageCam,
-      resultado_modelo: resultModelo,
-      resultado_real: resultLaudo == "1" ? resultModelo : resultReal
+      resultado_modelo: predictionLabel,
+      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal
     }
 
     console.log(diagnostico)
@@ -208,6 +209,7 @@ export const Diagnostico = () => {
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
       console.log(data)
       downloadPDF(data.data.laudo_medico)
+      history('/historico')
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -238,7 +240,8 @@ export const Diagnostico = () => {
       console.log(data)
       var imageData = data.image;
       setImageCam(imageData)
-      setPrediction(data.predictions)
+      setPredictionLabel(data.predictions[0])
+      setPrediction(+data.predictions[1])
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -450,7 +453,7 @@ export const Diagnostico = () => {
             <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
               justifyContent='left' alignItems='center' mt='1.5rem'>
               <Text justifySelf='center'>
-                Laudo do modelo: {prediction.toFixed(2)}% de {calcularPredicao(prediction)}
+                Laudo do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
               </Text>
               {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a confimação do laudo</Text>}
               <Text justifySelf='center'>
