@@ -13,9 +13,6 @@ import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
-
-
-import { Link } from 'react-router-dom';
 import {imagemDeFundo} from '../../assets/logo d.png';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
@@ -284,7 +281,7 @@ export const Diagnostico = () => {
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Tipo de exame: ${selectedModel.label}`, 20, 80);
+    doc.text(`Tipo de exame: Raio X do tórax`, 20, 80);
 
     doc.rect(15, 90, 180, 170);
     doc.setFontSize(16);
@@ -304,15 +301,8 @@ export const Diagnostico = () => {
 
 
     doc.setFillColor(0, 0, 0);
-    doc.rect(15, 45, 180, 90, 'F');
-    doc.addImage(uploadedImage, 'JPEG', 20, 55, 90, 72);
-    doc.addImage(imageCam, 'JPEG', 100, 55, 90, 72);
-
-    doc.rect(15, 140, 180, 140)
-    doc.setFontSize(18);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Laudo do Modelo:`, 20, 150);
-    // Adicione mais informações conforme necessário
+    doc.rect(15, 45, 180, 200, 'F');
+    doc.addImage(imageCam, 'JPEG', -5, 55, 210, 180);
 
     // Converte o PDF para base64
     const pdfDataUri = doc.output('datauristring');
@@ -436,16 +426,6 @@ export const Diagnostico = () => {
       </Box> :
         <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
           <Box margin='4rem 0' w='50%'>
-            <Box display='flex' justifyContent='space-between'>
-              <Box>
-                <Text>Nome: {patient?.pessoa?.nome}</Text>
-                <Text>CPF: {patient?.pessoa?.cpf}</Text>
-              </Box>
-              <Box>
-                <Text>Idade: {calcularIdade(patient?.pessoa?.data_nascimento)}</Text>
-              </Box>
-
-            </Box>
             <Box padding='0.5rem' background='#323639'>
               <div>
                 <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
