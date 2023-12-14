@@ -446,11 +446,7 @@ export const Diagnostico = () => {
             <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
               justifyContent='left' alignItems='center' mt='1.5rem'>
               <Text justifySelf='center'>
-<<<<<<< Updated upstream
                 Laudo do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
-=======
-                Laudo do modelo: "Espaço da toFixed" de {calcularPredicao(prediction)}
->>>>>>> Stashed changes
               </Text>
               {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a confimação do laudo</Text>}
               <Text justifySelf='center'>
