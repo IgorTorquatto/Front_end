@@ -22,7 +22,7 @@ export const Sobre = () => {
             <div className="secao1-retangulo"></div>
             <div className="secao1-container-h1">
               <h1 className="secao1-h1">
-                Somos a dIAgnostica e acreditamos que a tecnologia deve ser
+                Somos a d.IAgnóstica e acreditamos que a tecnologia deve ser
                 usada para o bem da humanidade.
               </h1>
             </div>
@@ -32,14 +32,14 @@ export const Sobre = () => {
             <section className="sobre-secao2">
               <div className="secao2-texto">
                 <p>
-                  A criação da dIAgnóstica marca um notável marco na interseção
+                  A criação da d.IAgnóstica marca um notável marco na interseção
                   entre a academia e a indústria tecnológica, resultando de uma
                   colaboração conjunta de estudantes da Universidade Federal do
                   Cariri. Este projeto visionário ganhou vida graças ao apoio da
                   BRISA - Sociedade para o Desenvolvimento da Tecnologia da
                   Informação, em parceria com a SOFTEX, e foi financiado pelo
                   Ministério de Ciência, Tecnologia e Inovação (MCTIC) através
-                  dos recursos provenientes da Lei nº 8.248/91. A dIAgnóstica
+                  dos recursos provenientes da Lei nº 8.248/91. A d.IAgnóstica
                   nasceu com um propósito claro: utilizar a inteligência
                   artificial como uma ferramenta poderosa para melhorar o
                   diagnóstico de doenças pulmonares. Com a aplicação de
@@ -57,7 +57,7 @@ export const Sobre = () => {
                 </p>
 
                 <div className="sobre-secao2-lista">
-                  <h3>Equipe dIAgnóstica:</h3>
+                  <h3>Equipe d.IAgnóstica:</h3>
                   <ul>
                     <li>Carlos Eduardo</li>
                     <li>Victor Lima</li>
