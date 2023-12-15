@@ -289,7 +289,18 @@ export const Diagnostico = () => {
     doc.text(`Laudo Médico:`, 20, 100);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'italic');
-    doc.text(`${observacoes}`, 20, 120);
+
+
+    // Para não deixar o texto escapar do PDF
+
+    const maxWidth = 160; 
+    const text = `${observacoes}`;
+    const lines = doc.splitTextToSize(text, maxWidth);
+    
+    const lineHeight = 10; 
+    lines.forEach((line, index) => {
+        doc.text(line, 20, 120 + index * lineHeight);
+    });
 
     doc.addPage();
 
@@ -451,8 +462,8 @@ export const Diagnostico = () => {
               
               <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
                 <Stack direction='row' gap='30px' mb='1.0rem'>
-                  <Radio value='1'>Sim</Radio>
-                  <Radio value='2'>Não</Radio>
+                  <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
+                  <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
                 </Stack>
               </RadioGroup>
 
