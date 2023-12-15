@@ -269,6 +269,8 @@ export const Diagnostico = () => {
     doc.setFont('georgia', 'bold');
     doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
 
+
+
     doc.rect(15, 35, 180, 30);
     doc.setFontSize(14);
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
@@ -283,13 +285,29 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text(`Tipo de exame: Raio X do tórax`, 20, 80);
 
-    doc.rect(15, 90, 180, 170);
+    doc.rect(15, 90, 180, 150);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.text(`Laudo Médico:`, 20, 100);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'italic');
-    doc.text(`${observacoes}`, 20, 120);
+
+
+    // Para não deixar o texto escapar do PDF
+
+    const maxWidth = 160; 
+    const text = `${observacoes}`;
+    const lines = doc.splitTextToSize(text, maxWidth);
+    
+    const lineHeight = 10; 
+    lines.forEach((line, index) => {
+        doc.text(line, 20, 120 + index * lineHeight);
+    });
+
+    doc.rect(15, 245, 180, 20);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'italic');
+    doc.text(`D.IAgnóstica, seu assistente em diagnósticos.\nUniversidade Federal do Cariri - grupodiagnosticatic@gmail.com`, 20, 254);
 
     doc.addPage();
 
@@ -299,12 +317,9 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text("Mapa de Calor", 20, 35);
 
+    doc.addImage(imageCam, 'JPEG', 40, 40, 135, 270);
 
-    doc.setFillColor(0, 0, 0);
-    doc.rect(15, 45, 180, 200, 'F');
-    doc.addImage(imageCam, 'JPEG', -5, 55, 210, 180);
-
-    // Converte o PDF para base64
+    // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
 
     // Atualizar o número de páginas para exibição no visor de PDF
@@ -434,19 +449,28 @@ export const Diagnostico = () => {
 
 
             <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
-              justifyContent='left' alignItems='center' mt='1.5rem'>
-              <Text justifySelf='center'>
-                Laudo do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
+              justifyContent='left' alignItems='left' mt='1.5rem'>
+              <Text justifySelf='center' style={{border: '2px solid black', padding: '8px', borderRadius: '4px'}}>
+                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
               </Text>
-              {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a confimação do laudo</Text>}
-              <Text justifySelf='center'>
+
+              <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
+                <Text>
+                  Descrição do laudo
+                </Text>
+                <Textarea style={{border: '1px solid black'}} onChange={(e) => setObservacoes(e.target.value)} />
+
+              </Box>
+
+              {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a corretude do resultado</Text>}
+              <Text justifySelf='center' marginTop='30px'>
                 O Laudo do modelo está correto?
               </Text>
               
               <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
-                <Stack direction='row'>
-                  <Radio value='1'>Sim</Radio>
-                  <Radio value='2'>Não</Radio>
+                <Stack direction='row' gap='30px' mb='1.0rem'>
+                  <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
+                  <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
                 </Stack>
               </RadioGroup>
 
@@ -457,14 +481,6 @@ export const Diagnostico = () => {
                 <option value={"COVID"}>COVID</option>
                 <option value={"NORMAL"}>NORMAL</option>
                 </SelectChakra></Box>}
-            </Box>
-
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='center' mt='1.5rem'>
-              <Text>
-                Escreva seu laudo
-              </Text>
-              <Textarea onChange={(e) => setObservacoes(e.target.value)} />
-
             </Box>
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>

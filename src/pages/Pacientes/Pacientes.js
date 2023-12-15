@@ -731,7 +731,7 @@ async function loadPatients() {
                   </div>
                 </div>
                 
-                <Button type="submit" isLoading={loadingCadastro} mt = '0.8rem' >Editar</Button>
+                <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} mt ='0.8rem' >Editar</Button>
 
               </form>
             </ModalBody>
