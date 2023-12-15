@@ -269,6 +269,8 @@ export const Diagnostico = () => {
     doc.setFont('georgia', 'bold');
     doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
 
+
+
     doc.rect(15, 35, 180, 30);
     doc.setFontSize(14);
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
@@ -283,7 +285,7 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text(`Tipo de exame: Raio X do tórax`, 20, 80);
 
-    doc.rect(15, 90, 180, 170);
+    doc.rect(15, 90, 180, 150);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.text(`Laudo Médico:`, 20, 100);
@@ -301,6 +303,11 @@ export const Diagnostico = () => {
     lines.forEach((line, index) => {
         doc.text(line, 20, 120 + index * lineHeight);
     });
+
+    doc.rect(15, 245, 180, 20);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'italic');
+    doc.text(`D.IAgnóstica, seu assistente em diagnósticos.\nUniversidade Federal do Cariri - grupodiagnosticatic@gmail.com`, 20, 254);
 
     doc.addPage();
 
