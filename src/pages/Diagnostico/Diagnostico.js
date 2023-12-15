@@ -3,7 +3,7 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra } from '@chakra-ui/react'
+import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -13,7 +13,7 @@ import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
-import {imagemDeFundo} from '../../assets/logo d.png';
+import { imagemDeFundo } from '../../assets/logo d.png';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
 
@@ -39,8 +39,10 @@ export const Diagnostico = () => {
   const [resultReal, setResultReal] = useState(null);
   const [laudoError, setLaudoError] = useState(false);
 
+  const [pageLoading, setPageLoading] = useState(true);
+
   const history = useNavigate()
-  
+
   const { data: user } = useSelector((state) => state.tokens);
 
   const models = [
@@ -68,7 +70,9 @@ export const Diagnostico = () => {
 
   useEffect(() => {
     (async () => {
-      await loadPatients()
+      await loadPatients().then(() => {
+        setPageLoading(false)
+      })
     })()
   }, [])
 
@@ -87,25 +91,25 @@ export const Diagnostico = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         // Cria uma nova imagem
-      const img = new Image();
-      img.src = event.target.result;
+        const img = new Image();
+        img.src = event.target.result;
 
-      img.onload = () => {
-        // Cria um canvas
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
+        img.onload = () => {
+          // Cria um canvas
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
 
-        // Desenha a imagem no canvas
-        context.drawImage(img, 0, 0, img.width, img.height);
+          // Desenha a imagem no canvas
+          context.drawImage(img, 0, 0, img.width, img.height);
 
-        // Converte o conteúdo do canvas para JPEG
-        const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+          // Converte o conteúdo do canvas para JPEG
+          const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.9);
 
-        // Atualiza o estado com a imagem JPEG
-        setUploadedImage(jpegDataUrl);
-      };
+          // Atualiza o estado com a imagem JPEG
+          setUploadedImage(jpegDataUrl);
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -186,10 +190,10 @@ export const Diagnostico = () => {
   }
 
   async function submitLaudo() {
-    if(!resultLaudo){
+    if (!resultLaudo) {
       setLaudoError(true)
       return
-    }else{
+    } else {
       setLaudoError(false)
     }
     const diagnostico = {
@@ -295,13 +299,13 @@ export const Diagnostico = () => {
 
     // Para não deixar o texto escapar do PDF
 
-    const maxWidth = 160; 
+    const maxWidth = 160;
     const text = `${observacoes}`;
     const lines = doc.splitTextToSize(text, maxWidth);
-    
-    const lineHeight = 10; 
+
+    const lineHeight = 10;
     lines.forEach((line, index) => {
-        doc.text(line, 20, 120 + index * lineHeight);
+      doc.text(line, 20, 120 + index * lineHeight);
     });
 
     doc.rect(15, 245, 180, 20);
@@ -330,21 +334,13 @@ export const Diagnostico = () => {
     // pdfContainer.innerHTML = `<embed src="${pdfDataUri}" width="100%" height="500px" type="application/pdf" />`;
   };
 
-  const calcularPredicao = (predicao)=>{
-    if(predicao > 0){
-      return "PNEUMONIA"
-    }
-    if(predicao < 0){
-      return "TURBECULOSE"
-    }
-    if(predicao > 0 && predicao < 1){
-      return "COVID"
-    }
-  }
   return (
     <body>
       <header><NavbarComp showEntrarButton={true} /></header>
-      {!prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
+      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+      <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
+        </Flex> :
+        !prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
         <Box w='30%' padding='4rem 0'>
           <Box w='100%' >
             <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O PACIENTE</Text>
@@ -418,7 +414,7 @@ export const Diagnostico = () => {
 
 
           </Box>
-          
+
           <Button w='100%' colorScheme={error ? 'red' : 'blue'} isLoading={loadingLaudo} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
           <Box display='flex' justifyContent='space-between'>
             <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
@@ -439,65 +435,67 @@ export const Diagnostico = () => {
 
         </Box>
       </Box> :
-        <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
-          <Box margin='4rem 0' w='50%'>
-            <Box padding='0.5rem' background='#323639'>
-              <div>
-                <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
-              </div>
+      <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
+        <Box margin='4rem 0' w='50%'>
+          <Box padding='0.5rem' background='#323639'>
+            <div>
+              <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
+            </div>
+          </Box>
+
+
+          <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
+            justifyContent='left' alignItems='left' mt='1.5rem'>
+            <Text justifySelf='center' style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
+              Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% de {predictionLabel}
+            </Text>
+
+            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
+              <Text>
+                Descrição do laudo
+              </Text>
+              <Textarea style={{ border: '1px solid black' }} onChange={(e) => setObservacoes(e.target.value)} />
+
             </Box>
 
+            {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a corretude do resultado</Text>}
+            <Text justifySelf='center' marginTop='30px'>
+              O Laudo do modelo está correto?
+            </Text>
 
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
-              justifyContent='left' alignItems='left' mt='1.5rem'>
-              <Text justifySelf='center' style={{border: '2px solid black', padding: '8px', borderRadius: '4px'}}>
-                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
-              </Text>
+            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
+              <Stack direction='row' gap='30px' mb='1.0rem'>
+                <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
+                <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
+              </Stack>
+            </RadioGroup>
 
-              <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
-                <Text>
-                  Descrição do laudo
-                </Text>
-                <Textarea style={{border: '1px solid black'}} onChange={(e) => setObservacoes(e.target.value)} />
-
-              </Box>
-
-              {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a corretude do resultado</Text>}
-              <Text justifySelf='center' marginTop='30px'>
-                O Laudo do modelo está correto?
-              </Text>
-              
-              <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
-                <Stack direction='row' gap='30px' mb='1.0rem'>
-                  <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
-                  <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
-                </Stack>
-              </RadioGroup>
-
-              {resultLaudo == 2 && <Box><Text>Qual o diagnóstico correto?</Text>
-              <SelectChakra onChange={(e)=>setResultReal(e.target.value)}>
+            {resultLaudo == 2 && <Box><Text>Qual o diagnóstico correto?</Text>
+              <SelectChakra onChange={(e) => setResultReal(e.target.value)}>
                 <option value={"PNEUMONIA"}>PNEUMONIA</option>
                 <option value={"TURBECULOSE"}>TURBECULOSE</option>
                 <option value={"COVID"}>COVID</option>
                 <option value={"NORMAL"}>NORMAL</option>
-                </SelectChakra></Box>}
-            </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
-
-            </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
-
-            </Box>
-            <Box display='flex' mt='2rem' justifyContent='space-around'>
-              <Button colorScheme='red' borderRadius='1rem' onClick={()=>setPrediction(null)}>Revogar Laudo</Button>
-              <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
-            </Box>
+              </SelectChakra></Box>}
           </Box>
+          <Box display='flex' alignItems='center' mt='1rem'>
+            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
 
+          </Box>
+          <Box display='flex' alignItems='center' mt='1rem'>
+            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
+
+          </Box>
+          <Box display='flex' mt='2rem' justifyContent='space-around'>
+            <Button colorScheme='red' borderRadius='1rem' onClick={() => setPrediction(null)}>Revogar Laudo</Button>
+            <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
+          </Box>
         </Box>
-      }
+
+      </Box>
+     }
+     
+
 
 
       <div>
