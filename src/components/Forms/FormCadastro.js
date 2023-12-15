@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loadSession } from '../../store/ducks/tokens/actions.ts';
 import { api, apiUnAuth } from  '../../services/api.ts'
 import { useDispatch } from 'react-redux';
+import { Button } from '@chakra-ui/react';
 
 
 const schema = yup.object({
@@ -33,6 +34,7 @@ export const FormCadastro = () => {
   const history = useNavigate()
   const dispactch = useDispatch();
 
+  const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
 
@@ -236,13 +238,16 @@ export const FormCadastro = () => {
           </div>
         </div>
 
-        <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" />
+        <Button
+          type="submit"
+          colorScheme='blue'
+          w='80%'
+          className="inputbtn"
+          isLoading={onLoading}
+        >Cadastrar</Button>
       </form>
 
-      <div className="form-cadastro-text mt-5">
-        {/* <Link to="/home">
-          <button className="btn btn-primary custom-btn">Cadastrar</button>
-        </Link> */}
+      <div className="form-cadastro-text mt-3">
         <p className="cadastro-login-link">
           Já possui conta? <Link to="/login">Entrar agora</Link>
         </p>
