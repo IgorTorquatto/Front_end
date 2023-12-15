@@ -311,6 +311,10 @@ export const Diagnostico = () => {
 
     doc.addPage();
 
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'italic');
+    doc.text('*O nível de ativação representa a região da imagem crucial para\n a classificação.', 20, 15);
+
     doc.rect(15, 28, 180, 10)
 
     doc.setFontSize(18);
@@ -480,7 +484,7 @@ export const Diagnostico = () => {
                 <option value={"TURBECULOSE"}>TURBECULOSE</option>
                 <option value={"COVID"}>COVID</option>
                 <option value={"NORMAL"}>NORMAL</option>
-                </SelectChakra></Box>}
+              </SelectChakra></Box>}
             </Box>
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
