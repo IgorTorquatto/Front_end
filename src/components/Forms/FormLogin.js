@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./FormLogin.css";
 
-//import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
  // AiOutlineEye,
  // AiOutlineEyeInvisible,
@@ -14,6 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 //import { api } from "../../services/api.ts";
 import { useDispatch } from "react-redux";
+import { Button } from "@chakra-ui/react";
 
 const schema = yup
   .object({
@@ -37,13 +38,15 @@ export const FormLogin = () => {
     resolver: yupResolver(schema),
   });
 
+  const [onLoading, setOnLoading] = useState(false);
+
   const history = useNavigate();
   const dispactch = useDispatch();
 
   //const [showPassword, setShowPassword] = useState("password");
   //const [visible, setVisible] = useState(true);
   const onSubmit = async (user) => {
-    console.log(user);
+    setOnLoading(true)
     try {
       dispactch(loadSession(user))
     } catch {}
@@ -92,11 +95,14 @@ export const FormLogin = () => {
         <p className="login-forget-password mt-3">
           <Link to="/">Esqueceu sua senha?</Link>
         </p>
-        <input
+        <Button
           type="submit"
-          className="inputbtn btn btn-primary custom-btn"
-          value="Entrar"
-        />
+          colorScheme='blue'
+          w='80%'
+          alignSelf='center'
+          mb='1rem'
+          isLoading={onLoading}
+        >Entrar</Button>
       </form>
 
       <div className="form-login-text">
