@@ -317,7 +317,7 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text("Mapa de Calor", 20, 35);
 
-    doc.addImage(imageCam, 'JPEG', 35, 40, 140, 280);
+    doc.addImage(imageCam, 'JPEG', 40, 40, 135, 270);
 
     // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
@@ -456,7 +456,7 @@ export const Diagnostico = () => {
 
               <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
                 <Text>
-                  Escreva seu laudo
+                  Descrição do laudo
                 </Text>
                 <Textarea style={{border: '1px solid black'}} onChange={(e) => setObservacoes(e.target.value)} />
 
