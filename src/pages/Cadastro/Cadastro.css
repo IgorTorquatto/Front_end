@@ -15,7 +15,7 @@
 .cadastro-section{
     background-color: #FFFFFF;
     border-radius: 20px;
-    width: 50%;
+    width: 80%;
     height: 100%;
     margin: 3rem;
     box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.25);
@@ -28,3 +28,22 @@
     margin-bottom: 2%;
     text-align: center;
 }
+
+.cadastro-formulario {
+    width: 50%;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+  }
+
+  .cadastro-logo {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 30px;
+    display: flex;
+    width:100%;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+  }
