@@ -1,0 +1,84 @@
+.clinicaDados-info {
+  height: 100vh;
+  padding: 0px;
+}
+.clinicaDados-section-top{
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+}
+
+.clinicaDados-section-bottom{
+  height: 60vh;
+}
+.clinicaDados-info h2 {
+  font-size: 28px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.clinicaDados-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-left: 60px;
+}
+
+.column {
+  flex: 1;
+}
+
+.clinicaDados-details p {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+.clinicaDados-details p strong {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.clinicaDados-details .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.clinicaDados-details .column div {
+  display: flex;
+  align-items: center;
+  color: #000;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 450px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.clinicaDados-details .column div svg {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.clinicaDados-details .column div strong {
+  min-width: 100px;
+}
+
+.btn-clinica-editar{
+  align-self: flex-end; /* Isso posicionará o botão à direita */
+  margin-top: auto; /* Isso alinhará o botão à parte inferior da seção */
+  margin-right: 80px; /* Ajustes do espaçamento à direita  */
+  padding: 8px 16px;
+  transition: transform 1s ease;
+  border-radius: 5px;
+  background-color: #0d6efd;
+  border: none;
+  cursor: pointer;
+  width: 90px;
+  color: #fff;
+  text-align: center;
+}
+
+.btn-clinica-editar:hover {
+  transform: scale(1.1);
+}
