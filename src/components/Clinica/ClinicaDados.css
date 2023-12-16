@@ -1,17 +1,23 @@
-.clinicaDados-info {
+.clinicaDados-container {
   height: 100vh;
   padding: 0px;
 }
-.clinicaDados-section-top{
+.clinicaDados-section-top {
   display: flex;
   flex-direction: column;
   height: 40vh;
 }
 
-.clinicaDados-section-bottom{
+.clinicaDados-section-bottom {
   height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
-.clinicaDados-info h2 {
+
+.clinicaDados-section-top h2 {
   font-size: 28px;
   margin-top: 4px;
   text-align: center;
@@ -64,21 +70,73 @@
   min-width: 100px;
 }
 
-.btn-clinica-editar{
+.btn-clinica-editar {
   align-self: flex-end; /* Isso posicionará o botão à direita */
   margin-top: auto; /* Isso alinhará o botão à parte inferior da seção */
   margin-right: 80px; /* Ajustes do espaçamento à direita  */
   padding: 8px 16px;
+  font-size: 14px;
   transition: transform 1s ease;
   border-radius: 5px;
   background-color: #0d6efd;
   border: none;
   cursor: pointer;
-  width: 90px;
   color: #fff;
   text-align: center;
 }
 
 .btn-clinica-editar:hover {
   transform: scale(1.1);
+}
+
+.funcionarios-table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.funcionarios-table th,
+.funcionarios-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  /* text-align: center; Centraliza o texto */
+}
+
+.funcionarios-table th {
+  background-color: #fff;
+  font-weight: bold;
+}
+
+.clinicaDados-section-bottom h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.btn-paginacao {
+  padding: 8px 16px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #0d6efd;
+  color: #fff;
+  font-size: 14px;
+}
+
+.btn-paginacao:hover {
+  background-color: #0b5ed7;
+}
+
+.btn-paginacao:focus {
+  outline: none;
+}
+
+/* Estilos botão 'Anterior' */
+.btn-paginacao:first-child {
+  margin-right: 10px;
+}
+
+/* Estilos botão 'Próximo' */
+.btn-paginacao:last-child {
+  margin-left: 10px;
 }
