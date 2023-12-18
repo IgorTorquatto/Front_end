@@ -20,7 +20,6 @@
 }
 
 .card-title-context{
-    background-color: #002F59;
     width: 100%;
     height: fit-content;
     display: flex;
@@ -28,6 +27,7 @@
     padding: 2px 20px;
     border-radius: 15px;
     margin-bottom: 10px;
+    border: 1px solid white; 
 }
 
 .historico-card-body{
