@@ -89,6 +89,9 @@ export const Pacientes = () => {
   const [loadingCadastro, setLoadingCadastro] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+  const [buttonEditColor, setButtonEditColor] = useState('white');
+  const [buttonInfoColor, setButtonInfoColor] = useState('white');
+
 async function loadPatients() {
     await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
       setPatientsArray(data)
@@ -238,6 +241,10 @@ async function loadPatients() {
     setSelectedState(selectedState);
   };
 
+  const changeButtonContent = (setFunction, mouseEvent) => {
+    mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3')
+}
+
   const states = [
     { label: 'Acre', value: 'AC' },
     { label: 'Alagoas', value: 'AL' },
@@ -269,15 +276,15 @@ async function loadPatients() {
   ];
 
   return (
-    <main>
+    <main style={{backgroundColor: '#F8F8FF'}}>
       <header><NavbarComp showEntrarButton={true} /></header>
       <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
         <Box display='flex' w='100%' >
-          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem'>
+          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem' bg={'white'}>
             <option value='nome'>Nome</option>
             <option value='cpf'>CPF</option>
           </Select>
-          <Input placeholder='Procurar paciente'  mr='0.5rem' onChange={searchPatient} />
+          <Input placeholder='Procurar paciente'  mr='0.5rem' onChange={searchPatient} bg={'white'}/>
           <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
         </Box>
 
@@ -286,8 +293,8 @@ async function loadPatients() {
           h='80%'
         >
           {patients.map(paciente => (
-            <Box color='white' className='patientBox'  padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
-              <Box display='flex' padding='0.5rem' w='100%'>
+            <Box color='white' className='patientBox' py='0.5rem' px='1.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3B83C3'>
+              <Box display='flex' py='0.5rem' w='100%'>
                 <div id='patientInformations'>
                   <div>
                     <p>
@@ -304,10 +311,22 @@ async function loadPatients() {
                 </div>
               </Box>
             <Stack spacing={3}>
-              <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
+              <Button 
+                leftIcon={<FaBars />} 
+                onClick={() => { openInfo(paciente) }} 
+                color={buttonInfoColor} variant='outline'
+                onMouseEnter={() => changeButtonContent(setButtonInfoColor, 'in')} 
+                onMouseLeave={() => changeButtonContent(setButtonInfoColor, 'out')} 
+              >
                 Informações
               </Button>
-              <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
+              <Button 
+                leftIcon={<CiEdit />} 
+                onClick={() => { openEdit(paciente) }} 
+                color={buttonEditColor} variant='outline'
+                onMouseEnter={() => changeButtonContent(setButtonEditColor, 'in')} 
+                onMouseLeave={() => changeButtonContent(setButtonEditColor, 'out')} 
+              >
                 Editar
               </Button>
             </Stack>

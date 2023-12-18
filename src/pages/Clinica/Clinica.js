@@ -63,6 +63,7 @@ export const Clinica = () => {
                 className="clinica-avatar-custom"
                 src="https://bit.ly/broken-link"
                 size="lg"
+                marginBottom={'10px'}
               />
               <span>Nome da Clínica</span>
             </div>

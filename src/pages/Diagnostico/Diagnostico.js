@@ -359,7 +359,7 @@ export const Diagnostico = () => {
     }
   }
   return (
-    <body>
+    <body style={{backgroundColor: '#F8F8FF'}}>
       <header><NavbarComp showEntrarButton={true} /></header>
       {!prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
         <Box w='30%' padding='4rem 0'>
@@ -407,7 +407,7 @@ export const Diagnostico = () => {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            background='d8d8d8'
+            background='#F8F8F9'
           >
             {!uploadedImage &&
               <Box lineHeight='0.5rem'>

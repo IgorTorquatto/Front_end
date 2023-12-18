@@ -65,10 +65,10 @@ export const HistoricoCard = ({ data }) => {
       }
 
     return (
-        <Box className='historico-card-container' cursor={'pointer'} >
+        <Box id='historico-card-container' cursor={'pointer'} >
             <Box className='card-title-context'>
                 <span className='hcard-text'>Modelo: {data.modelo}</span>
-                <span className='hcard-text'>Data e Hora: {dayjs(new Date(data.data_hora)).format('DD/MM/YYYY')}</span>
+                <span className='hcard-text'>Data: {dayjs(new Date(data.data_hora)).format('DD/MM/YYYY')}</span>
             </Box>
             <Box className='historico-card-body'>
                 <Box id='paciente-info'>

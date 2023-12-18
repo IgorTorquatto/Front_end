@@ -1,11 +1,15 @@
 .clinicaDados-container {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   padding: 0px;
+ 
 }
 .clinicaDados-section-top {
   display: flex;
   flex-direction: column;
   height: 40vh;
+
 }
 
 .clinicaDados-section-bottom {
@@ -15,10 +19,10 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
+
 }
 
 .clinicaDados-section-top h2 {
-  font-size: 28px;
   margin-top: 4px;
   text-align: center;
 }
@@ -74,25 +78,15 @@
   align-self: flex-end; /* Isso posicionará o botão à direita */
   margin-top: auto; /* Isso alinhará o botão à parte inferior da seção */
   margin-right: 80px; /* Ajustes do espaçamento à direita  */
-  padding: 8px 16px;
-  font-size: 14px;
-  transition: transform 1s ease;
-  border-radius: 5px;
-  background-color: #0d6efd;
-  border: none;
-  cursor: pointer;
-  color: #fff;
-  text-align: center;
+
 }
 
-.btn-clinica-editar:hover {
+.btn-clinica-editr:hover {
   transform: scale(1.1);
 }
 
-.funcionarios-table {
-  width: 80%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+table .table-striped .custom-table{
+  width: 50%;
 }
 
 .funcionarios-table th,
@@ -107,9 +101,8 @@
   font-weight: bold;
 }
 
-.clinicaDados-section-bottom h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
+.clinicaDados-container h2 {
+  font-size: 25px;
 }
 
 .btn-paginacao {
@@ -139,4 +132,9 @@
 /* Estilos botão 'Próximo' */
 .btn-paginacao:last-child {
   margin-left: 10px;
+}
+
+.table-wrapper {
+  overflow: auto;
+  display: inline-block;
 }
