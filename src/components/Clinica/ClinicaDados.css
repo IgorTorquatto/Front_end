@@ -1,15 +1,12 @@
 .clinicaDados-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   padding: 0px;
- 
 }
 .clinicaDados-section-top {
   display: flex;
   flex-direction: column;
   height: 40vh;
-
 }
 
 .clinicaDados-section-bottom {
@@ -19,7 +16,6 @@
   justify-content: center;
   align-items: center;
   padding: 20px;
-
 }
 
 .clinicaDados-section-top h2 {
@@ -78,14 +74,10 @@
   align-self: flex-end; /* Isso posicionará o botão à direita */
   margin-top: auto; /* Isso alinhará o botão à parte inferior da seção */
   margin-right: 80px; /* Ajustes do espaçamento à direita  */
-
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn-clinica-editr:hover {
-  transform: scale(1.1);
-}
-
-table .table-striped .custom-table{
+table .table-striped .custom-table {
   width: 50%;
 }
 
@@ -105,7 +97,7 @@ table .table-striped .custom-table{
   font-size: 25px;
 }
 
-.btn-paginacao {
+/*.btn-paginacao {
   padding: 8px 16px;
   margin: 5px;
   border: none;
@@ -124,17 +116,34 @@ table .table-striped .custom-table{
   outline: none;
 }
 
-/* Estilos botão 'Anterior' */
 .btn-paginacao:first-child {
   margin-right: 10px;
 }
 
-/* Estilos botão 'Próximo' */
+
 .btn-paginacao:last-child {
   margin-left: 10px;
-}
+}*/
 
 .table-wrapper {
   overflow: auto;
   display: inline-block;
+}
+
+.btn-clinica-gerenciar {
+  align-self: flex-end; /* Isso posicionará o botão à direita */
+  margin-top: 20px;
+  margin-right: 80px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-clinica-gerenciar button {
+  display: flex;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-clinica-gerenciar button svg {
+  font-size: 14px; /*Tamanho do ícone do botão*/
 }
