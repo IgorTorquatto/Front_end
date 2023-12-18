@@ -2,6 +2,7 @@ import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
+import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra } from '@chakra-ui/react'
 import Select from 'react-select';
@@ -305,6 +306,8 @@ export const Diagnostico = () => {
     doc.text(`Laudo Médico:`, 20, 100);
     doc.setFontSize(14);
     doc.setFont('helvetica', 'normal');
+
+    doc.addImage(DiagnosticaLogoBW, 'PNG', 30, 150, 150, 34)
 
 
     // Para não deixar o texto escapar do PDF
