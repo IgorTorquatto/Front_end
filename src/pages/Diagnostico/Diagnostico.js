@@ -2,13 +2,12 @@ import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
+import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import PDFReport from '../../components/Pdf/PdfViewer'
-import { Document, Page } from 'react-pdf';
 import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
@@ -31,13 +30,14 @@ export const Diagnostico = () => {
   const [imageCam, setImageCam] = useState(null);
   const [error, setError] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState(null);
-  const [termo, setTermo] = useState(false);
+  const [termo, setTermo] = useState(null);
   const [downloadLaudo, setDownloadLaudo] = useState(false);
   const [observacoes, setObservacoes] = useState('Seu laudo vem aqui...');
   const [loadingLaudo, setLoadingLaudo] = useState(false)
   const [resultLaudo, setResultLaudo] = useState(null)
   const [resultReal, setResultReal] = useState(null);
   const [laudoError, setLaudoError] = useState(false);
+  const [obsState, setobsState] = useState(true);
 
   const [pageLoading, setPageLoading] = useState(true);
 
@@ -67,6 +67,10 @@ export const Diagnostico = () => {
       console.log(err)
     })
   }
+
+  const handleCheckboxChange = (e, setter) => {
+    setter(e.target.checked);
+  };
 
   useEffect(() => {
     (async () => {
@@ -196,6 +200,18 @@ export const Diagnostico = () => {
     } else {
       setLaudoError(false)
     }
+    if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0)
+    {
+      setobsState(false)
+      console.log("Sem descrição");
+      return
+    } else{
+      setobsState(true)
+    }
+    if(termo == null || termo == false)
+    {
+      return
+    }
     const diagnostico = {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
@@ -269,13 +285,14 @@ export const Diagnostico = () => {
 
   const createPDF = async () => {
     const doc = new jsPDF();
-    doc.setFontSize(25);
-    doc.setFont('georgia', 'bold');
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
     doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
 
 
 
     doc.rect(15, 35, 180, 30);
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(14);
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
     doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 52);
@@ -294,7 +311,9 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text(`Laudo Médico:`, 20, 100);
     doc.setFontSize(14);
-    doc.setFont('helvetica', 'italic');
+    doc.setFont('helvetica', 'normal');
+
+    doc.addImage(DiagnosticaLogoBW, 'PNG', 45, 140, 120, 72)
 
 
     // Para não deixar o texto escapar do PDF
@@ -315,13 +334,17 @@ export const Diagnostico = () => {
 
     doc.addPage();
 
-    doc.rect(15, 28, 180, 10)
+    doc.rect(15, 10, 180, 10)
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text("Mapa de Calor", 20, 35);
+    doc.text("Mapa de Calor", 20, 17);
 
-    doc.addImage(imageCam, 'JPEG', 40, 40, 135, 270);
+    doc.addImage(imageCam, 'JPEG', 40, 22, 135, 270);
+
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'italic');
+    doc.text('*O nível de ativação representa as regiões da imagem mais cruciais para a \nclassificação.', 20, 285);
 
     // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
@@ -335,7 +358,7 @@ export const Diagnostico = () => {
   };
 
   return (
-    <body>
+    <body style={{backgroundColor: '#F8F8FF'}}>
       <header><NavbarComp showEntrarButton={true} /></header>
       {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
       <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
@@ -386,7 +409,7 @@ export const Diagnostico = () => {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            background='d8d8d8'
+            background='#F8F8F9'
           >
             {!uploadedImage &&
               <Box lineHeight='0.5rem'>
@@ -450,18 +473,23 @@ export const Diagnostico = () => {
               Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% de {predictionLabel}
             </Text>
 
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
-              <Text>
-                Descrição do laudo
+            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
+              justifyContent='left' alignItems='left' mt='1.5rem'>
+              <Text justifySelf='center' style={{border: '2px solid black', padding: '8px', borderRadius: '4px'}}>
+                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% para {predictionLabel}
+
               </Text>
               <Textarea style={{ border: '1px solid black' }} onChange={(e) => setObservacoes(e.target.value)} />
 
             </Box>
 
-            {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a corretude do resultado</Text>}
-            <Text justifySelf='center' marginTop='30px'>
-              O Laudo do modelo está correto?
-            </Text>
+              {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
+              <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
+                <Text>
+                  Descrição do laudo
+                </Text>
+                <Textarea style={{border: '1px solid black'}} onChange={(e) => setObservacoes(e.target.value)} />
+
 
             <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
               <Stack direction='row' gap='30px' mb='1.0rem'>
@@ -477,9 +505,14 @@ export const Diagnostico = () => {
                 <option value={"COVID"}>COVID</option>
                 <option value={"NORMAL"}>NORMAL</option>
               </SelectChakra></Box>}
-          </Box>
-          <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
+            </Box>
+            {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
+            <Box display='flex' alignItems='center' mt='1rem'>
+              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
+            </Box>
+            <Box display='flex' alignItems='center' mt='1rem'>
+              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o laudo com a previsão do modelo</Text>
+
 
           </Box>
           <Box display='flex' alignItems='center' mt='1rem'>

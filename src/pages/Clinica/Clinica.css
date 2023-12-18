@@ -1,0 +1,70 @@
+.clinica-container {
+  background-color:#F8F8FF;
+  height: 110vh;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.clinica-menu {
+  width: 18%;
+  background-color:  #0b2a45;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.clinica-settings {
+  width: 82%;
+}
+.clinica-settings-title {
+  margin-top: 20px;
+}
+.clinica-settings-title h1 {
+  font-size: 30px;
+}
+
+.clinica-menu .clinica-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.clinica-avatar span {
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.clinica-menu .clinica-avatar:hover {
+  cursor: pointer;
+}
+
+.clinica-menu .clinica-avatar .clinica-avatar-custom {
+  width: 100px;
+  height: 100px;
+}
+
+.clinica-menu .chakra-menu__menuitem {
+  position: relative;
+  transition: all 0.5s ease;
+  background-color: transparent;
+}
+
+.clinica-menu .chakra-menu__menuitem:hover {
+  color: #50b7a1;
+}
+
+.clinica-logo-section {
+  display: flex;
+  height: 80px;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.editar-dados-button {
+  position: absolute;
+  bottom: 0;
+  right: 60px;
+  margin-bottom: 180px;
+  margin-right: 30px;
+}

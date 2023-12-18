@@ -97,6 +97,7 @@ export const Historico = () => {
               <ModalContent w='100%'>
                 <ModalHeader>Informações do Paciente</ModalHeader>
                 <ModalCloseButton />
+
                 <ModalBody w='100%'>
                   <Box position='relative' padding='0.5rem 0'>
                     <Divider />

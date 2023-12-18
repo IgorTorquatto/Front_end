@@ -91,6 +91,10 @@ export const Pacientes = () => {
   const [loadingCadastro, setLoadingCadastro] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+  const [buttonEditColor, setButtonEditColor] = useState('white');
+  const [buttonInfoColor, setButtonInfoColor] = useState('white');
+
+async function loadPatients() {
   const [pageLoading, setPageLoading] = useState(true);
 
   async function loadPatients() {
@@ -243,6 +247,10 @@ export const Pacientes = () => {
     setSelectedState(selectedState);
   };
 
+  const changeButtonContent = (setFunction, mouseEvent) => {
+    mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3')
+}
+
   const states = [
     { label: 'Acre', value: 'AC' },
     { label: 'Alagoas', value: 'AL' },
@@ -274,11 +282,34 @@ export const Pacientes = () => {
   ];
 
   return (
-    <main>
+    <main style={{backgroundColor: '#F8F8FF'}}>
       <header><NavbarComp showEntrarButton={true} /></header>
-      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+{pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex> :
+      <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+        <Box display='flex' w='100%' >
+          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem' bg={'white'}>
+            <option value='nome'>Nome</option>
+            <option value='cpf'>CPF</option>
+          </Select>
+          <Input placeholder='Procurar paciente'  mr='0.5rem' onChange={searchPatient} bg={'white'}/>
+          <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
+        </Box>
+
+        <Box
+          w='80%'
+          h='80%'
+        >
+          {patients.map(paciente => (
+            <Box color='white' className='patientBox' py='0.5rem' px='1.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3B83C3'>
+              <Box display='flex' py='0.5rem' w='100%'>
+                <div id='patientInformations'>
+                  <div>
+                    <p>
+                      PACIENTE: 
+                    </p>
+      
         <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
           <Box display='flex' w='100%' >
             <Select onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem'>
@@ -320,6 +351,27 @@ export const Pacientes = () => {
                   </Button>
                 </Stack>
               </Box>
+            <Stack spacing={3}>
+              <Button 
+                leftIcon={<FaBars />} 
+                onClick={() => { openInfo(paciente) }} 
+                color={buttonInfoColor} variant='outline'
+                onMouseEnter={() => changeButtonContent(setButtonInfoColor, 'in')} 
+                onMouseLeave={() => changeButtonContent(setButtonInfoColor, 'out')} 
+              >
+                Informações
+              </Button>
+              <Button 
+                leftIcon={<CiEdit />} 
+                onClick={() => { openEdit(paciente) }} 
+                color={buttonEditColor} variant='outline'
+                onMouseEnter={() => changeButtonContent(setButtonEditColor, 'in')} 
+                onMouseLeave={() => changeButtonContent(setButtonEditColor, 'out')} 
+              >
+                Editar
+              </Button>
+            </Stack>
+            </Box>
 
             ))}
 

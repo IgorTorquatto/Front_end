@@ -1,4 +1,6 @@
-.historico-card-container{
+@import url('https://fonts.googleapis.com/css2?family=Hedvig+Letters+Sans&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+#historico-card-container{
     height: 100%;
     width: 100%;
     background-color: #3B83C3 !important;
@@ -18,7 +20,6 @@
 }
 
 .card-title-context{
-    background-color: #002F59;
     width: 100%;
     height: fit-content;
     display: flex;
@@ -26,6 +27,7 @@
     padding: 2px 20px;
     border-radius: 15px;
     margin-bottom: 10px;
+    border: 1px solid white; 
 }
 
 .historico-card-body{
@@ -77,4 +79,9 @@
     margin-right: 4px;
     height: 24px;
     width: 24px;
+}
+
+#historico-card-container span{
+    letter-spacing: 1px;
+    font-family: poppins;
 }
