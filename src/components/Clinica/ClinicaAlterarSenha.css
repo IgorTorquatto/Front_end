@@ -1,11 +1,7 @@
-.clinicaAlterarSenha-container {
-  height: 90vh;
-}
-
 .clinicaAlterarSenha-container h2 {
   margin-bottom: 40px;
-  margin-top: 4px;
-  font-size: 28px;
+  margin-top: 20px;
+  font-size: 25px;
   text-align: center;
 }
 
@@ -14,8 +10,8 @@
   bottom: 0;
   right: 30px;
   font-size: 14px;
-  margin-bottom: 20px;
-  margin-right: 30px;
+  margin-bottom: 200px;
+  margin-right: 80px;
 }
 
 .clinicaAlterarSenha-inputs {

@@ -8,6 +8,7 @@ import {
   FaMap,
   FaMapMarked,
   FaIdCard,
+  FaCog,
 } from "react-icons/fa";
 
 import { CiEdit } from "react-icons/ci";
@@ -137,6 +138,9 @@ export const ClinicaDados = () => {
         </Box>
 
       </Box>
+      <div className="btn-clinica-gerenciar">
+        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#007bff'}> Gerenciar</Button>
+      </div>
     </div>
   </>
   );
