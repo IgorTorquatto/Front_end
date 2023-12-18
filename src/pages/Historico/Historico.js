@@ -85,7 +85,7 @@ export const Historico = () => {
               <ModalHeader>Informações do Paciente</ModalHeader>
                 <ModalCloseButton />
                   <ModalBody>
-                    <Container display='flex' justifyContent='space-between'>
+                    <Container display='flex'>
                     <Box>
                     <Text>Name: {diagnostico?.paciente.pessoa.nome}</Text>
                     <Text>CPF: {diagnostico?.paciente.pessoa.cpf}</Text>
@@ -95,16 +95,6 @@ export const Historico = () => {
                     <Text>Número: {diagnostico?.paciente.numero}</Text>
                     <Text>Cidade: {diagnostico?.paciente.cidade}</Text>
                     </Box>
-                    <Box>
-                    <Text>Name: {diagnostico?.paciente.pessoa.nome}</Text>
-                    <Text>CPF: {diagnostico?.paciente.pessoa.cpf}</Text>
-                    <Text>Telefone: {diagnostico?.paciente.telefone}</Text>
-                    <Text>Rua: {diagnostico?.paciente.logradouro}</Text>
-                    <Text>Bairro: {diagnostico?.paciente.bairro}</Text>
-                    <Text>Número: {diagnostico?.paciente.numero}</Text>
-                    <Text>Cidade: {diagnostico?.paciente.cidade}</Text>
-                    </Box>
-
                     </Container>
                   
                   </ModalBody>
