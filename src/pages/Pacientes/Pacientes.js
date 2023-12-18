@@ -30,6 +30,7 @@ import {
   Flex
 } from '@chakra-ui/react'
 import { Container } from 'react-bootstrap';
+import { MyFooter } from '../../components/Footer/Footer'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -93,8 +94,6 @@ export const Pacientes = () => {
 
   const [buttonEditColor, setButtonEditColor] = useState('white');
   const [buttonInfoColor, setButtonInfoColor] = useState('white');
-
-async function loadPatients() {
   const [pageLoading, setPageLoading] = useState(true);
 
   async function loadPatients() {
@@ -249,7 +248,7 @@ async function loadPatients() {
 
   const changeButtonContent = (setFunction, mouseEvent) => {
     mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3')
-}
+  }
 
   const states = [
     { label: 'Acre', value: 'AC' },
@@ -282,41 +281,19 @@ async function loadPatients() {
   ];
 
   return (
-    <main style={{backgroundColor: '#F8F8FF'}}>
+    <main style={{ backgroundColor: '#F8F8FF' }}>
       <header><NavbarComp showEntrarButton={true} /></header>
-{pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
-      </Flex> :
-      <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
-        <Box display='flex' w='100%' >
-          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem' bg={'white'}>
-            <option value='nome'>Nome</option>
-            <option value='cpf'>CPF</option>
-          </Select>
-          <Input placeholder='Procurar paciente'  mr='0.5rem' onChange={searchPatient} bg={'white'}/>
-          <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
-        </Box>
-
-        <Box
-          w='80%'
-          h='80%'
-        >
-          {patients.map(paciente => (
-            <Box color='white' className='patientBox' py='0.5rem' px='1.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3B83C3'>
-              <Box display='flex' py='0.5rem' w='100%'>
-                <div id='patientInformations'>
-                  <div>
-                    <p>
-                      PACIENTE: 
-                    </p>
-      
-        <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+      </Flex>
+        :
+        <Box m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
           <Box display='flex' w='100%' >
-            <Select onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem'>
+            <Select onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem' bg={'white'}>
               <option value='nome'>Nome</option>
               <option value='cpf'>CPF</option>
             </Select>
-            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchPatient} />
+            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchPatient} bg={'white'} />
             <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
           </Box>
 
@@ -324,499 +301,493 @@ async function loadPatients() {
             w='80%'
             h='80%'
           >
-            {patients.map(paciente => (
-              <Box color='white' className='patientBox' padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
-                <Box display='flex' padding='0.5rem' w='100%'>
-                  <div id='patientInformations'>
-                    <div>
-                      <p>
-                        PACIENTE:
-                      </p>
-                      <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
-                    </div>
-                    <div>
-                      <p>
-                        CPF:
-                      </p>
-                      <span style={{ fontSize: 'larger' }}>{paciente.pessoa.cpf}</span>
-                    </div>
-                  </div>
-                </Box>
-                <Stack spacing={3}>
-                  <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
-                    Informações
-                  </Button>
-                  <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
-                    Editar
-                  </Button>
-                </Stack>
+
+            <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+
+              <Box
+                w='80%'
+                h='80%'
+              >
+                {patients.map(paciente => (
+                  <Box>
+                    <Box color='white' className='patientBox' padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
+                      <Box display='flex' padding='0.5rem' w='100%'>
+                        <div id='patientInformations'>
+                          <div>
+                            <p>
+                              PACIENTE:
+                            </p>
+                            <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
+                          </div>
+                          <div>
+                            <p>
+                              CPF:
+                            </p>
+                            <span style={{ fontSize: 'larger' }}>{paciente.pessoa.cpf}</span>
+                          </div>
+                        </div>
+                      </Box>
+                      <Stack spacing={3}>
+                        <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
+                          Informações
+                        </Button>
+                        <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
+                          Editar
+                        </Button>
+                      </Stack>
+                    </Box>
+                  </Box>
+
+                ))}
+
+
               </Box>
-            <Stack spacing={3}>
-              <Button 
-                leftIcon={<FaBars />} 
-                onClick={() => { openInfo(paciente) }} 
-                color={buttonInfoColor} variant='outline'
-                onMouseEnter={() => changeButtonContent(setButtonInfoColor, 'in')} 
-                onMouseLeave={() => changeButtonContent(setButtonInfoColor, 'out')} 
-              >
-                Informações
-              </Button>
-              <Button 
-                leftIcon={<CiEdit />} 
-                onClick={() => { openEdit(paciente) }} 
-                color={buttonEditColor} variant='outline'
-                onMouseEnter={() => changeButtonContent(setButtonEditColor, 'in')} 
-                onMouseLeave={() => changeButtonContent(setButtonEditColor, 'out')} 
-              >
-                Editar
-              </Button>
-            </Stack>
             </Box>
-
-            ))}
-
-
           </Box>
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Cadastrar Paciente</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
+        </Box>}
+      <Box>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Cadastrar Paciente</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
 
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputNome">Nome*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputNome"
-                      placeholder="Digite seu nome completo*"
-                      {...register("nome")}
-                    />
-                    <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.nome?.message}</p>
-                    </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputNome">Nome*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputNome"
+                    placeholder="Digite seu nome completo*"
+                    {...register("nome")}
+                  />
+                  <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.nome?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCPF">CPF*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCPF"
+                    placeholder="000.000.000-00"
+                    {...register("cpf")}
+                  />
+                  <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.cpf?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputData">Data de Nascimento*</label>
+                  <input
+                    type="date"
+                    className="form-control formcomp-input"
+                    id="FormControlInputData"
+                    placeholder="DD/MM/AAAA"
+                    {...register("data_nascimento")}
+                  />
+                  <div className={errors.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.data_nascimento?.message}</p>
                   </div>
 
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputCPF">CPF*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputCPF"
-                      placeholder="000.000.000-00"
-                      {...register("cpf")}
-                    />
-                    <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.cpf?.message}</p>
-                    </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputTel"> Telefone*</label>
+                  <input
+                    type="tel"
+                    className="form-control formcomp-input"
+                    id="FormControlInputTel"
+                    placeholder="(99) 9 9999-9999"
+                    pattern="[0-9]*"
+                    {...register("telefone")}
+                    title="Digite apenas números"
+                  />
+                  <div className={errors.telefone ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.telefone?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2">
+                  <label htmlFor="FormControlSexo">Sexo*</label>
+                  <select
+                    className="form-control formcomp-input"
+                    id="FormControlSexo"
+                    {...register("sexo")}
+                  >
+                    <option value="" disabled selected>
+                      Escolha um dos itens listados
+                    </option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                  </select>
+                  <div className={errors.sexo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.sexo?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputTipoSanguineo">Tipo sanguíneo*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputTipoSanguineo"
+                    placeholder="Ex: A+"
+                    {...register("tipo_sanguineo")}
+                  />
+                  <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.tipo_sanguineo?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputDetalhes">Detalhes clinicos</label>
+                  <Textarea
+                    resize='vertical'
+                    w='80%'
+                    height='5rem'
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputDetalhes"
+                    placeholder="Informações adicionais do paciente"
+                    {...register("detalhes_clinicos")}
+                  />
+                  <div className={errors.detalhes_clinicos ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.detalhes_clinicos?.message}</p>
                   </div>
 
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputData">Data de Nascimento*</label>
-                    <input
-                      type="date"
-                      className="form-control formcomp-input"
-                      id="FormControlInputData"
-                      placeholder="DD/MM/AAAA"
-                      {...register("data_nascimento")}
-                    />
-                    <div className={errors.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.data_nascimento?.message}</p>
-                    </div>
+                </div>
 
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputLogradouro">Logradouro*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputLogradouro"
+                    placeholder=""
+                    {...register("logradouro")}
+                  />
+                  <div className={errors.logradouro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.logradouro?.message}</p>
+                  </div>
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputBairro">Bairro*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputBairro"
+                    placeholder=""
+                    {...register("bairro")}
+                  />
+                  <div className={errors.bairro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.bairro?.message}</p>
+                  </div>
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCidade">Cidade*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCidade"
+                    placeholder=""
+                    {...register("cidade")}
+                  />
+                  <div className={errors.cidade ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.cidade?.message}</p>
+                  </div>
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputNumero">Numero*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputNumero"
+                    placeholder=""
+                    {...register("numero")}
+                  />
+                  <div className={errors.numero ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.numero?.message}</p>
+                  </div>
+                </div>
+                <div className="form-group mt-2">
+                  <label htmlFor="FormControlEstado">Estado*</label>
+                  <select
+                    className="form-control formcomp-input"
+                    id="FormControlEstado"
+                    {...register("estado")}
+                  >
+                    <option value="" disabled selected>
+                      Escolha um dos itens listados
+                    </option>
+                    {
+                      states.map((item) => (
+                        <option value={item.value}>{item.label}</option>
+                      ))
+                    }
+                  </select>
+                  <div className={errors.estado ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.estado?.message}</p>
+                  </div>
+                </div>
+                {/* <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" /> */}
+                <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} className="inputbtn btn btn-primary custom-btn" >Cadastrar</Button>
+              </form>
+            </ModalBody>
+
+          </ModalContent>
+        </Modal>
+
+        <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Editar Informações</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp">
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputNome">Nome</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputNome"
+                    placeholder="Digite seu nome completo"
+                    {...resgisterEdit("nome")}
+
+
+
+                  />
+                  <div className={errorsEdit.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.nome?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCPF">CPF</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCPF"
+                    placeholder="000.000.000-00"
+                    {...resgisterEdit("cpf")}
+                  />
+                  <div className={errorsEdit.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.cpf?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputData">Data de Nascimento</label>
+                  <input
+                    type="date"
+                    className="form-control formcomp-input"
+                    id="FormControlInputData"
+                    placeholder="Digite sua data de nascimento"
+                    {...resgisterEdit("data_nascimento")}
+                  />
+                  <div className={errorsEdit.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.data_nascimento?.message}</p>
                   </div>
 
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputTel"> Telefone*</label>
-                    <input
-                      type="tel"
-                      className="form-control formcomp-input"
-                      id="FormControlInputTel"
-                      placeholder="(99) 9 9999-9999"
-                      pattern="[0-9]*"
-                      {...register("telefone")}
-                      title="Digite apenas números"
-                    />
-                    <div className={errors.telefone ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.telefone?.message}</p>
-                    </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputTel"> Telefone</label>
+                  <input
+                    type="tel"
+                    className="form-control formcomp-input"
+                    id="FormControlInputTel"
+                    placeholder="(99) 9 9999-9999"
+                    pattern="[0-9]*"
+                    {...resgisterEdit("telefone")}
+                    title="Digite apenas números"
+                  />
+                  <div className={errorsEdit.telefone ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.telefone?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2">
+                  <label htmlFor="FormControlSexo">Sexo</label>
+                  <select
+                    className="form-control formcomp-input"
+                    id="FormControlSexo"
+                    {...resgisterEdit("sexo")}
+                  >
+                    <option value="" disabled selected>
+                      Escolha um dos itens listados
+                    </option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Feminino">Feminino</option>
+                  </select>
+                  <div className={errorsEdit.sexo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.sexo?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputTipoSanguineo">Tipo sanguíneo</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputTipoSanguineo"
+                    placeholder="Ex: A+"
+                    {...resgisterEdit("tipo_sanguineo")}
+                  />
+                  <div className={errorsEdit.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.tipo_sanguineo?.message}</p>
+                  </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputDetalhes">Detalhes clinicos</label>
+                  <Textarea
+                    resize='vertical'
+                    w='80%'
+                    height='5rem'
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputDetalhes"
+                    placeholder="Informe os detalhes aqui"
+                    {...resgisterEdit("detalhes_clinicos")}
+                  />
+                  <div className={errorsEdit.detalhes_clinicos ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.detalhes_clinicos?.message}</p>
                   </div>
 
-                  <div className="form-group mt-2">
-                    <label htmlFor="FormControlSexo">Sexo*</label>
-                    <select
-                      className="form-control formcomp-input"
-                      id="FormControlSexo"
-                      {...register("sexo")}
-                    >
-                      <option value="" disabled selected>
-                        Escolha um dos itens listados
-                      </option>
-                      <option value="Masculino">Masculino</option>
-                      <option value="Feminino">Feminino</option>
-                    </select>
-                    <div className={errors.sexo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.sexo?.message}</p>
-                    </div>
+                </div>
+
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputLogradouro">Logradouro</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputLogradouro"
+                    placeholder=""
+                    {...resgisterEdit("logradouro")}
+                  />
+                  <div className={errorsEdit.logradouro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.logradouro?.message}</p>
                   </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputTipoSanguineo">Tipo sanguíneo*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputTipoSanguineo"
-                      placeholder="Ex: A+"
-                      {...register("tipo_sanguineo")}
-                    />
-                    <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.tipo_sanguineo?.message}</p>
-                    </div>
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputBairro">Bairro</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputBairro"
+                    placeholder=""
+                    {...resgisterEdit("bairro")}
+                  />
+                  <div className={errorsEdit.bairro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.bairro?.message}</p>
                   </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputDetalhes">Detalhes clinicos</label>
-                    <Textarea
-                      resize='vertical'
-                      w='80%'
-                      height='5rem'
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputDetalhes"
-                      placeholder="Informações adicionais do paciente"
-                      {...register("detalhes_clinicos")}
-                    />
-                    <div className={errors.detalhes_clinicos ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.detalhes_clinicos?.message}</p>
-                    </div>
-
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCidade">Cidade</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCidade"
+                    placeholder=""
+                    {...resgisterEdit("cidade")}
+                  />
+                  <div className={errorsEdit.cidade ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.cidade?.message}</p>
                   </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputLogradouro">Logradouro*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputLogradouro"
-                      placeholder=""
-                      {...register("logradouro")}
-                    />
-                    <div className={errors.logradouro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.logradouro?.message}</p>
-                    </div>
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputNumero">Numero</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputNumero"
+                    placeholder=""
+                    {...resgisterEdit("numero")}
+                  />
+                  <div className={errorsEdit.numero ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.numero?.message}</p>
                   </div>
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputBairro">Bairro*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputBairro"
-                      placeholder=""
-                      {...register("bairro")}
-                    />
-                    <div className={errors.bairro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.bairro?.message}</p>
-                    </div>
+                </div>
+                <div className="form-group mt-2">
+                  <label htmlFor="FormControlEstado">Estado</label>
+                  <select
+                    className="form-control formcomp-input"
+                    id="FormControlEstado"
+                    {...resgisterEdit("estado")}
+                  >
+                    <option value="" disabled selected>
+                      Escolha um dos itens listados
+                    </option>
+                    {
+                      states.map((item) => (
+                        <option value={item.value}>{item.label}</option>
+                      ))
+                    }
+                  </select>
+                  <div className={errorsEdit.estado ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.estado?.message}</p>
                   </div>
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputCidade">Cidade*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputCidade"
-                      placeholder=""
-                      {...register("cidade")}
-                    />
-                    <div className={errors.cidade ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.cidade?.message}</p>
-                    </div>
-                  </div>
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputNumero">Numero*</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputNumero"
-                      placeholder=""
-                      {...register("numero")}
-                    />
-                    <div className={errors.numero ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.numero?.message}</p>
-                    </div>
-                  </div>
-                  <div className="form-group mt-2">
-                    <label htmlFor="FormControlEstado">Estado*</label>
-                    <select
-                      className="form-control formcomp-input"
-                      id="FormControlEstado"
-                      {...register("estado")}
-                    >
-                      <option value="" disabled selected>
-                        Escolha um dos itens listados
-                      </option>
-                      {
-                        states.map((item) => (
-                          <option value={item.value}>{item.label}</option>
-                        ))
-                      }
-                    </select>
-                    <div className={errors.estado ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errors.estado?.message}</p>
-                    </div>
-                  </div>
-                  {/* <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" /> */}
-                  <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} className="inputbtn btn btn-primary custom-btn" >Cadastrar</Button>
-                </form>
-              </ModalBody>
+                </div>
 
-            </ModalContent>
-          </Modal>
+                <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} mt='0.8rem' >Editar</Button>
 
-          <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Editar Informações</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp">
+              </form>
+            </ModalBody>
 
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputNome">Nome</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputNome"
-                      placeholder="Digite seu nome completo"
-                      {...resgisterEdit("nome")}
+          </ModalContent>
+        </Modal>
+        <Modal isOpen={isInfoOpen} onClose={closeInfo}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Informações do Paciente</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Name: {selectedPatient?.pessoa.nome}</Text>
+              <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
+              <Text>Telefone: {selectedPatient?.telefone}</Text>
+              <Text>Rua: {selectedPatient?.logradouro}</Text>
+              <Text>Bairro: {selectedPatient?.bairro}</Text>
+              <Text>Número: {selectedPatient?.numero}</Text>
+              <Text>Cidade: {selectedPatient?.cidade}</Text>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Box>
 
-
-
-                    />
-                    <div className={errorsEdit.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.nome?.message}</p>
-                    </div>
-                  </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputCPF">CPF</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputCPF"
-                      placeholder="000.000.000-00"
-                      {...resgisterEdit("cpf")}
-                    />
-                    <div className={errorsEdit.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.cpf?.message}</p>
-                    </div>
-                  </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputData">Data de Nascimento</label>
-                    <input
-                      type="date"
-                      className="form-control formcomp-input"
-                      id="FormControlInputData"
-                      placeholder="Digite sua data de nascimento"
-                      {...resgisterEdit("data_nascimento")}
-                    />
-                    <div className={errorsEdit.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.data_nascimento?.message}</p>
-                    </div>
-
-                  </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputTel"> Telefone</label>
-                    <input
-                      type="tel"
-                      className="form-control formcomp-input"
-                      id="FormControlInputTel"
-                      placeholder="(99) 9 9999-9999"
-                      pattern="[0-9]*"
-                      {...resgisterEdit("telefone")}
-                      title="Digite apenas números"
-                    />
-                    <div className={errorsEdit.telefone ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.telefone?.message}</p>
-                    </div>
-                  </div>
-
-                  <div className="form-group mt-2">
-                    <label htmlFor="FormControlSexo">Sexo</label>
-                    <select
-                      className="form-control formcomp-input"
-                      id="FormControlSexo"
-                      {...resgisterEdit("sexo")}
-                    >
-                      <option value="" disabled selected>
-                        Escolha um dos itens listados
-                      </option>
-                      <option value="Masculino">Masculino</option>
-                      <option value="Feminino">Feminino</option>
-                    </select>
-                    <div className={errorsEdit.sexo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.sexo?.message}</p>
-                    </div>
-                  </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputTipoSanguineo">Tipo sanguíneo</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputTipoSanguineo"
-                      placeholder="Ex: A+"
-                      {...resgisterEdit("tipo_sanguineo")}
-                    />
-                    <div className={errorsEdit.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.tipo_sanguineo?.message}</p>
-                    </div>
-                  </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputDetalhes">Detalhes clinicos</label>
-                    <Textarea
-                      resize='vertical'
-                      w='80%'
-                      height='5rem'
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputDetalhes"
-                      placeholder="Informe os detalhes aqui"
-                      {...resgisterEdit("detalhes_clinicos")}
-                    />
-                    <div className={errorsEdit.detalhes_clinicos ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.detalhes_clinicos?.message}</p>
-                    </div>
-
-                  </div>
-
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputLogradouro">Logradouro</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputLogradouro"
-                      placeholder=""
-                      {...resgisterEdit("logradouro")}
-                    />
-                    <div className={errorsEdit.logradouro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.logradouro?.message}</p>
-                    </div>
-                  </div>
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputBairro">Bairro</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputBairro"
-                      placeholder=""
-                      {...resgisterEdit("bairro")}
-                    />
-                    <div className={errorsEdit.bairro ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.bairro?.message}</p>
-                    </div>
-                  </div>
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputCidade">Cidade</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputCidade"
-                      placeholder=""
-                      {...resgisterEdit("cidade")}
-                    />
-                    <div className={errorsEdit.cidade ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.cidade?.message}</p>
-                    </div>
-                  </div>
-                  <div className="form-group mt-2 ">
-                    <label htmlFor="FormControlInputNumero">Numero</label>
-                    <input
-                      type="text"
-                      className="form-control formcomp-input"
-                      id="FormControlInputNumero"
-                      placeholder=""
-                      {...resgisterEdit("numero")}
-                    />
-                    <div className={errorsEdit.numero ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.numero?.message}</p>
-                    </div>
-                  </div>
-                  <div className="form-group mt-2">
-                    <label htmlFor="FormControlEstado">Estado</label>
-                    <select
-                      className="form-control formcomp-input"
-                      id="FormControlEstado"
-                      {...resgisterEdit("estado")}
-                    >
-                      <option value="" disabled selected>
-                        Escolha um dos itens listados
-                      </option>
-                      {
-                        states.map((item) => (
-                          <option value={item.value}>{item.label}</option>
-                        ))
-                      }
-                    </select>
-                    <div className={errorsEdit.estado ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-                      <AiOutlineInfoCircle />
-                      <p>{errorsEdit.estado?.message}</p>
-                    </div>
-                  </div>
-
-                  <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} mt='0.8rem' >Editar</Button>
-
-                </form>
-              </ModalBody>
-
-            </ModalContent>
-          </Modal>
-          <Modal isOpen={isInfoOpen} onClose={closeInfo}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Informações do Paciente</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Text>Name: {selectedPatient?.pessoa.nome}</Text>
-                <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
-                <Text>Telefone: {selectedPatient?.telefone}</Text>
-                <Text>Rua: {selectedPatient?.logradouro}</Text>
-                <Text>Bairro: {selectedPatient?.bairro}</Text>
-                <Text>Número: {selectedPatient?.numero}</Text>
-                <Text>Cidade: {selectedPatient?.cidade}</Text>
-              </ModalBody>
-            </ModalContent>
-          </Modal>
-        </Box>
-      }
-
+      <div>
+        <MyFooter />
+      </div>
 
 
     </main>
