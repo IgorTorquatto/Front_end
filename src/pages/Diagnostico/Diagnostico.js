@@ -524,7 +524,7 @@ export const Diagnostico = () => {
             <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
           </Box>
         </Box>
-
+      </Box>
       </Box>
      }
      
