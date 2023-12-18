@@ -297,20 +297,16 @@ export const Pacientes = () => {
             <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
           </Box>
 
-          <Box
-            w='80%'
-            h='80%'
-          >
+       
 
-            <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+            <Box m='2rem 0' w='100%' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
 
               <Box
                 w='80%'
                 h='80%'
               >
                 {patients.map(paciente => (
-                  <Box>
-                    <Box color='white' className='patientBox' padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
+                    <Box color='white' className='patientBox' padding='0.5rem' w='100%' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
                       <Box display='flex' padding='0.5rem' w='100%'>
                         <div id='patientInformations'>
                           <div>
@@ -336,7 +332,6 @@ export const Pacientes = () => {
                         </Button>
                       </Stack>
                     </Box>
-                  </Box>
 
                 ))}
 
@@ -344,7 +339,7 @@ export const Pacientes = () => {
               </Box>
             </Box>
           </Box>
-        </Box>}
+        }
       <Box>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
