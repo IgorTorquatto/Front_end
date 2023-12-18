@@ -6,10 +6,6 @@ import { useNavigate } from "react-router-dom";
 export const Login = () => {
   const navigate = useNavigate();
 
-  const navigateToPage = (path) => {
-    navigate(path);
-  };
-
   return (
     <>
       <div className="login-container">
@@ -19,7 +15,7 @@ export const Login = () => {
             <span
               className="login-faixa"
               onClick={() => {
-                navigateToPage("/");
+                navigate("/");
               }}
             >
               d.<span className="text-ia">IA</span>gnóstica

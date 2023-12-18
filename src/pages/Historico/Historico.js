@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { Box } from '@chakra-ui/react'
 import { MyFooter } from '../../components/Footer/Footer'
 import { HistoricoCard } from '../../components/Cards/HistoricoCard'
 import { useDispatch, useSelector } from 'react-redux';
 import { api } from '../../services/api.ts'
 import {
-  Input, 
+  Input,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -16,8 +15,16 @@ import {
   ModalCloseButton,
   useDisclosure,
   Text,
-  Container
+  Divider,
+  AbsoluteCenter,
+  Container,
+  Spinner,
+  Flex,
+  Box,
+  Select,
+  Button
 } from '@chakra-ui/react'
+import { GiSettingsKnobs } from "react-icons/gi";
 
 import './Historico.css'
 
@@ -28,12 +35,16 @@ export const Historico = () => {
   const [diagnosticosOnDisplay, setDiagnosticosOnDisplay] = useState([]);
   const [diagnosticos, setDiagnosticos] = useState([]);
   const [diagnostico, setDiagnostico] = useState(null);
+  const [searchBy, setSearchBy] = useState('nome');
 
   const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [pageLoading, setPageLoading] = useState(true);
 
   async function loadHistorico() {
     await api.get(`/diagnostico?id_medico=${user.data.id}`).then(({ data }) => {
       setDiagnosticos(data)
+      setDiagnosticosArray(data)
       console.log(data)
 
     }).catch(({ err }) => {
@@ -41,78 +52,134 @@ export const Historico = () => {
     })
   }
 
-  const searchOnHistory = (search) => {
-
-    var diagnosticos = diagnosticosArray.filter(item => {
-      var nome = item.nomePaciente.toLowerCase(), cpf = item.cpf.toLowerCase(), exameID = item.exameID.toLowerCase();
-      var searched = search.target.value.toLowerCase()
-      return nome.includes(searched) || cpf.includes(searched) || exameID.includes(searched)
-    })
-    setDiagnosticosOnDisplay(diagnosticos)
-  }
-
-  const handleModal = (diagnosticoSelecionado)=>{
+  const handleModal = (diagnosticoSelecionado) => {
     setDiagnostico(diagnosticoSelecionado)
     onOpen()
   }
 
   useEffect(() => {
-    loadHistorico()
+    loadHistorico().then(() => {
+      setPageLoading(false)
+    })
   }, [])
+
+  const searchHistory = (search) => {
+    console.log(search.target.value)
+    if (searchBy === 'nome') {
+      var diagnosticos = diagnosticosArray.filter(item => item.paciente.pessoa.nome.toLowerCase().includes(search.target.value.toLowerCase()))
+      setDiagnosticos(diagnosticos)
+    }
+    if (searchBy === 'cpf') {
+      var diagnosticos = diagnosticosArray.filter(item => item.paciente.pessoa.cpf.toLowerCase().includes(search.target.value.toLowerCase()))
+      setDiagnosticos(diagnosticos)
+    }
+  }
 
   return (
     <Box className='historico-container'>
-      <Box>
+      <header>
         <NavbarComp showEntrarButton={true} />
-      </Box>
-      <Box id='historico-body'>
-        <Box id='main-content'>
-          <Box id='hist-searchbar-context'>
-            <Box>
-
-            </Box>
-            <Input placeholder='Busque Por: Nome, CPF ou Número do Exame' mr='0.5rem' onChange={searchOnHistory} backgroundColor={'white'} />
-            {/*
-              <Box className='search-icon' cursor={'pointer'} onClick={() => window.alert("Botão de buscar clicado")}>
-                <LuSearch className='icone-lupa' />
-                <span className='search-text'>Buscar</span>
-              </Box>  
-              */}
+      </header>
+      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+        <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
+      </Flex> :
+        <Box id='historico-body'>
+          <Box id='main-content'>
+          <Box display='flex' w='90%' m='0.5rem 0'  >
+            <Select onChange={(e) => setSearchBy(e.target.value)} w='20%'  icon={<GiSettingsKnobs />} mr='1rem'>
+              <option value='nome'>Nome do paciente</option>
+              <option value='cpf'>CPF do paciente</option>
+            </Select>
+            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchHistory} />
           </Box>
-          <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Informações do Paciente</ModalHeader>
+            <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
+              <ModalOverlay />
+              <ModalContent w='100%'>
+                <ModalHeader>Informações do Paciente</ModalHeader>
                 <ModalCloseButton />
-                  <ModalBody>
-                    <Container display='flex'>
-                    <Box>
-                    <Text>Name: {diagnostico?.paciente.pessoa.nome}</Text>
-                    <Text>CPF: {diagnostico?.paciente.pessoa.cpf}</Text>
-                    <Text>Telefone: {diagnostico?.paciente.telefone}</Text>
-                    <Text>Rua: {diagnostico?.paciente.logradouro}</Text>
-                    <Text>Bairro: {diagnostico?.paciente.bairro}</Text>
-                    <Text>Número: {diagnostico?.paciente.numero}</Text>
-                    <Text>Cidade: {diagnostico?.paciente.cidade}</Text>
-                    </Box>
-                    </Container>
-                  
-                  </ModalBody>
-            </ModalContent>
-        </Modal>
-          <Box id='result-context'>
-            {
-              diagnosticos.map((user, index) => {
-                return (
-                  <Box className='historico-line' onClick={()=>handleModal(user)} key={index}>
-                    <HistoricoCard data={user} />
+
+                <ModalBody w='100%'>
+                  <Box position='relative' padding='0.5rem 0'>
+                    <Divider />
+                    <AbsoluteCenter fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
+                      Paciente
+                    </AbsoluteCenter>
                   </Box>
-                );
-              })
-            }
+                  <Flex borderRadius='1rem' padding='0 1rem' background='#3b83c3' height='5rem' justify='flex-start' alignItems='center' color='white' w='100%'>
+
+                    <Text fontWeight='bold' as='span'>Name: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.nome}</Text>
+                    <Text fontWeight='bold' as='span'>CPF: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.cpf}</Text>
+                    <Text fontWeight='bold' as='span'>Telefone: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.telefone}</Text>
+                    <Text fontWeight='bold' as='span'>Rua: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.logradouro}</Text>
+                    <Text fontWeight='bold' as='span'>Bairro: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.bairro}</Text>
+                    <Text fontWeight='bold' as='span'>Número:</Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.numero}</Text>
+                    <Text fontWeight='bold' as='span'>Cidade: </Text><Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.cidade}</Text>
+
+                  </Flex>
+                  <Box display='flex' flexDirection='column' w='100%' justifyContent='space-between'>
+
+                    <Box position='relative' padding='10'>
+                      <Divider />
+                      <AbsoluteCenter fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
+                        Modelo
+                      </AbsoluteCenter>
+                    </Box>
+                    <Flex borderRadius='1rem' padding='0 1rem' background='#3b83c3' height='100%' justify='flex-start' alignItems='center' color='white' w='100%'>
+                      <Box>
+                        <Text fontWeight='bold' >Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.modelo}</Text>
+                        <Text fontWeight='bold' >Resultado do Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
+                        <Text fontWeight='bold' >Resultado Real: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_real}</Text>
+                      </Box>
+
+                      <Flex w='100%' justify='center'>
+                        <Flex direction='column' alignItems='center' justifyContent='flex-start' padding='2rem 0' >
+                          <Text fontWeight='bold'>Raio X: </Text>
+                          {diagnostico?.raio_x && (
+                            <img
+                              src={diagnostico?.raio_x}
+                              alt="Uploaded"
+                              style={{ maxWidth: '60%', maxHeight: '300px' }}
+                            />
+                          )}
+                        </Flex>
+                        <Flex direction='column' alignItems='center' justifyContent='flex-start' >
+                          <Text fontWeight='bold'>Mapa de calor: </Text>
+                          {diagnostico?.mapa_calor && (
+                            <img
+                              src={diagnostico?.mapa_calor}
+                              alt="Uploaded"
+                              style={{ maxWidth: '100%', maxHeight: '300px' }}
+                            />
+                          )}
+                        </Flex>
+
+
+
+                      </Flex>
+                    </Flex>
+
+
+
+
+                  </Box>
+
+                </ModalBody>
+              </ModalContent>
+            </Modal>
+            <Box id='result-context'>
+              {
+                diagnosticos.map((user, index) => {
+                  return (
+                    <Box className='historico-line' onClick={() => handleModal(user)} key={index}>
+                      <HistoricoCard data={user} />
+                    </Box>
+                  );
+                })
+              }
+            </Box>
           </Box>
         </Box>
-      </Box>
+      }
       <Box>
         <MyFooter />
       </Box>
