@@ -307,7 +307,7 @@ export const Diagnostico = () => {
     doc.setFontSize(14);
     doc.setFont('helvetica', 'normal');
 
-    doc.addImage(DiagnosticaLogoBW, 'PNG', 30, 150, 150, 34)
+    doc.addImage(DiagnosticaLogoBW, 'PNG', 45, 140, 120, 72)
 
 
     // Para não deixar o texto escapar do PDF
