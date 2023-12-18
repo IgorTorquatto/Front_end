@@ -2,6 +2,7 @@ import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
+import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
 import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra } from '@chakra-ui/react'
 import Select from 'react-select';
@@ -278,13 +279,14 @@ export const Diagnostico = () => {
 
   const createPDF = async () => {
     const doc = new jsPDF();
-    doc.setFontSize(25);
-    doc.setFont('georgia', 'bold');
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
     doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
 
 
 
     doc.rect(15, 35, 180, 30);
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(14);
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
     doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 52);
@@ -303,7 +305,9 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'bold');
     doc.text(`Laudo Médico:`, 20, 100);
     doc.setFontSize(14);
-    doc.setFont('helvetica', 'italic');
+    doc.setFont('helvetica', 'normal');
+
+    doc.addImage(DiagnosticaLogoBW, 'PNG', 45, 140, 120, 72)
 
 
     // Para não deixar o texto escapar do PDF
@@ -324,17 +328,17 @@ export const Diagnostico = () => {
 
     doc.addPage();
 
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'italic');
-    doc.text('*O nível de ativação representa a região da imagem crucial para\n a classificação.', 20, 15);
-
-    doc.rect(15, 28, 180, 10)
+    doc.rect(15, 10, 180, 10)
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text("Mapa de Calor", 20, 35);
+    doc.text("Mapa de Calor", 20, 17);
 
-    doc.addImage(imageCam, 'JPEG', 40, 40, 135, 270);
+    doc.addImage(imageCam, 'JPEG', 40, 22, 135, 270);
+
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'italic');
+    doc.text('*O nível de ativação representa as regiões da imagem mais cruciais para a \nclassificação.', 20, 285);
 
     // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
@@ -468,7 +472,7 @@ export const Diagnostico = () => {
             <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
               justifyContent='left' alignItems='left' mt='1.5rem'>
               <Text justifySelf='center' style={{border: '2px solid black', padding: '8px', borderRadius: '4px'}}>
-                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
+                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% para {predictionLabel}
               </Text>
 
               {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
