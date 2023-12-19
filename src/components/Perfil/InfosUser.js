@@ -49,7 +49,7 @@ export const InfosUser = () => {
               </div>
               <div>
                 <FaRegIdCard />
-                <strong>CPF:</strong> {user.data.crm}
+                <strong>CPF:</strong> {user.data.pessoa.cpf}
               </div>
               <div>
                 <FaCalendarAlt />

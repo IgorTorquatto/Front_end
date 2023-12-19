@@ -84,11 +84,11 @@ export const FormLogin = () => {
           />
           <div
             className={
-              errors.email ? "showerror errorDiv" : "hideerror errorDiv"
+              errors.senha ? "showerror errorDiv" : "hideerror errorDiv"
             }
           >
             <AiOutlineInfoCircle />
-            <p>{errors.email?.message}</p>
+            <p>{errors.senha?.message}</p>
           </div>
         </div>
 
