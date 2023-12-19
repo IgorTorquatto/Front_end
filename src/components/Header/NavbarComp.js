@@ -128,7 +128,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
             >
               <Avatar
                 name={user.data.pessoa.nome}
-                src="https://bit.ly/broken-link"
+                src={user.data.foto_perfil}
               />
               <Menu>
                 <MenuButton
