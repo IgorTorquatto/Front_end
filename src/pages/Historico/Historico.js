@@ -27,6 +27,7 @@ import {
 import { GiSettingsKnobs } from "react-icons/gi";
 
 import './Historico.css'
+import dayjs from 'dayjs';
 
 export const Historico = () => {
   const { data: user } = useSelector((state) => state.tokens);
@@ -36,7 +37,10 @@ export const Historico = () => {
   const [diagnosticos, setDiagnosticos] = useState([]);
   const [diagnostico, setDiagnostico] = useState(null);
   const [searchBy, setSearchBy] = useState('nome');
-
+  const [search, setSearch] = useState('');
+  const [initDate, setInitDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [pageLoading, setPageLoading] = useState(true);
@@ -63,17 +67,44 @@ export const Historico = () => {
     })
   }, [])
 
-  const searchHistory = (search) => {
-    console.log(search.target.value)
-    if (searchBy === 'nome') {
-      var diagnosticos = diagnosticosArray.filter(item => item.paciente.pessoa.nome.toLowerCase().includes(search.target.value.toLowerCase()))
-      setDiagnosticos(diagnosticos)
+  useEffect(() => {
+    searchHistory()
+  }, [initDate, endDate,search])
+
+  const searchHistory = () => {
+    if(diagnosticosArray.length){
+      if (searchBy === 'nome') {
+        var diagnosticos = diagnosticosArray.filter(item => item.paciente.pessoa.nome.toLowerCase().includes(search.toLowerCase()))
+        setDiagnosticos(diagnosticos)
+      }
+      if (searchBy === 'cpf') {
+        var diagnosticos = diagnosticosArray.filter(item => item.paciente.pessoa.cpf.toLowerCase().includes(search.toLowerCase()))
+        setDiagnosticos(diagnosticos)
+      }
+  
+  
+      if (initDate != '' && endDate != '') {
+        const newDiagnostico = diagnosticosArray.filter(item => dayjs(item.data_hora).isAfter(dayjs(initDate)) )
+        const newDiagnostico_2 = newDiagnostico.filter(item => dayjs(endDate).isAfter(dayjs(item.data_hora)))
+        setDiagnosticos(newDiagnostico_2)
+      }else{
+        if (initDate != '') {
+          const newDiagnostico = diagnosticosArray.filter(item => dayjs(item.data_hora).isAfter(dayjs(initDate)) )
+          setDiagnosticos(newDiagnostico)
+        }
+        if (endDate != '') {
+          const newDiagnostico = diagnosticosArray.filter(item => dayjs(endDate).isAfter(dayjs(item.data_hora)))
+          setDiagnosticos(newDiagnostico)
+        }
+      }
+      
     }
-    if (searchBy === 'cpf') {
-      var diagnosticos = diagnosticosArray.filter(item => item.paciente.pessoa.cpf.toLowerCase().includes(search.target.value.toLowerCase()))
-      setDiagnosticos(diagnosticos)
-    }
+   
   }
+
+  
+
+    
 
   return (
     <Box className='historico-container'>
@@ -85,13 +116,15 @@ export const Historico = () => {
       </Flex> :
         <Box id='historico-body'>
           <Box id='main-content'>
-          <Box display='flex' w='90%' m='1.0rem 0rem' mt='1.5rem'>
-            <Select onChange={(e) => setSearchBy(e.target.value)} w='15%'  icon={<GiSettingsKnobs />} mr='1rem' bgColor={'white'} cursor={'pointer'}>
-              <option value='nome'>Nome</option>
-              <option value='cpf'>CPF</option>
-            </Select>
-            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchHistory} bgColor={'white'}/>
-          </Box>
+            <Box display='flex' w='90%' m='1.0rem 0rem' mt='1.5rem'>
+              <Select onChange={(e) => setSearchBy(e.target.value)} w='15%' icon={<GiSettingsKnobs />} mr='1rem' bgColor={'white'} cursor={'pointer'}>
+                <option value='nome'>Nome</option>
+                <option value='cpf'>CPF</option>
+              </Select>
+              <Input w='70%' placeholder='Procurar paciente' mr='0.5rem' onChange={(e)=>setSearch(e.target.value)} bgColor={'white'} />
+              <Input w='15%' type='date' onChange={(e) => setInitDate(e.target.value)} />
+              <Input w='15%' type='date' onChange={(e) => setEndDate(e.target.value)} />
+            </Box>
             <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
               <ModalOverlay />
               <ModalContent w='100%'>
