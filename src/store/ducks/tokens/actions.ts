@@ -1,10 +1,12 @@
 import { action } from 'typesafe-actions';
-import { TokenData, TokensTypes } from './types';
+import { TokenData, TokensTypes, User } from './types';
 
 type Inputs = {
     email: string,
     password: string,
 };
+
+export const editProfile = (data: User) => action(TokensTypes.EDIT_PROFILE, { data });
 
 export const loadSession = (data: Inputs) => action(TokensTypes.LOAD_SESSION, { data });
 

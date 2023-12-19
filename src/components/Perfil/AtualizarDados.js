@@ -1,8 +1,10 @@
 import React from "react";
-import { Menu, MenuItem } from "@chakra-ui/react";
+import { Menu, 
+  MenuItem
+ } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadLogout } from "../../store/ducks/tokens/actions.ts";
+import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
 import { MdOutlineExitToApp } from "react-icons/md";
 import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
@@ -35,14 +37,6 @@ export const AtualizarDados = () => {
         .required("Informe uma data de nascimento valida"),
       crm: yup.string().required("Informe um crm valido"),
       especialidade: yup.string().required("Informe uma especialidade valida"),
-      senha: yup
-        .string()
-        .min(8, "a senha deve conter 8 caracteres")
-        .required("Digite uma senha"),
-      confirmarSenha: yup
-        .string()
-        .required("Digite sua senha novamente")
-        .oneOf([yup.ref("senha")], "As senhas devem ser iguais"),
     })
     .required();
   const {
@@ -53,34 +47,30 @@ export const AtualizarDados = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (user) => {
+  const onSubmit = async (edit_user) => {
     const pessoa = {
-      cpf: user.cpf,
-      data_nascimento: user.data_nascimento,
-      nome: user.nome,
-      telefone: user.telefone,
+      cpf: edit_user.cpf,
+      data_nascimento: edit_user.data_nascimento,
+      nome: edit_user.nome,
+      telefone: edit_user.telefone,
       cargo: "Médico",
     };
-    await apiUnAuth
-      .post("/pessoa", pessoa)
+    console.log(edit_user)
+    await api
+      .put(`/pessoa/${user.data.id_pessoa}`, pessoa)
       .then(({ data }) => {
         const medico = {
           id_pessoa: data.data.id,
-          crm: user.crm,
-          especialidade: user.especialidade,
-          senha: user.senha,
-          email: user.email,
+          crm: edit_user.crm,
+          especialidade: edit_user.especialidade,
+          email: edit_user.email,
         };
 
-        apiUnAuth
-          .post("/medico", medico)
+        api
+          .put(`/medico/${user.data.id}`, medico)
           .then(({ data }) => {
-            const login = {
-              email: user.email,
-              senha: user.senha,
-            };
-            dispatch(loadSession(login));
-            history("/sobre");
+            dispatch(editProfile(data.data));
+            history("/perfil");
           })
           .catch(({}) => {});
       })
@@ -91,6 +81,7 @@ export const AtualizarDados = () => {
 
   return (
     <>
+    
       <div className="atualizarDados-container">
         <h2>Atualizar Dados</h2>
         <form
@@ -122,6 +113,7 @@ export const AtualizarDados = () => {
                   id="FormControlInputEmail"
                   {...register("email")}
                   placeholder="novoemail@email.com"
+                  defaultValue={user.data.email}
                 />
               </div>
 
@@ -133,6 +125,7 @@ export const AtualizarDados = () => {
                   id="FormControlInputCPF"
                   placeholder="Atualize o seu CPF"
                   {...register("cpf")}
+                  defaultValue={user.data.pessoa.cpf}
                 />
               </div>
 
@@ -144,6 +137,7 @@ export const AtualizarDados = () => {
                   id="FormControlInputCRM"
                   placeholder="Atualize o seu CRM"
                   {...register("crm")}
+                  defaultValue={user.data.crm}
                 />
               </div>
             </div>
@@ -159,6 +153,8 @@ export const AtualizarDados = () => {
                   id="FormControlInputData"
                   placeholder="Digite seu nome completo"
                   {...register("data_nascimento")}
+                  defaultValue={user.data.pessoa.data_nascimento}
+
                 />
               </div>
 
@@ -172,6 +168,7 @@ export const AtualizarDados = () => {
                   pattern="[0-9]*"
                   {...register("telefone")}
                   title="Digite apenas números"
+                  defaultValue={user.data.pessoa.telefone}
                 />
               </div>
 
@@ -181,6 +178,7 @@ export const AtualizarDados = () => {
                   className="form-control formcomp-input"
                   id="FormControlInputEsp"
                   {...register("especialidade")}
+                  defaultValue={user.data.especialidade}
                 >
                   <option value="" disabled selected>
                     Escolha um dos itens listados

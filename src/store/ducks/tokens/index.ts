@@ -3,7 +3,7 @@ import { TokenData, TokenState, TokensTypes, User } from './types';
 
 const INITIAL_STATE: TokenState = {
   data: {
-    user: {} as User,
+    data: {} as User,
     token: "",
     logged: false
   },
@@ -12,12 +12,14 @@ const INITIAL_STATE: TokenState = {
 };
 
 const error = {
-  user: {} as User,
+  data: {} as User,
   token: "",
   logged: false
 }
 const reducer: Reducer<TokenState> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case TokensTypes.EDIT_PROFILE:
+      return { ...state, loading: true };
     case TokensTypes.LOAD_SESSION:
       return { ...state, loading: true };
     case TokensTypes.LOAD_LOGOUT:
