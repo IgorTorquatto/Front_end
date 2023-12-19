@@ -85,12 +85,12 @@ export const Historico = () => {
       </Flex> :
         <Box id='historico-body'>
           <Box id='main-content'>
-          <Box display='flex' w='90%' m='0.5rem 0'  >
-            <Select onChange={(e) => setSearchBy(e.target.value)} w='20%'  icon={<GiSettingsKnobs />} mr='1rem'>
-              <option value='nome'>Nome do paciente</option>
-              <option value='cpf'>CPF do paciente</option>
+          <Box display='flex' w='90%' m='1.0rem 0rem' mt='1.5rem'>
+            <Select onChange={(e) => setSearchBy(e.target.value)} w='15%'  icon={<GiSettingsKnobs />} mr='1rem' bgColor={'white'} cursor={'pointer'}>
+              <option value='nome'>Nome</option>
+              <option value='cpf'>CPF</option>
             </Select>
-            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchHistory} />
+            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchHistory} bgColor={'white'}/>
           </Box>
             <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
               <ModalOverlay />

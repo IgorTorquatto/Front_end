@@ -31,6 +31,7 @@ import {
 } from '@chakra-ui/react'
 import { Container } from 'react-bootstrap';
 import { MyFooter } from '../../components/Footer/Footer'
+import PatientCard from '../../components/Cards/PatientCard';
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -306,35 +307,8 @@ export const Pacientes = () => {
                 h='80%'
               >
                 {patients.map(paciente => (
-                    <Box color='white' className='patientBox' padding='0.5rem' w='100%' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
-                      <Box display='flex' padding='0.5rem' w='100%'>
-                        <div id='patientInformations'>
-                          <div>
-                            <p>
-                              PACIENTE:
-                            </p>
-                            <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
-                          </div>
-                          <div>
-                            <p>
-                              CPF:
-                            </p>
-                            <span style={{ fontSize: 'larger' }}>{paciente.pessoa.cpf}</span>
-                          </div>
-                        </div>
-                      </Box>
-                      <Stack spacing={3}>
-                        <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
-                          Informações
-                        </Button>
-                        <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
-                          Editar
-                        </Button>
-                      </Stack>
-                    </Box>
-
+                  <PatientCard paciente={paciente} openEdit={openEdit} openInfo={openInfo} />
                 ))}
-
 
               </Box>
             </Box>

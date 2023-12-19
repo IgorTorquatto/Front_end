@@ -66,36 +66,3 @@
     align-items: center;
     height: 1.25rem;
 }
-
-.patientBox{
-    transition: all 200ms;
-}
-
-.patientBox:hover{
-    /* box-shadow:'0px 4px 4px 0px rgba(0, 0, 0, 0.25)'; */
-    transform: scale(1.05);
-    box-shadow: -13px 14px 30px 1px rgba(0,0,0,0.25);
-    -webkit-box-shadow: -13px 14px 30px 1px rgba(0,0,0,0.25);
-    -moz-box-shadow: -13px 14px 30px 1px rgba(0,0,0,0.25);
-}
-
-#patientInformations{
-    height: 100%;
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap:20px;
-}
-
-#patientInformations p{
-    margin-bottom: 0;
-    font-family: poppins;
-    font-weight:100;
-    font-size: small;
-}
-
-#patientInformations span{
-    letter-spacing: 1px;
-    font-family: poppins;
-}
