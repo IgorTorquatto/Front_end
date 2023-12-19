@@ -473,15 +473,6 @@ export const Diagnostico = () => {
               Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% de {predictionLabel}
             </Text>
 
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
-              justifyContent='left' alignItems='left' mt='1.5rem'>
-              <Text justifySelf='center' style={{border: '2px solid black', padding: '8px', borderRadius: '4px'}}>
-                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% para {predictionLabel}
-
-              </Text>
-              <Textarea style={{ border: '1px solid black' }} onChange={(e) => setObservacoes(e.target.value)} />
-
-            </Box>
 
               {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
               <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
@@ -510,13 +501,9 @@ export const Diagnostico = () => {
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
             </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o laudo com a previsão do modelo</Text>
-
-
-          </Box>
+            
           <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
+            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
 
           </Box>
           <Box display='flex' mt='2rem' justifyContent='space-around'>
