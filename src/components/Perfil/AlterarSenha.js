@@ -9,7 +9,7 @@ import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import "./AlterarSenha.css";
 
-export const AlterarSenha = () => {
+export const AlterarSenha = ({ onCancel }) => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -80,6 +80,9 @@ export const AlterarSenha = () => {
         // alert("Error ao cadastrar")
       });
   };
+  const handleCancel = () => {
+    onCancel();
+  };
 
   return (
     <>
@@ -139,7 +142,11 @@ export const AlterarSenha = () => {
             <button type="submit" className="btn-salvar">
               Atualizar dados
             </button>
-            <button type="button" className="btn-cancelar">
+            <button
+              type="button"
+              className="btn-cancelar"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
           </div>

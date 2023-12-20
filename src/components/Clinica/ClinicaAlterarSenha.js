@@ -2,7 +2,7 @@ import React from 'react'
 import './ClinicaAlterarSenha.css'
 
 export const ClinicaAlterarSenha = () => {
- 
+  
   return (
     <>
     <div className="clinicaAlterarSenha-container">
