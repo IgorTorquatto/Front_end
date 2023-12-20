@@ -10,9 +10,7 @@ import {
   FaIdCard,
   FaCog,
 } from "react-icons/fa";
-
 import { CiEdit } from "react-icons/ci";
-
 import { Box, Divider, Button } from "@chakra-ui/react";
 
 export const ClinicaDados = () => {

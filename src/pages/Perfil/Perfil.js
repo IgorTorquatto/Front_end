@@ -35,7 +35,10 @@ import { AlterarSenha } from "../../components/Perfil/AlterarSenha";
 import { InfosUser } from "../../components/Perfil/InfosUser";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { MdEdit } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+
 export const Perfil = () => {
+
   const { data: user } = useSelector((state) => state.tokens);
   const [navigationSection, setNavigationSection] = useState("info");
   const [editAvatarClassname, setEditAvatarClassname] =
@@ -363,10 +366,8 @@ export const Perfil = () => {
           {navigationSection === "info" && (
             <div className="infosuser">
               <InfosUser />
-              <div className="editar-dados-button">
-                <button onClick={handleEditData} className="btn-salvar">
-                  Editar Dados
-                </button>
+              <div className="btn-editar-dados">
+                <Button leftIcon={<CiEdit />} onClick={handleEditData} colorScheme="blue" bgColor={'#007bff'}> Editar Dados</Button>
               </div>
             </div>
           )}

@@ -92,7 +92,7 @@ export const AlterarSenha = ({ onCancel }) => {
           onSubmit={handleSubmit(onSubmit)}
           className="custom-formcomp mt-4"
         >
-          <div className="row">
+          <div className="row perfil-row">
             <div className="col-md-6 alterarSenha-inputs">
               <div className="form-group mt-2">
                 <label htmlFor="FormControlInputSenha">Senha:</label>

@@ -88,7 +88,7 @@ export const AtualizarDados = ({ onCancel }) => {
           onSubmit={handleSubmit(onSubmit)}
           className="custom-formcomp mt-4"
         >
-          <div className="row">
+          <div className="row perfil-row">
             <div className="col-md-6">
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputNome">Nome: </label>
