@@ -1,14 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-  FaUser,
-  FaEnvelope,
-  FaCalendarAlt,
-  FaPhone,
-  FaBriefcase,
-  FaBuilding,
-  FaRegIdCard
-} from "react-icons/fa";
+import {FaUser,FaEnvelope,FaCalendarAlt,FaPhone,FaBriefcase,FaBuilding,FaRegIdCard,FaIdCard} from "react-icons/fa";
 import "./InfosUser.css";
 
 export const InfosUser = () => {
@@ -44,7 +36,7 @@ export const InfosUser = () => {
           </div>
           <div className="column">
               <div>
-                <FaRegIdCard />
+                <FaIdCard />
                 <strong>CRM:</strong> {user.data.crm}
               </div>
               <div>
@@ -58,10 +50,6 @@ export const InfosUser = () => {
               <div>
                 <FaBuilding />
                 <strong>Clínica:</strong> {user.data.pessoa.clinica}
-              </div>
-              <div>
-                <FaBuilding />
-                <strong>Exemplo:</strong> {user.data.pessoa.clinica}
               </div>
           </div>
         </div>
