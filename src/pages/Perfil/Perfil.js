@@ -1,6 +1,7 @@
 import React from "react";
 import "./Perfil.css";
-import { Menu, 
+import {
+  Menu,
   MenuItem,
   Modal,
   ModalOverlay,
@@ -13,8 +14,8 @@ import { Menu,
   AvatarBadge,
   Text,
   Box,
-  Button
- } from "@chakra-ui/react";
+  Button,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
@@ -34,13 +35,17 @@ import { AlterarSenha } from "../../components/Perfil/AlterarSenha";
 import { InfosUser } from "../../components/Perfil/InfosUser";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { MdEdit } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
+
 export const Perfil = () => {
+
   const { data: user } = useSelector((state) => state.tokens);
   const [navigationSection, setNavigationSection] = useState("info");
-  const [editAvatarClassname, setEditAvatarClassname] = useState("editAvatarOff");
+  const [editAvatarClassname, setEditAvatarClassname] =
+    useState("editAvatarOff");
   const history = useNavigate();
   const dispatch = useDispatch();
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [showAtualizarDados, setShowAtualizarDados] = useState(false);
   const [showAlterarSenha, setShowAlterarSenha] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -154,23 +159,35 @@ export const Perfil = () => {
     attData();
   };
 
+  const handleAtualizarDadosCancel = () => {
+    setShowAtualizarDados(false); // Esconder o componente AtualizarDados
+    setNavigationSection("info"); // Mudar para a seção 'info' para renderizar InfosUser
+  };
+
+  const handleAlterarSenhaCancel = () => {
+    setShowAlterarSenha(false); // Esconder o componente AlterarSenha
+    setNavigationSection("info"); // Mudar para a seção 'info' para renderizar InfosUser
+  };
+
   async function submitLaudo() {
- 
     const medico = {
-      foto_perfil: uploadedImage
-    }
-    setIsLoading(true)
-    await api.put(`/medico/${user.data.id}`, medico).then(({ data }) => {
-      onClose()
-      dispatch(editProfile(data.data))
-      setIsLoading(false)
-    }).catch(({ err }) => {
-      console.log(err)
-    })
+      foto_perfil: uploadedImage,
+    };
+    setIsLoading(true);
+    await api
+      .put(`/medico/${user.data.id}`, medico)
+      .then(({ data }) => {
+        onClose();
+        dispatch(editProfile(data.data));
+        setIsLoading(false);
+      })
+      .catch(({ err }) => {
+        console.log(err);
+      });
   }
 
   const handleContainerClick = () => {
-    document.getElementById('file-input').click();
+    document.getElementById("file-input").click();
   };
 
   const handleDragEnter = (e) => {
@@ -188,7 +205,7 @@ export const Perfil = () => {
     setIsDragging(false);
 
     const file = e.dataTransfer.files[0];
-    setUploadedImageData(file)
+    setUploadedImageData(file);
 
     if (file) {
       const reader = new FileReader();
@@ -201,7 +218,7 @@ export const Perfil = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setUploadedImageData(file)
+    setUploadedImageData(file);
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -211,8 +228,8 @@ export const Perfil = () => {
 
         img.onload = () => {
           // Cria um canvas
-          const canvas = document.createElement('canvas');
-          const context = canvas.getContext('2d');
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
           canvas.width = img.width;
           canvas.height = img.height;
 
@@ -220,8 +237,7 @@ export const Perfil = () => {
           context.drawImage(img, 0, 0, img.width, img.height);
 
           // Converte o conteúdo do canvas para JPEG
-          const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.9);
-          
+          const jpegDataUrl = canvas.toDataURL("image/jpeg", 0.9);
 
           // Atualiza o estado com a imagem JPEG
           setUploadedImage(jpegDataUrl);
@@ -232,64 +248,65 @@ export const Perfil = () => {
   };
   return (
     <>
-    <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Editar Foto de Perfil</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody display='flex' justifyContent='center' flexDirection='column' alignItems='center'>
-            <Box
-            mt='2rem'
-            textAlign='center'
-            border={isDragging ? '2px solid #4CAF50' : '2px dashed #ccc'}
-            borderRadius='20px'
-            padding='20px'
-            cursor='pointer'
-            marginBottom='20px'
-            onClick={handleContainerClick}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            w='100%'
-            height='50vh'
-            display='flex'
-            alignItems='center'
-            justifyContent='center'
-            background='#F8F8F9'
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Editar Foto de Perfil</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody
+            display="flex"
+            justifyContent="center"
+            flexDirection="column"
+            alignItems="center"
           >
-            {!uploadedImage &&
-              <Box lineHeight='0.5rem'>
-                <p id='titleDragInput'>Clique para fazer o upload </p>
-                <p id='titleDragInput'>ou arraste sua imagem</p>
-              </Box>
-
-            }
-            <input
-              type="file"
-              id="file-input"
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
-
-
-            {uploadedImage && (
-              <img
-                src={uploadedImage}
-                alt="Uploaded"
-                style={{ maxWidth: '100%', maxHeight: '300px' }}
+            <Box
+              mt="2rem"
+              textAlign="center"
+              border={isDragging ? "2px solid #4CAF50" : "2px dashed #ccc"}
+              borderRadius="20px"
+              padding="20px"
+              cursor="pointer"
+              marginBottom="20px"
+              onClick={handleContainerClick}
+              onDragEnter={handleDragEnter}
+              onDragLeave={handleDragLeave}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={handleDrop}
+              w="100%"
+              height="50vh"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              background="#F8F8F9"
+            >
+              {!uploadedImage && (
+                <Box lineHeight="0.5rem">
+                  <p id="titleDragInput">Clique para fazer o upload </p>
+                  <p id="titleDragInput">ou arraste sua imagem</p>
+                </Box>
+              )}
+              <input
+                type="file"
+                id="file-input"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
               />
-            )}
 
+              {uploadedImage && (
+                <img
+                  src={uploadedImage}
+                  alt="Uploaded"
+                  style={{ maxWidth: "100%", maxHeight: "300px" }}
+                />
+              )}
+            </Box>
 
-
-          </Box>
-
-          <Button onClick={()=>submitLaudo()} colorScheme='blue' mb='1rem'>Editar Imagem de perfil</Button>
-            </ModalBody>
-
-          </ModalContent>
-        </Modal>
+            <Button onClick={() => submitLaudo()} colorScheme="blue" mb="1rem">
+              Editar Imagem de perfil
+            </Button>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <div className="perfil-container">
         <div className="perfil-menu">
           <Menu>
@@ -304,11 +321,26 @@ export const Perfil = () => {
                 src={user.data.foto_perfil}
                 size="lg"
               >
-                
-                <AvatarBadge background='white' className={editAvatarClassname} onClick={onOpen} onMouseEnter={()=>setEditAvatarClassname("editAvatarOn")}
-                onMouseLeave={()=>setEditAvatarClassname("editAvatarOff")} boxSize='1.25em'> 
-                {/* <EditIcon  /> */}
-                <MdEdit color='#0b2a45'/> {editAvatarClassname === "editAvatarOn" && <Text padding='0 1rem' mt='1rem' color='#0b2a45'   fontSize='0.85rem'>Editar</Text> }
+                <AvatarBadge
+                  background="white"
+                  className={editAvatarClassname}
+                  onClick={onOpen}
+                  onMouseEnter={() => setEditAvatarClassname("editAvatarOn")}
+                  onMouseLeave={() => setEditAvatarClassname("editAvatarOff")}
+                  boxSize="1.25em"
+                >
+                  {/* <EditIcon  /> */}
+                  <MdEdit color="#0b2a45" />{" "}
+                  {editAvatarClassname === "editAvatarOn" && (
+                    <Text
+                      padding="0 1rem"
+                      mt="1rem"
+                      color="#0b2a45"
+                      fontSize="0.85rem"
+                    >
+                      Editar
+                    </Text>
+                  )}
                 </AvatarBadge>
               </Avatar>
               <span>{user.data.pessoa.nome}</span>
@@ -334,13 +366,17 @@ export const Perfil = () => {
           {navigationSection === "info" && (
             <div className="infosuser">
               <InfosUser />
-              <div className="editar-dados-button">
-                <button onClick={handleEditData} className="btn-salvar">Editar Dados</button>
+              <div className="btn-editar-dados">
+                <Button leftIcon={<CiEdit />} onClick={handleEditData} colorScheme="blue" bgColor={'#007bff'}> Editar Dados</Button>
               </div>
             </div>
           )}
-          {showAtualizarDados && <AtualizarDados />}
-          {showAlterarSenha && <AlterarSenha />}
+          {showAtualizarDados && (
+            <AtualizarDados onCancel={handleAtualizarDadosCancel} />
+          )}
+          {showAlterarSenha && (
+            <AlterarSenha onCancel={handleAlterarSenhaCancel} />
+          )}
         </div>
       </div>
     </>
