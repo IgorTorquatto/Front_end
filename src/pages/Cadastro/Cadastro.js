@@ -1,6 +1,6 @@
 import React from 'react'
 import './Cadastro.css'
-import { FormCadastro } from '../../components/Forms/FormCadastro'
+import { FormCadastroClinica} from '../../components/Forms/FormCadastroClinica'
 import { useNavigate } from "react-router-dom";
 
 export const Cadastro = () => {
@@ -25,7 +25,7 @@ export const Cadastro = () => {
             
             <h2>Cadastro</h2>
             <div className="cadastro-form">
-              <FormCadastro />
+              <FormCadastroClinica />
             </div>
           </div>
         </div>

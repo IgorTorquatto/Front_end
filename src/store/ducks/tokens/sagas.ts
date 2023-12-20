@@ -37,7 +37,7 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
   try {
     const { data } = payload
     // var response = data as any
-    let response: TokenStateFromback = yield call(apiUnAuth.post, `/medico/login`, data)
+    let response: TokenStateFromback = yield call(apiUnAuth.post, `/login`, data)
     var user: TokenData = {
       ...response.data,
       logged: true
@@ -48,7 +48,12 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
     );
     yield put(loadSessionSucess(user));
     window.location.reload()
-    window.location.pathname = '/diagnostico'
+    if(response.data.data.email){
+      window.location.pathname = '/diagnostico'
+    }else{
+      window.location.pathname = '/clinica'
+
+    }
   } catch (err) {
     console.log(err)
     localStorage.removeItem(
