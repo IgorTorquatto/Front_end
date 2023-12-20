@@ -470,33 +470,27 @@ export const Diagnostico = () => {
           <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
             justifyContent='left' alignItems='left' mt='1.5rem'>
             <Text justifySelf='center' style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
-              Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% de {predictionLabel}
+              Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}
             </Text>
 
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
-              justifyContent='left' alignItems='left' mt='1.5rem'>
-              <Text justifySelf='center' style={{border: '2px solid black', padding: '8px', borderRadius: '4px'}}>
-                Classificação do modelo: {(Math.floor(prediction * 100) / 100)*100}% para {predictionLabel}
-
+            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
+              <Text fontWeight={'bold'} mt='1rem' mb='-0.2rem'>
+                A classificação do modelo está correta?
               </Text>
-              <Textarea style={{ border: '1px solid black' }} onChange={(e) => setObservacoes(e.target.value)} />
-
-            </Box>
+              <Stack direction='row' gap='30px' mb='1.0rem' mt='0.5rem'>
+                <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
+                <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
+              </Stack>
+            </RadioGroup>
 
               {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
               <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
                 <Text>
                   Descrição do laudo
                 </Text>
-                <Textarea style={{border: '1px solid black'}} onChange={(e) => setObservacoes(e.target.value)} />
+                <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
 
 
-            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
-              <Stack direction='row' gap='30px' mb='1.0rem'>
-                <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
-                <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
-              </Stack>
-            </RadioGroup>
 
             {resultLaudo == 2 && <Box><Text>Qual o diagnóstico correto?</Text>
               <SelectChakra onChange={(e) => setResultReal(e.target.value)}>
@@ -510,11 +504,7 @@ export const Diagnostico = () => {
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
             </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o laudo com a previsão do modelo</Text>
 
-
-          </Box>
           <Box display='flex' alignItems='center' mt='1rem'>
             <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
 
