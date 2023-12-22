@@ -120,16 +120,11 @@ export const Perfil = () => {
       });
   };
 
-  function LoggoutAccount() {
-    const confirmLogout = window.confirm(
-      "Você realmente quer se desconectar do site?"
-    );
-
-    if (confirmLogout) {
-      dispatch(loadLogout());
-      history("/");
-    } else {
-      window.location.reload();
+  function goBackHome() {
+    const confirmBack = window.confirm("Você realmente quer sair da página?");
+    if (confirmBack) {
+      // Redirecionar para a página Home.js 
+      history('/home'); 
     }
   }
 
@@ -263,7 +258,7 @@ export const Perfil = () => {
               mt="2rem"
               textAlign="center"
               border={isDragging ? "2px solid #4CAF50" : "2px dashed #ccc"}
-              borderRadius="20px"
+              borderRadius="50%"
               padding="20px"
               cursor="pointer"
               marginBottom="20px"
@@ -355,8 +350,8 @@ export const Perfil = () => {
                 Voltar
               </MenuItem>
               <hr></hr>
-              <MenuItem icon={<MdOutlineExitToApp />} onClick={LoggoutAccount}>
-                Sair da conta
+              <MenuItem icon={<MdOutlineExitToApp />} onClick={goBackHome}>
+                Sair 
               </MenuItem>
             </div>
           </Menu>
