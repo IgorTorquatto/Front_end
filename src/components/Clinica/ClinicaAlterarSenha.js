@@ -1,8 +1,12 @@
 import React from 'react'
 import './ClinicaAlterarSenha.css'
 
-export const ClinicaAlterarSenha = () => {
- 
+export const ClinicaAlterarSenha = ({ handleCancelar }) => {
+
+  function handleCancelarClick() {
+    handleCancelar();
+  }
+
   return (
     <>
     <div className="clinicaAlterarSenha-container">
@@ -40,7 +44,7 @@ export const ClinicaAlterarSenha = () => {
             <button type="submit" className="btn-salvar">
               Atualizar dados
             </button>
-            <button type="button" className="btn-cancelar">
+            <button type="button" className="btn-cancelar" onClick={handleCancelarClick}>
               Cancelar
             </button>
           </div>

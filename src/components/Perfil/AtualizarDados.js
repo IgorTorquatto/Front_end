@@ -1,7 +1,5 @@
 import React from "react";
-import { Menu, 
-  MenuItem
- } from "@chakra-ui/react";
+import { Menu, MenuItem } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
@@ -19,7 +17,7 @@ import { api, apiUnAuth } from "../../services/api.ts";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import "./AtualizarDados.css";
 
-export const AtualizarDados = () => {
+export const AtualizarDados = ({ onCancel }) => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -55,7 +53,7 @@ export const AtualizarDados = () => {
       telefone: edit_user.telefone,
       cargo: "Médico",
     };
-    console.log(edit_user)
+    console.log(edit_user);
     await api
       .put(`/pessoa/${user.data.id_pessoa}`, pessoa)
       .then(({ data }) => {
@@ -79,16 +77,18 @@ export const AtualizarDados = () => {
       });
   };
 
+  const handleCancel = () => {
+    onCancel();
+  };
   return (
     <>
-    
       <div className="atualizarDados-container">
         <h2>Atualizar Dados</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="custom-formcomp mt-4"
         >
-          <div className="row">
+          <div className="row perfil-row">
             <div className="col-md-6">
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputNome">Nome: </label>
@@ -154,7 +154,6 @@ export const AtualizarDados = () => {
                   placeholder="Digite seu nome completo"
                   {...register("data_nascimento")}
                   defaultValue={user.data.pessoa.data_nascimento}
-
                 />
               </div>
 
@@ -196,7 +195,11 @@ export const AtualizarDados = () => {
             <button type="submit" className="btn-salvar">
               Atualizar dados
             </button>
-            <button type="button" className="btn-cancelar">
+            <button
+              type="button"
+              className="btn-cancelar"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
           </div>

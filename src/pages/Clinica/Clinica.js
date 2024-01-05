@@ -21,13 +21,6 @@ export const Clinica = () => {
   console.log(user)
   const [componenteExibido, setComponenteExibido] = useState(<ClinicaDados />); // Define o componente exibido por padrão
 
-  function goBack() {
-    const confirmBack = window.confirm("Você realmente quer sair da página?");
-    if (confirmBack) {
-      history(-1); 
-    }
-  }
-
   //Functions
   function handleClick(item) {
     switch (item) {
@@ -52,6 +45,23 @@ export const Clinica = () => {
   function handleAvatarClick() {
     setComponenteExibido(<ClinicaDados />);
   }
+
+  function handleCancelar() {
+    setComponenteExibido(<ClinicaDados />);
+  }
+
+  function goBack() {
+    const confirmBack = window.confirm("Você realmente quer sair da página?");
+    if (confirmBack) {
+      // Redirecionar para a página Home.js 
+      history('/home'); 
+    }
+  }
+
+  function voltarParaClinicaDados() {
+    setComponenteExibido(<ClinicaDados/>);
+  }
+
 
   return (
     <>
@@ -109,7 +119,7 @@ export const Clinica = () => {
         </div>
 
         <div className="clinica-settings">
-          <div className="clinicaDados">{componenteExibido}</div>
+        <div className="clinicaDados">{React.cloneElement(componenteExibido, { voltarParaClinicaDados, handleCancelar })}</div>
         </div>
       </div>
     </>
