@@ -473,6 +473,7 @@ export const Diagnostico = () => {
               Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}
             </Text>
 
+
             <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
               <Text fontWeight={'bold'} mt='1rem' mb='-0.2rem'>
                 A classificação do modelo está correta?
@@ -482,6 +483,7 @@ export const Diagnostico = () => {
                 <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
               </Stack>
             </RadioGroup>
+
 
               {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
               <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
@@ -506,7 +508,7 @@ export const Diagnostico = () => {
             </Box>
 
           <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
+            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
 
           </Box>
           <Box display='flex' mt='2rem' justifyContent='space-around'>

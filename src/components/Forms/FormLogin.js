@@ -4,8 +4,8 @@ import "./FormLogin.css";
 
 import { useState } from "react";
 import {
- // AiOutlineEye,
- // AiOutlineEyeInvisible,
+  // AiOutlineEye,
+  // AiOutlineEyeInvisible,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
 import * as yup from "yup";
@@ -18,10 +18,9 @@ import { Button } from "@chakra-ui/react";
 
 const schema = yup
   .object({
-    email: yup
+    data: yup
       .string()
-      .email("Informe um email valido")
-      .required("Informe um email valido"),
+      .required("Informe um email ou cnpj valido"),
     senha: yup
       .string()
       .min(8, "a senha deve conter 8 caracteres")
@@ -45,31 +44,62 @@ export const FormLogin = () => {
 
   //const [showPassword, setShowPassword] = useState("password");
   //const [visible, setVisible] = useState(true);
+
+  function validarEmail(texto) {
+    // Padrão de expressão regular para verificar o formato de um e-mail
+    var padraoEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    // Testar se a string corresponde ao padrão de e-mail
+    return padraoEmail.test(texto);
+  }
+
   const onSubmit = async (user) => {
-    setOnLoading(true)
+
+    console.log(user)
+
+    // setOnLoading(true)
     try {
-      dispactch(loadSession(user))
-    } catch {}
+      if (validarEmail(user.data)) {
+        const login = {
+          email: user.data,
+          cnpj: null,
+          senha: user.senha
+        }
+    console.log(login)
+    dispactch(loadSession(login))
+      } else {
+        const login = {
+          email: null,
+          cnpj: user.data,
+          senha: user.senha
+        }
+    console.log(login)
+    dispactch(loadSession(login))
+      }
+    } catch { }
   };
+
+
+
   return (
     <>
       <form className="custom-formcomp" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-2 ">
-          <label htmlFor="exampleFormControl1">Endereço de email</label>
+          <label htmlFor="exampleFormControl1">Endereço de email ou cnpj</label>
           <input
-            type="email"
+            type="text"
             className="form-control formcomp-input"
             id="exampleFormControl1"
             placeholder="exemplo@email.com"
-            {...register("email")}
+            {...register("data")}
           />
           <div
             className={
-              errors.email ? "showerror errorDiv" : "hideerror errorDiv"
+              errors.data ? "showerror errorDiv" : "hideerror errorDiv"
             }
           >
             <AiOutlineInfoCircle />
-            <p>{errors.email?.message}</p>
+            <p>{errors.data?.message}</p>
           </div>
         </div>
 

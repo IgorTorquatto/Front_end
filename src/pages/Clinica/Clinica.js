@@ -11,10 +11,14 @@ import { ClinicaAlterarSenha } from "../../components/Clinica/ClinicaAlterarSenh
 import { CadastrarMedico } from "../../components/Clinica/CadastrarMedico";
 import { Estatisticas } from "../../components/Clinica/Estatisticas";
 import { GerenciarIA } from "../../components/Clinica/GerenciarIA";
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Clinica = () => {
   //Variables
   const history = useNavigate();
+  const { data: user } = useSelector((state) => state.tokens);
+
+  console.log(user)
   const [componenteExibido, setComponenteExibido] = useState(<ClinicaDados />); // Define o componente exibido por padrão
 
   //Functions
