@@ -1,5 +1,5 @@
 .clinica-container {
-  background-color:#F8F8FF;
+  background-color:#eef1f3;
   height: 110vh;
   display: flex;
   justify-content: space-between;
@@ -10,7 +10,7 @@
   width: 18%;
   background-color:  #0b2a45;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .clinica-settings {

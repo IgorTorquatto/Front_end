@@ -10,13 +10,13 @@ import {
   FaIdCard,
   FaCog,
 } from "react-icons/fa";
-
 import { CiEdit } from "react-icons/ci";
-
 import { Box, Divider, Button } from "@chakra-ui/react";
+
 import { api } from "../../services/api";
 import { useDispatch, useSelector } from "react-redux";
-
+import { ClinicaAlterarDados } from "./ClinicaAlterarDados";
+import { ClinicaGerenciarFuncionarios } from "./ClinicaGerenciarFuncionarios";
 export const ClinicaDados = () => {
   const { data: user } = useSelector((state) => state.tokens);
   const [funcionarios, setFuncionarios]  = useState([])
@@ -32,8 +32,35 @@ export const ClinicaDados = () => {
   },[])
 
 
+  const [isEditing, setIsEditing] = useState(false); 
+  const [isManaging, setIsManaging] = useState(false);
+
+
+
+  const voltarParaClinicaDados = () => {
+    setIsEditing(false); // Define o estado para false, voltando à renderização de ClinicaDados
+  };
+
+  const voltarParaClinicaDados2 = () => {
+    setIsManaging(false); // Define o estado para false, voltando à renderização de ClinicaDados
+  };
+
+  function handleEditClick() {
+    setIsEditing(true); // Quando o botão de editar for clicado, definir o estado para true
+  }
+
+  function handleGerenciarClick() {
+    setIsManaging(true); // Quando o botão de gerenciar for clicado, definir o estado para true
+  }
+
+
   return (
     <>
+     {isEditing ? ( // Se estiver em modo de edição, renderize o componente ClinicaAlterarDados
+        <ClinicaAlterarDados voltarParaClinicaDados={voltarParaClinicaDados}/>
+      ) : isManaging ? ( // Se estiver gerenciando funcionários, renderize o componente ClinicaGerenciarFuncionarios
+        <ClinicaGerenciarFuncionarios voltarParaClinicaDados2={voltarParaClinicaDados2}/>
+      ) : (
     <div className="clinicaDados-container">
       <div className="clinicaDados-section-top">
         <h2>Dados da Clínica</h2>
@@ -68,7 +95,7 @@ export const ClinicaDados = () => {
           </div>
         </div>
         <div className="btn-clinica-editar">
-          <Button leftIcon={<CiEdit />} colorScheme="blue" bgColor={'#007bff'}> Editar</Button>
+          <Button leftIcon={<CiEdit />} colorScheme="blue" bgColor={'#007bff'} onClick={handleEditClick}> Editar</Button>
         </div>
       </div>
 
@@ -105,9 +132,10 @@ export const ClinicaDados = () => {
 
       </Box>
       <div className="btn-clinica-gerenciar">
-        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#007bff'}> Gerenciar</Button>
+        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#007bff'} onClick={handleGerenciarClick}> Gerenciar</Button>
       </div>
     </div>
+    )}
   </>
   );
 };

@@ -22,10 +22,9 @@ export const Clinica = () => {
   function goBack() {
     const confirmBack = window.confirm("Você realmente quer sair da página?");
     if (confirmBack) {
-      history(-1); 
+      history('/home'); 
     }
   }
-
 
   return (
     <>
