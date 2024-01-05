@@ -42,8 +42,9 @@ export const FormCadastroClinica = () => {
     }
     await apiUnAuth.post('/clinica', clinica).then(({ data }) => {
       const login = {
+        email: null,
         cnpj: user.cnpj,
-        senha: user.senha,
+        senha: user.senha
       }
       dispactch(loadSession(login))
       history('/clinica')
@@ -82,7 +83,7 @@ export const FormCadastroClinica = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputNome"
-            placeholder="Digite seu nome completo"
+            placeholder="Digite o nome da sua clinica"
             {...register("nome")}
           />
           <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -98,7 +99,7 @@ export const FormCadastroClinica = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCPF"
-            placeholder="Digite seu nome completo"
+            placeholder="Digite o cnpj"
             {...register("cnpj")}
           />
           <div className={errors.cnpj ? 'showerror errorDiv' : 'hideerror errorDiv'}>

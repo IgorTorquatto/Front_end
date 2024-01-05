@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ClinicaDados.css";
 import { useState } from "react";
 import {
@@ -14,56 +14,22 @@ import {
 import { CiEdit } from "react-icons/ci";
 
 import { Box, Divider, Button } from "@chakra-ui/react";
+import { api } from "../../services/api";
+import { useDispatch, useSelector } from "react-redux";
 
 export const ClinicaDados = () => {
-  //funcionários:
-  const funcionarios = [
-    {
-      nome: "João Silva",
-      especialidade: "Pneumologia",
-      crm: "12345",
-    },
-    {
-      nome: "Maria Souza",
-      especialidade: "Pneumologia",
-      crm: "67890",
-    },
-    {
-      nome: "Pedro Oliveira",
-      especialidade: "Pneumologia",
-      crm: "24680",
-    },
-    {
-      nome: "Ana Santos",
-      especialidade: "Pneumologia",
-      crm: "13579",
-    },
-    {
-      nome: "Carlos Ferreira",
-      especialidade: "Pneumologia",
-      crm: "97531",
-    },
-    {
-      nome: "Lúcia Mendes",
-      especialidade: "Pneumologia",
-      crm: "86420",
-    },
-    {
-      nome: "Lúcia Mendes",
-      especialidade: "Pneumologia",
-      crm: "86420",
-    },
-    {
-      nome: "Lúcia Mendes",
-      especialidade: "Pneumologia",
-      crm: "86420",
-    },
-    {
-      nome: "Lúcia Mendes",
-      especialidade: "Pneumologia",
-      crm: "86420",
-    },
-  ];
+  const { data: user } = useSelector((state) => state.tokens);
+  const [funcionarios, setFuncionarios]  = useState([])
+
+   const loadFuncionarios = async ()=>{
+    await api.get(`/clinica/${user.data.id}`).then(({data})=>{
+      console.log(data)
+      setFuncionarios(data.data)
+    })
+  }
+  useEffect(()=>{
+    loadFuncionarios()
+  },[])
 
 
   return (
@@ -128,7 +94,7 @@ export const ClinicaDados = () => {
               {funcionarios.map((funcionario, index) => (
                 <tr key={index}>
                   <th scope="row">{index+1}</th>
-                  <td>{funcionario.nome}</td>
+                  <td>{funcionario.pessoa.nome}</td>
                   <td>{funcionario.especialidade}</td>
                   <td>{funcionario.crm}</td>
                 </tr>

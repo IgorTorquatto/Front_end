@@ -9,9 +9,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loadSession } from '../../store/ducks/tokens/actions.ts';
 import { api, apiUnAuth } from  '../../services/api.ts'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import { Button } from '@chakra-ui/react';
-
+import { useHistorico } from '../../hooks/useHistorico';
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -37,32 +37,29 @@ export const FormCadastro = () => {
   const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
-
-  const onSubmit = async (user) => {
+  const { data: user } = useSelector((state) => state.tokens);
+  const { handleHistorico } = useHistorico()
+  const onSubmit = async (novoMedico) => {
    
     const pessoa = {
-      cpf: user.cpf,
-      data_nascimento: user.data_nascimento,
-      nome: user.nome,
-      telefone: user.telefone,
+      cpf: novoMedico.cpf,
+      data_nascimento: novoMedico.data_nascimento,
+      nome: novoMedico.nome,
+      telefone: novoMedico.telefone,
       cargo: 'Médico',
     }
     await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
-        crm: user.crm,
-        especialidade: user.especialidade,
-        senha: user.senha,
-        email: user.email
+        crm: novoMedico.crm,
+        especialidade: novoMedico.especialidade,
+        senha: novoMedico.senha,
+        email: novoMedico.email
       }
 
-      apiUnAuth.post('/medico', medico).then(({ data }) => {
-        const login = {
-          email: user.email,
-          senha: user.senha
-        }
-        dispactch(loadSession(login))
-        history('/sobre')
+      apiUnAuth.post(`/clinica/${user.data.id}/medico`, medico).then(({ data }) => {
+       console.log(data)
+       handleHistorico(null)
       }).catch(({})=>{
 
       })
