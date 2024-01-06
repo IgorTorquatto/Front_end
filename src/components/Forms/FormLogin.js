@@ -55,8 +55,6 @@ export const FormLogin = () => {
 
   const onSubmit = async (user) => {
 
-    console.log(user)
-
     // setOnLoading(true)
     try {
       if (validarEmail(user.data)) {
@@ -65,7 +63,6 @@ export const FormLogin = () => {
           cnpj: null,
           senha: user.senha
         }
-    console.log(login)
     dispactch(loadSession(login))
       } else {
         const login = {
@@ -73,7 +70,6 @@ export const FormLogin = () => {
           cnpj: user.data,
           senha: user.senha
         }
-    console.log(login)
     dispactch(loadSession(login))
       }
     } catch { }
