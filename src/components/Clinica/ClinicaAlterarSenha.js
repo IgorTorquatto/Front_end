@@ -22,7 +22,7 @@ export const ClinicaAlterarSenha = ({ handleCancelar }) => {
                   type="password"
                   className="form-control formcomp-input"
                   id="FormControlInputSenha"
-                  placeholder="Informe  nova sua senha"
+                  placeholder="Informe sua nova senha"
                 />
               </div>
 

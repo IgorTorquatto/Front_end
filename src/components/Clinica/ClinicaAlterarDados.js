@@ -124,7 +124,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 type="text"
                 className="form-control formcomp-input"
                 id="FormControlInputEndereco"
-                placeholder="Insira o seu  endereço"
+                placeholder="Insira o CEP da clínica"
                 {...register("cep")}
                 defaultValue={user.data?.cep}
               />
@@ -144,7 +144,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputEndereco"
-                  placeholder="Insira o seu  endereço"
+                  placeholder="Insira o logradouro da clínica"
                   {...register("logradouro")}
                   defaultValue={user.data?.logradouro}
                 />
@@ -159,7 +159,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputEndereco"
-                  placeholder="Insira o seu  endereço"
+                  placeholder="Insira o nome do bairro da clínica"
                   {...register("bairro")}
                   defaultValue={user.data?.bairro}
                 />
@@ -174,7 +174,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputEndereco"
-                  placeholder="Insira o seu  endereço"
+                  placeholder="Insira o nome da cidade da clínica"
                   {...register("cidade")}
                   defaultValue={user.data?.cidade}
                 />
@@ -184,12 +184,12 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 </div>
               </div>
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEndereco">Numero:</label>
+                <label htmlFor="FormControlInputEndereco">Número:</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputEndereco"
-                  placeholder="Insira o seu  endereço"
+                  placeholder="Insira o número da clínica"
                   {...register("numero")}
                   defaultValue={user.data?.numero}
                 />
@@ -204,7 +204,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputEndereco"
-                  placeholder="Insira o seu  endereço"
+                  placeholder="Insira o nome do estado da clínica"
                   {...register("estado")}
                   defaultValue={user.data?.estado}
                 />
