@@ -78,12 +78,12 @@ export const FormCadastroClinica = () => {
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp mt-4">
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputNome">Nome</label>
+          <label htmlFor="FormControlInputNome">Nome: </label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputNome"
-            placeholder="Digite o nome da sua clinica"
+            placeholder="Digite o nome da sua clínica"
             {...register("nome")}
           />
           <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -94,12 +94,12 @@ export const FormCadastroClinica = () => {
 
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCPF">CNPJ</label>
+          <label htmlFor="FormControlInputCPF">CNPJ: </label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCPF"
-            placeholder="Digite o cnpj"
+            placeholder="Insira o CNPJ"
             {...register("cnpj")}
           />
           <div className={errors.cnpj ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -109,7 +109,7 @@ export const FormCadastroClinica = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputSenha">Senha</label>
+          <label htmlFor="FormControlInputSenha">Senha: </label>
           <input
             type="password"
             className="form-control formcomp-input"
@@ -124,7 +124,7 @@ export const FormCadastroClinica = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha</label>
+          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha: </label>
           <input
             type="password"
             className="form-control formcomp-input"
