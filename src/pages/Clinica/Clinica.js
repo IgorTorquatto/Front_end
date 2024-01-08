@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./Clinica.css";
-import { Menu, MenuItem } from "@chakra-ui/react";
+import { Menu, MenuItem, useDisclosure } from "@chakra-ui/react";
 import { MdOutlineExitToApp } from "react-icons/md";
 import { FaKey, FaUserMd, FaChartBar, FaRobot } from "react-icons/fa";
 import { Avatar } from "@chakra-ui/react";
@@ -9,10 +9,14 @@ import { useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistorico } from "../../hooks/useHistorico";
+import { loadLogout } from "../../store/ducks/tokens/actions";
+import { PerfilAvatar } from "../../components/PerfilAvatar/PerfilAvatar";
 
 export const Clinica = () => {
   //Variables
   const history = useNavigate();
+  const dispactch = useDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: user } = useSelector((state) => state.tokens);
   const {historico, handleHistorico } = useHistorico()
   console.log(historico)
@@ -22,7 +26,8 @@ export const Clinica = () => {
   function goBack() {
     const confirmBack = window.confirm("Você realmente quer sair da página?");
     if (confirmBack) {
-      history('/home'); 
+    dispactch(loadLogout());
+    history('/home'); 
     }
   }
 
@@ -36,12 +41,7 @@ export const Clinica = () => {
             </div>
             <hr />
             <div className="clinica-avatar" onClick={()=>handleHistorico(null)}>
-              <Avatar
-                className="clinica-avatar-custom"
-                src="https://bit.ly/broken-link"
-                size="lg"
-                marginBottom={'10px'}
-              />
+              <PerfilAvatar userType='clinca' />
               <span>Nome da Clínica</span>
             </div>
             <div className="clinica-menu-items">
