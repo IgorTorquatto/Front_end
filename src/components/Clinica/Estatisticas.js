@@ -1,4 +1,5 @@
 import React from 'react'
+import './Estatisticas.css'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,28 +11,31 @@ import {
   ArcElement,
   PointElement,
   LineElement,
+  RadialLinearScale,
+  Filler,
 } from 'chart.js';
-import { Bar, Pie, Line } from 'react-chartjs-2';
+import { Bar, Pie, Line, Radar } from 'react-chartjs-2';
 import {dataPacientes, optionsPacientes} from './estatisticaBarPacientes'
 import {dataClassificacao, optionsClassificacao} from './estatisticaPieClassificacao'
 import {dataDoenca, optionsDoenca} from './estatisticaLineDoencas'
-import './Estatisticas.css'
+import {dataModelo, optionsModelo} from './estatisticaRadarModelo'
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
+  ArcElement,
+  PointElement,
+  LineElement,
+  RadialLinearScale,
+  Filler,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
-ChartJS.register(ArcElement)
-ChartJS.register(PointElement)
-ChartJS.register(LineElement)
 
 export const Estatisticas = () => {
   return (
-
     <div class="container">
       <div class="tituloPagina">
         <h2>Dashboard</h2>
@@ -49,7 +53,9 @@ export const Estatisticas = () => {
       <div class="lineDoencas dashboard">
         <Line options={optionsDoenca} data={dataDoenca}/>
       </div>
-      <div class="info1 dashboard"></div>
+      <div class="info1 dashboard">
+        <Radar options={optionsModelo} data={dataModelo}/>
+      </div>
       <div class="info2 dashboard"></div>
     </div>
   )

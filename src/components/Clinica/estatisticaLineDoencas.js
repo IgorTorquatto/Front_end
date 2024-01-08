@@ -6,7 +6,7 @@ export const optionsDoenca = {
         },
         title: {
             display: true,
-            text: 'Classificações realizadas pelo modelo [nome]',
+            text: 'Diagnósticos de doenças realizados por médicos',
         },
     },
 };
