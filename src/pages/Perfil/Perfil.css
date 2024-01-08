@@ -83,20 +83,6 @@
   align-items: flex-end;
 }
 
-.editAvatarOff{
-  transition: all 200ms;
-}
-
-.editAvatarOn{
-  transition: all 200ms;
-  width: 10rem !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  vertical-align: center !important;
-  right: 10px !important;
-}
-
 .uploadBox {
   border-radius: 50%;
   border: 2px solid #4CAF50;
