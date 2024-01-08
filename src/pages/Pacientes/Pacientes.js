@@ -41,6 +41,7 @@ const schema = yup.object({
   sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
+  cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
   cidade: yup.string().required('Informe uma cidade valida'),
@@ -56,6 +57,7 @@ const schemaEdit = yup.object({
   sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
+  cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
   cidade: yup.string().required('Informe uma cidade valida'),
@@ -96,14 +98,21 @@ export const Pacientes = () => {
   const [buttonEditColor, setButtonEditColor] = useState('white');
   const [buttonInfoColor, setButtonInfoColor] = useState('white');
   const [pageLoading, setPageLoading] = useState(true);
+  const [clinica, setClinica] = useState(null);
 
   async function loadPatients() {
-    await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
+    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
 
     }).catch(({ err }) => {
       console.log(err)
+    })
+  }
+
+  const loadClinicas = async ()=>{
+    await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
+      console.log(data)
     })
   }
 
@@ -120,10 +129,16 @@ export const Pacientes = () => {
   }
 
   useEffect(() => {
-    loadPatients().then(() => {
+    loadClinicas().then(()=>{
       setPageLoading(false)
     })
   }, [])
+
+  useEffect(()=>{
+    if(clinica){
+      loadPatients()
+    }
+  },[clinica])
 
   useEffect(() => {
     if (patient) {
@@ -131,6 +146,7 @@ export const Pacientes = () => {
       setValue('cpf', patient.pessoa.cpf);
       setValue('estado', patient.estado);
       setValue('sexo', patient.sexo);
+      setValue('cep', patient.cep);
       setValue('logradouro', patient.logradouro);
       setValue('numero', patient.numero);
       setValue('tipo_sanguineo', patient.tipo_sanguineo);
@@ -180,7 +196,7 @@ export const Pacientes = () => {
     await api.post('/pessoa', pessoa).then(({ data }) => {
       const paciente = {
         id_pessoa: data.data.id,
-        id_medico: user.data.id,
+        id_clinica: user.data.id,
         sexo: novopaciente.sexo,
         tipo_sanguineo: novopaciente.tipo_sanguineo,
         detalhes_clinicos: novopaciente.detalhes_clinicos,
@@ -438,6 +454,20 @@ export const Pacientes = () => {
                   </div>
 
                 </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCEP">CEP*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCEP"
+                    placeholder=""
+                    {...register("cep")}
+                  />
+                  <div className={errors.cep ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.cep?.message}</p>
+                  </div>
+                </div>
 
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputLogradouro">Logradouro*</label>
@@ -649,6 +679,20 @@ export const Pacientes = () => {
                     <p>{errorsEdit.detalhes_clinicos?.message}</p>
                   </div>
 
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCEP">CEP*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCEP"
+                    placeholder=""
+                    {...register("cep")}
+                  />
+                  <div className={errors.cep ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.cep?.message}</p>
+                  </div>
                 </div>
 
                 <div className="form-group mt-2 ">

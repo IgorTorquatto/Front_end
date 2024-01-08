@@ -22,15 +22,18 @@ export const ClinicaDados = () => {
   const [funcionarios, setFuncionarios]  = useState([])
 
    const loadFuncionarios = async ()=>{
-    await api.get(`/clinica/${user.data.id}`).then(({data})=>{
+    await api.get(`/clinica/${user.data.id}/medico`).then(({data})=>{
       console.log(data)
       setFuncionarios(data.data)
+    }).catch((data)=>{
+      console.log(data)
     })
   }
+  
   useEffect(()=>{
     loadFuncionarios()
   },[])
-
+  
 
   const [isEditing, setIsEditing] = useState(false); 
   const [isManaging, setIsManaging] = useState(false);
@@ -69,28 +72,34 @@ export const ClinicaDados = () => {
             <div>
               <FaBuilding />
               <strong>Nome:</strong>
+              <span>{user.data.nome}</span>
             </div>
             <div>
               <FaEnvelope />
               <strong>Email:</strong>
+              <span>{user.data.email}</span>
             </div>
             <div>
               <FaPhone />
               <strong>Telefone:</strong>
+              <span>{user.data.telefone}</span>
             </div>
           </div>
           <div className="column">
             <div>
               <FaIdCard />
               <strong>CNPJ:</strong>
+              <span>{user.data.cnpj}</span>
             </div>
             <div>
               <FaMapMarked />
               <strong>CEP:</strong>
+              <span>{user.data.cep}</span>
             </div>
             <div>
               <FaMap />
-              <strong>Endereço:</strong>
+              <strong>Logradouro:</strong>
+              <span>{user.data.logradouro}</span>
             </div>
           </div>
         </div>

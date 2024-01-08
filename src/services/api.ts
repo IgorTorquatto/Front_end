@@ -15,7 +15,7 @@ export const api = axios.create({
 });
 
 const handleAuthenticationError = (error:any) => {
-  if (error.response.status === 401) {
+  if (error.response?.status === 401) {
     // Redirecionar para a página de login ou fazer outras ações de autenticação
     window.location.href = '/login';
   }
