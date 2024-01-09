@@ -81,7 +81,7 @@ export const FormLogin = () => {
     <>
       <form className="custom-formcomp" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-2 ">
-          <label htmlFor="exampleFormControl1">Endereço de email ou CNPJ: </label>
+          <label htmlFor="exampleFormControl1">Endereço de email ou CNPJ</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -100,7 +100,7 @@ export const FormLogin = () => {
         </div>
 
         <div className="form-group mt-3">
-          <label htmlFor="exampleFormControl2">Senha: </label>
+          <label htmlFor="exampleFormControl2">Senha</label>
           <input
             type="password"
             className="form-control formcomp-input"

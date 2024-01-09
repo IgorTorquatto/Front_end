@@ -91,7 +91,7 @@ export const AtualizarDados = ({ onCancel }) => {
           <div className="row perfil-row">
             <div className="col-md-6">
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputNome">Nome: </label>
+                <label htmlFor="FormControlInputNome">Nome</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -105,7 +105,7 @@ export const AtualizarDados = ({ onCancel }) => {
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputEmail">
                   {" "}
-                  Endereço de email:{" "}
+                  Endereço de email{" "}
                 </label>
                 <input
                   type="email"
@@ -118,7 +118,7 @@ export const AtualizarDados = ({ onCancel }) => {
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputCPF">CPF: </label>
+                <label htmlFor="FormControlInputCPF">CPF</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -130,7 +130,7 @@ export const AtualizarDados = ({ onCancel }) => {
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputCRM">CRM: </label>
+                <label htmlFor="FormControlInputCRM">CRM</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -145,7 +145,7 @@ export const AtualizarDados = ({ onCancel }) => {
             <div className="col-md-6">
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputData">
-                  Data de Nascimento:{" "}
+                  Data de nascimento{" "}
                 </label>
                 <input
                   type="date"
@@ -158,7 +158,7 @@ export const AtualizarDados = ({ onCancel }) => {
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputTel"> Telefone: </label>
+                <label htmlFor="FormControlInputTel">Telefone</label>
                 <input
                   type="tel"
                   className="form-control formcomp-input"
@@ -172,7 +172,7 @@ export const AtualizarDados = ({ onCancel }) => {
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEsp">Especialização: </label>
+                <label htmlFor="FormControlInputEsp">Especialização</label>
                 <select
                   className="form-control formcomp-input"
                   id="FormControlInputEsp"
