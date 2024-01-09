@@ -17,14 +17,14 @@ export const dataModelo = {
     labels,
     datasets: [
         {
-            label: 'diagnósticos',
+            label: 'Diagnósticos',
             data: [30, 24, 34, 13],
             backgroundColor: 'rgba(0, 131, 202, 0.7)',
             borderColor: 'rgba(0, 131, 202)',
             borderWidth: 1
         },
         {
-            label: 'classificações',
+            label: 'Classificações',
             data: [20, 32, 39, 10],
             backgroundColor: 'rgb(11, 42, 69, 0.7)',
             borderColor: 'rgb(11, 42, 69, 0.7)',

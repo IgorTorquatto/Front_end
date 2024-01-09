@@ -496,10 +496,10 @@ export const Diagnostico = () => {
 
             {resultLaudo == 2 && <Box><Text>Qual o diagnóstico correto?</Text>
               <SelectChakra onChange={(e) => setResultReal(e.target.value)}>
-                <option value={"PNEUMONIA"}>PNEUMONIA</option>
-                <option value={"TURBECULOSE"}>TURBECULOSE</option>
-                <option value={"COVID"}>COVID</option>
-                <option value={"NORMAL"}>NORMAL</option>
+                <option value={"PNEUMONIA"}>Pneumonia</option>
+                <option value={"TURBECULOSE"}>Tuberculose</option>
+                <option value={"COVID"}>COVID-19</option>
+                <option value={"NORMAL"}>Saudável</option>
               </SelectChakra></Box>}
             </Box>
             {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
@@ -509,12 +509,13 @@ export const Diagnostico = () => {
 
           <Box display='flex' alignItems='center' mt='1rem'>
             <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
-
           </Box>
+
           <Box display='flex' mt='2rem' justifyContent='space-around'>
-            <Button colorScheme='red' borderRadius='1rem' onClick={() => setPrediction(null)}>Revogar Laudo</Button>
+            <Button colorScheme='blue' borderRadius='1rem' onClick={() => setPrediction(null)}>Voltar</Button>
             <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
           </Box>
+          
         </Box>
       </Box>
       </Box>

@@ -12,6 +12,9 @@ import { api, apiUnAuth } from  '../../services/api.ts'
 import { useDispatch,useSelector } from 'react-redux';
 import { Button } from '@chakra-ui/react';
 import { useHistorico } from '../../hooks/useHistorico';
+import $ from 'jquery';
+import 'jquery-mask-plugin'
+
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -90,9 +93,15 @@ export const FormCadastro = () => {
     }
   }
 
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+  });
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
+
         <div className="form-group mt-2 ">
           <label htmlFor="FormControlInputNome">Nome: </label>
           <input
@@ -128,9 +137,10 @@ export const FormCadastro = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCPF"
-            placeholder="Insira o CPF do médico"
+            placeholder="Insira o CPF do médico (somente números)"
             {...register("cpf")}
           />
+
           <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.cpf?.message}</p>
@@ -173,7 +183,6 @@ export const FormCadastro = () => {
             className="form-control formcomp-input"
             id="FormControlInputTel"
             placeholder="(99) 9 9999-9999"
-            pattern="[0-9]*"
             {...register("telefone")}
             title="Digite apenas números"
           />

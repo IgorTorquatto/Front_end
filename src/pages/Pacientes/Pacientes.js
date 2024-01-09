@@ -32,6 +32,8 @@ import {
 import { Container } from 'react-bootstrap';
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
+import $ from 'jquery'
+import 'jquery-mask-plugin'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -297,6 +299,18 @@ export const Pacientes = () => {
     { label: 'Tocantins', value: 'TO' },
   ];
 
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCEP').mask('00000-000')
+    $('#FormControlInputTipoSanguineo').mask('AA0', {
+      translation: {
+        'A': { pattern: /[ABO]/ },
+        '0': { pattern: /[+-]/ }
+      }
+    })
+  })
+
   return (
     <main style={{ backgroundColor: '#F8F8FF' }}>
       <header><NavbarComp showEntrarButton={true} /></header>
@@ -392,7 +406,6 @@ export const Pacientes = () => {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...register("telefone")}
                     title="Digite apenas números"
                   />
@@ -427,7 +440,7 @@ export const Pacientes = () => {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Ex: A+"
+                    placeholder="Ex: AA+"
                     {...register("tipo_sanguineo")}
                   />
                   <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
