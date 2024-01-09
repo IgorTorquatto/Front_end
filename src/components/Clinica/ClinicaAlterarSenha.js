@@ -1,12 +1,12 @@
 import React from 'react'
 import './ClinicaAlterarSenha.css'
 
-export const ClinicaAlterarSenha = ({ handleCancelar }) => {
+export const ClinicaAlterarSenha = () => {
 
-  function handleCancelarClick() {
-    handleCancelar();
-  }
-
+  const handleCancelarClick = () => {
+    window.location.reload();
+  };
+ 
   return (
     <>
     <div className="clinicaAlterarSenha-container">
@@ -17,7 +17,7 @@ export const ClinicaAlterarSenha = ({ handleCancelar }) => {
           <div className="clinica-row">
             <div className="col-md-6 clinicaAlterarSenha-inputs">
               <div className="form-group mt-2">
-                <label htmlFor="FormControlInputSenha">Senha:</label>
+                <label htmlFor="FormControlInputSenha">Senha</label>
                 <input
                   type="password"
                   className="form-control formcomp-input"
@@ -28,7 +28,7 @@ export const ClinicaAlterarSenha = ({ handleCancelar }) => {
 
               <div className="form-group mt-5">
                 <label htmlFor="FormControlInputConfirmarSenha">
-                  Confirmar senha:
+                  Confirmar senha
                 </label>
                 <input
                   type="password"

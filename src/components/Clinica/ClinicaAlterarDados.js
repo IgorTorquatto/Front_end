@@ -51,7 +51,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
           <div className="row perfil-row">
             <div className="col-md-6">
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputNome">Nome: </label>
+                <label htmlFor="FormControlInputNome">Nome</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -86,7 +86,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputCNPJ">CNPJ: </label>
+                <label htmlFor="FormControlInputCNPJ">CNPJ</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -102,7 +102,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputTel"> Telefone: </label>
+                <label htmlFor="FormControlInputTel">Telefone</label>
                 <input
                   type="tel"
                   className="form-control formcomp-input"
@@ -119,7 +119,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 </div>
               </div>
               <div className="form-group mt-2 ">
-              <label htmlFor="FormControlInputEndereco">CEP:</label>
+              <label htmlFor="FormControlInputEndereco">CEP</label>
               <input
                 type="text"
                 className="form-control formcomp-input"
@@ -139,7 +139,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
             <div className="col-md-6">
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEndereco">Logradouro:</label>
+                <label htmlFor="FormControlInputEndereco">Logradouro</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -154,7 +154,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 </div>
               </div>
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEndereco">Bairro:</label>
+                <label htmlFor="FormControlInputEndereco">Bairro</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -169,7 +169,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 </div>
               </div>
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEndereco">Cidade:</label>
+                <label htmlFor="FormControlInputEndereco">Cidade</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -184,7 +184,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 </div>
               </div>
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEndereco">Número:</label>
+                <label htmlFor="FormControlInputEndereco">Número</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -199,7 +199,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                 </div>
               </div>
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEndereco">Estado:</label>
+                <label htmlFor="FormControlInputEndereco">Estado</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
