@@ -96,6 +96,7 @@ export const FormCadastro = () => {
   $(() => {
     $('#FormControlInputCPF').mask('000.000.000-00')
     $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCRM').mask('000000')
   });
 
   return (
