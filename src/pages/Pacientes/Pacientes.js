@@ -24,7 +24,7 @@ import {
   useDisclosure,
   Text,
   Input,
-  Select,
+  Select as ChakraSelect,
   Stack,
   Spinner,
   Flex
@@ -32,8 +32,7 @@ import {
 import { Container } from 'react-bootstrap';
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
-import $ from 'jquery'
-import 'jquery-mask-plugin'
+import Select from 'react-select';
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -101,6 +100,8 @@ export const Pacientes = () => {
   const [buttonInfoColor, setButtonInfoColor] = useState('white');
   const [pageLoading, setPageLoading] = useState(true);
   const [clinica, setClinica] = useState(null);
+  const [clinicas, setClinicas] = useState([]);
+  const [clinicasArray, setClinicasArray] = useState([]);
 
   async function loadPatients() {
     await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
@@ -115,7 +116,24 @@ export const Pacientes = () => {
   const loadClinicas = async ()=>{
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       console.log(data)
+      setClinicas(data.data)
+      const clinicasOptions= []
+      data.data.map(item=>{
+        const clinica = {
+          value: item.id,
+          label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
+        }
+        clinicasOptions.push(clinica)
+      })
+
+      setClinicasArray(clinicasOptions)
+      
     })
+  }
+
+  const handleClinica = (clinicaSelecionada) =>{
+    const clinicaFind = clinicas.find(clinica=> clinica.id === clinicaSelecionada.value)
+    setClinica(clinicaFind)
   }
 
   const searchPatient = (search) => {
@@ -138,7 +156,10 @@ export const Pacientes = () => {
 
   useEffect(()=>{
     if(clinica){
-      loadPatients()
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
     }
   },[clinica])
 
@@ -198,10 +219,11 @@ export const Pacientes = () => {
     await api.post('/pessoa', pessoa).then(({ data }) => {
       const paciente = {
         id_pessoa: data.data.id,
-        id_clinica: user.data.id,
+        id_clinica: clinica.id,
         sexo: novopaciente.sexo,
         tipo_sanguineo: novopaciente.tipo_sanguineo,
         detalhes_clinicos: novopaciente.detalhes_clinicos,
+        cep: novopaciente.cep,
         logradouro: novopaciente.logradouro,
         bairro: novopaciente.bairro,
         cidade: novopaciente.cidade,
@@ -299,18 +321,6 @@ export const Pacientes = () => {
     { label: 'Tocantins', value: 'TO' },
   ];
 
-  $(() => {
-    $('#FormControlInputCPF').mask('000.000.000-00')
-    $('#FormControlInputTel').mask('(00) 0 0000-0000')
-    $('#FormControlInputCEP').mask('00000-000')
-    $('#FormControlInputTipoSanguineo').mask('AA0', {
-      translation: {
-        'A': { pattern: /[ABO]/ },
-        '0': { pattern: /[+-]/ }
-      }
-    })
-  })
-
   return (
     <main style={{ backgroundColor: '#F8F8FF' }}>
       <header><NavbarComp showEntrarButton={true} /></header>
@@ -318,12 +328,26 @@ export const Pacientes = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex>
         :
+        !clinica ? 
+        <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
+          <Box w='80%'>
+          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
+            <Select
+            
+              value={clinica}
+              onChange={handleClinica}
+              options={clinicasArray}
+              isSearchable
+              placeholder="Digite para buscar..."
+            />
+          </Box>
+        </Box> : 
         <Box m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
-          <Box display='flex' w='100%' >
-            <Select onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem' bg={'white'}>
+          <Box display='flex' w='90%' >
+            <ChakraSelect onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem' bg={'white'}>
               <option value='nome'>Nome</option>
               <option value='cpf'>CPF</option>
-            </Select>
+            </ChakraSelect>
             <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchPatient} bg={'white'} />
             <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
           </Box>
@@ -342,7 +366,8 @@ export const Pacientes = () => {
 
               </Box>
             </Box>
-          </Box>
+          </Box> 
+          
         }
       <Box>
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -406,6 +431,7 @@ export const Pacientes = () => {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
+                    pattern="[0-9]*"
                     {...register("telefone")}
                     title="Digite apenas números"
                   />
@@ -440,7 +466,7 @@ export const Pacientes = () => {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Ex: AA+"
+                    placeholder="Ex: A+"
                     {...register("tipo_sanguineo")}
                   />
                   <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -694,17 +720,17 @@ export const Pacientes = () => {
 
                 </div>
                 <div className="form-group mt-2 ">
-                  <label htmlFor="FormControlInputCEP">CEP*</label>
+                  <label htmlFor="FormControlInputCEP">CEP</label>
                   <input
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputCEP"
                     placeholder=""
-                    {...register("cep")}
+                    {...resgisterEdit("cep")}
                   />
-                  <div className={errors.cep ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                  <div className={errorsEdit.cep ? 'showerror errorDiv' : 'hideerror errorDiv'}>
                     <AiOutlineInfoCircle />
-                    <p>{errors.cep?.message}</p>
+                    <p>{errorsEdit.cep?.message}</p>
                   </div>
                 </div>
 

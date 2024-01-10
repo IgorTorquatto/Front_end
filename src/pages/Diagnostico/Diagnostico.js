@@ -41,6 +41,10 @@ export const Diagnostico = () => {
 
   const [pageLoading, setPageLoading] = useState(true);
 
+  const [clinica, setClinica] = useState(null);
+  const [clinicas, setClinicas] = useState([]);
+  const [clinicasArray, setClinicasArray] = useState([]);
+
   const history = useNavigate()
 
   const { data: user } = useSelector((state) => state.tokens);
@@ -50,8 +54,31 @@ export const Diagnostico = () => {
     { value: '2', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
   ]
 
+  const loadClinicas = async ()=>{
+    await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
+      console.log(data)
+      setClinicas(data.data)
+      const clinicasOptions= []
+      data.data.map(item=>{
+        const clinica = {
+          value: item.id,
+          label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
+        }
+        clinicasOptions.push(clinica)
+      })
+
+      setClinicasArray(clinicasOptions)
+      
+    })
+  }
+
+  const handleClinica = (clinicaSelecionada) =>{
+    const clinicaFind = clinicas.find(clinica=> clinica.id === clinicaSelecionada.value)
+    setClinica(clinicaFind)
+  }
+
   async function loadPatients() {
-    await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
+    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
       console.log(data)
       const patientsValues = []
       setPatientsArray(data)
@@ -74,12 +101,22 @@ export const Diagnostico = () => {
 
   useEffect(() => {
     (async () => {
-      await loadPatients().then(() => {
+      await loadClinicas().then(() => {
         setPageLoading(false)
       })
     })()
   }, [])
 
+  useEffect(()=>{
+    if(clinica){
+      setPageLoading(true)
+      loadPatients().then(()=>{
+      setPageLoading(false)
+
+      })
+    }
+  },[clinica])
+  
   useEffect(() => {
     if (prediction != null) {
       createPDF()
@@ -360,9 +397,23 @@ export const Diagnostico = () => {
   return (
     <body style={{backgroundColor: '#F8F8FF'}}>
       <header><NavbarComp showEntrarButton={true} /></header>
-      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+      {pageLoading ?  <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
       <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
-        </Flex> :
+        </Flex> : 
+        !clinica ? 
+        <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
+          <Box w='80%'>
+          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
+            <Select
+            
+              value={clinica}
+              onChange={handleClinica}
+              options={clinicasArray}
+              isSearchable
+              placeholder="Digite para buscar..."
+            />
+          </Box>
+        </Box> :
         !prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
         <Box w='30%' padding='4rem 0'>
           <Box w='100%' >
