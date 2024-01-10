@@ -95,7 +95,7 @@ export const AlterarSenha = ({ onCancel }) => {
           <div className="row perfil-row">
             <div className="col-md-6 alterarSenha-inputs">
               <div className="form-group mt-2">
-                <label htmlFor="FormControlInputSenha">Senha:</label>
+                <label htmlFor="FormControlInputSenha">Senha</label>
                 <input
                   type="password"
                   className="form-control formcomp-input"
@@ -115,7 +115,7 @@ export const AlterarSenha = ({ onCancel }) => {
 
               <div className="form-group mt-5">
                 <label htmlFor="FormControlInputConfirmarSenha">
-                  Confirmar senha:
+                  Confirmar senha
                 </label>
                 <input
                   type="password"

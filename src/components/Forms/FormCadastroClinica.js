@@ -83,7 +83,7 @@ export const FormCadastroClinica = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputNome"
-            placeholder="Digite o nome da sua clinica"
+            placeholder="Digite o nome da sua clínica"
             {...register("nome")}
           />
           <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -99,7 +99,7 @@ export const FormCadastroClinica = () => {
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCPF"
-            placeholder="Digite o cnpj"
+            placeholder="Insira o CNPJ"
             {...register("cnpj")}
           />
           <div className={errors.cnpj ? 'showerror errorDiv' : 'hideerror errorDiv'}>

@@ -1,10 +1,10 @@
 .editAvatarOff{
-    transition: all 200ms;
+    transition: all 500ms;
   }
   
   .editAvatarOn{
-    transition: all 200ms;
-    width: 15rem !important;
+    transition: all 1s;
+    width: 12rem !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
