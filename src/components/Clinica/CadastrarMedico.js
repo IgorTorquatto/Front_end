@@ -1,11 +1,19 @@
 import { Box, Container } from '@chakra-ui/react'
 import React from 'react'
 import { FormCadastro } from '../Forms/FormCadastro'
+import './CadastrarMedico.css'
 
 export const CadastrarMedico = () => {
   return (
-    <Box  w='100%' height='100%'>
+  <>
+  <div className="cadastrarMedico-container">
+    <div className="cadastrarMedico-title">
+      <h2>Cadastrar Médico</h2>
+    </div>
+    <div className="cadastrarMedico-formulario">
       <FormCadastro/>
-    </Box>
+    </div>
+  </div>
+  </>
   )
 }

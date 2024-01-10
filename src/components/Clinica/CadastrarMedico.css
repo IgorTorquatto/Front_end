@@ -1,0 +1,16 @@
+.cadastrarMedico-container {
+  background-color: transparent;
+}
+
+.cadastrarMedico-title h2 {
+  margin-top: 20px;
+  margin-bottom:20px;
+  font-size: 25px;
+  text-align: center;
+}
+
+.cadastrarMedico-formulario{
+    margin: 0 auto;
+    width: 60%;
+    margin-bottom: 20px;
+}

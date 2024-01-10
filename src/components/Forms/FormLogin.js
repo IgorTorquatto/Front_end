@@ -81,12 +81,12 @@ export const FormLogin = () => {
     <>
       <form className="custom-formcomp" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-2 ">
-          <label htmlFor="exampleFormControl1">Endereço de email ou cnpj</label>
+          <label htmlFor="exampleFormControl1">Endereço de email ou CNPJ</label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="exampleFormControl1"
-            placeholder="exemplo@email.com"
+            placeholder="Insira o e-mail ou CNPJ"
             {...register("data")}
           />
           <div
