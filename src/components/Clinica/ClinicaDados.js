@@ -11,7 +11,7 @@ import {
   FaCog,
 } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
-import { Box, Divider, Button } from "@chakra-ui/react";
+import { Box, Divider, Button, Spinner, Flex } from "@chakra-ui/react";
 
 import { api } from "../../services/api";
 import { useDispatch, useSelector } from "react-redux";
@@ -117,6 +117,9 @@ export const ClinicaDados = () => {
         </Box>
 
         <Box w={'91%'} height={'42vh'} className="table-wrapper" maxHeight={'42vh'} px='0.5%'>
+        {funcionarios.length < 1 ? <Flex w='100%' justifyContent='center' alignItems='center' height='100%'>
+                <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
+              </Flex>  :
           <table className="table table-striped table-hover custom-table">
             <thead>
               <tr>
@@ -127,6 +130,7 @@ export const ClinicaDados = () => {
               </tr>
             </thead>
             <tbody id="clinica-medicos-tbody">
+              
               {funcionarios.map((funcionario, index) => (
                 <tr key={index}>
                   <th scope="row">{index+1}</th>
@@ -135,8 +139,9 @@ export const ClinicaDados = () => {
                   <td>{funcionario.crm}</td>
                 </tr>
               ))}
-            </tbody>
+              </tbody>
           </table>
+        }
         </Box>
 
       </Box>
