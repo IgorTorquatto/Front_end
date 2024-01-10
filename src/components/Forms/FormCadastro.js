@@ -254,11 +254,6 @@ export const FormCadastro = () => {
         >Cadastrar</Button>
       </form>
 
-      {/*<div className="form-cadastro-text mt-3">
-        <p className="cadastro-login-link">
-          Já possui conta? <Link to="/login">Entrar agora</Link>
-        </p>
-       </div>*/}
     </>
   );
 };
