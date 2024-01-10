@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Clinica.css";
 import { Menu, MenuItem, useDisclosure } from "@chakra-ui/react";
 import { MdOutlineExitToApp } from "react-icons/md";
@@ -31,6 +31,7 @@ export const Clinica = () => {
     }
   }
 
+
   return (
     <>
       <div className="clinica-container">
@@ -42,7 +43,7 @@ export const Clinica = () => {
             <hr />
             <div className="clinica-avatar" onClick={()=>handleHistorico(null)}>
               <PerfilAvatar userType='clinca' />
-              <span>Nome da Clínica</span>
+              <span>{user.data?.nome}</span>
             </div>
             <div className="clinica-menu-items">
               <hr />
