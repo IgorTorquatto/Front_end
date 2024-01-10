@@ -104,7 +104,7 @@ export const ClinicaDados = () => {
           </div>
         </div>
         <div className="btn-clinica-editar">
-          <Button leftIcon={<CiEdit />} colorScheme="blue" bgColor={'#007bff'} onClick={handleEditClick}> Editar</Button>
+          <Button leftIcon={<CiEdit />} colorScheme="blue" bgColor={'#0d6efd'} onClick={handleEditClick}> Editar</Button>
         </div>
       </div>
 
@@ -146,7 +146,7 @@ export const ClinicaDados = () => {
 
       </Box>
       <div className="btn-clinica-gerenciar">
-        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#007bff'} onClick={handleGerenciarClick}> Gerenciar</Button>
+        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#0d6efd'} onClick={handleGerenciarClick}> Gerenciar</Button>
       </div>
     </div>
     )}
