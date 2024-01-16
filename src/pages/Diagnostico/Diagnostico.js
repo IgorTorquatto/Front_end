@@ -4,7 +4,7 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 import './Diagnostico.css';
 import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
+import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -55,11 +55,9 @@ export const Diagnostico = () => {
 
   const loadClinicas = async () => {
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
-      console.log(data)
-      console.log(user.data.id)
       setClinicas(data.data)
       const clinicasOptions= []
-      data.data.map(item=>{
+      data.data.map(item => {
         const clinica = {
           value: item.id,
           label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
@@ -68,7 +66,6 @@ export const Diagnostico = () => {
       })
 
       setClinicasArray(clinicasOptions)
-      
     })
   }
 
@@ -79,7 +76,6 @@ export const Diagnostico = () => {
 
   async function loadPatients() {
     await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
-      console.log(data)
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
@@ -120,7 +116,6 @@ export const Diagnostico = () => {
   useEffect(() => {
     if (prediction != null) {
       createPDF()
-
     }
   }, [prediction, observacoes])
 
@@ -240,7 +235,6 @@ export const Diagnostico = () => {
     if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0)
     {
       setobsState(false)
-      console.log("Sem descrição");
       return
     } else{
       setobsState(true)
@@ -261,10 +255,7 @@ export const Diagnostico = () => {
       resultado_real: resultLaudo == "1" ? predictionLabel : resultReal
     }
 
-    console.log(diagnostico)
-
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
-      console.log(data)
       downloadPDF(data.data.laudo_medico)
       history('/historico')
     }).catch(({ err }) => {
@@ -307,8 +298,8 @@ export const Diagnostico = () => {
   const handlePatient = (patient) => {
     setSelectedPatient(patient)
     setPatient(patientsArray.find(item => item.id === patient.value))
-
   }
+
   function calcularIdade(dataNascimento) {
     var dataAtual = new Date();
     var dataNasc = new Date(dataNascimento);
@@ -544,7 +535,6 @@ export const Diagnostico = () => {
             </RadioGroup>
 
 
-              {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
               <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
                 <Text mb='-0.05rem'>
                   Descrição do laudo
@@ -552,6 +542,7 @@ export const Diagnostico = () => {
                 <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
 
             </Box>
+              {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
             {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>

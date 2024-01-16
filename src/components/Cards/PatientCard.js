@@ -12,6 +12,21 @@ const PatientCard = ({ paciente, openInfo, openEdit }) => {
     mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3');
   };
 
+  const cpf_mask = (cpf) => {
+    let mask_cpf = ''
+    if (cpf.length == 11)
+    {
+        mask_cpf += cpf.slice(0, 3)
+        mask_cpf += '.'
+        mask_cpf += cpf.slice(3, 6)
+        mask_cpf += '.'
+        mask_cpf += cpf.slice(6, 9)
+        mask_cpf += '-'
+        mask_cpf += cpf.slice(9, 11)
+    }
+    return mask_cpf
+}
+
   return (
     <Box
       color='white'
@@ -29,12 +44,12 @@ const PatientCard = ({ paciente, openInfo, openEdit }) => {
       <Box display='flex' py='0.5rem' pr='0.5rem' w='100%'>
         <div id='patientInformations'>
           <div>
-            <p>PACIENTE:</p>
+            <p>Paciente:</p>
             <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
           </div>
           <div>
             <p>CPF:</p>
-            <span style={{ fontSize: 'larger' }}>{paciente.pessoa.cpf}</span>
+            <span style={{ fontSize: 'larger' }}>{cpf_mask(paciente.pessoa.cpf)}</span>
           </div>
         </div>
       </Box>

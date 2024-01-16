@@ -60,19 +60,6 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
             <Nav className="center-nav-links">
               <Nav.Link
                 as={Link}
-                to={"/sobre"}
-                className={location.pathname.includes("/sobre") ? "active" : ""}
-              >
-                <div
-                  className={
-                    location.pathname.includes("/sobre") ? "active" : ""
-                  }
-                >
-                  Sobre Nós
-                </div>
-              </Nav.Link>
-              <Nav.Link
-                as={Link}
                 to={"/diagnostico"}
                 className={
                   location.pathname.includes("/diagnostico") ? "active" : ""
@@ -114,6 +101,20 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   }
                 >
                   Pacientes
+                </div>
+              </Nav.Link>
+
+              <Nav.Link
+                as={Link}
+                to={"/sobre"}
+                className={location.pathname.includes("/sobre") ? "active" : ""}
+              >
+                <div
+                  className={
+                    location.pathname.includes("/sobre") ? "active" : ""
+                  }
+                >
+                  Sobre Nós
                 </div>
               </Nav.Link>
             </Nav>
