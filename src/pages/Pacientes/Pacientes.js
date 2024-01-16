@@ -5,8 +5,6 @@ import './Pacientes.css'
 
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
-import { CiEdit } from "react-icons/ci";
-import { FaBars } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -25,14 +23,14 @@ import {
   Text,
   Input,
   Select as ChakraSelect,
-  Stack,
   Spinner,
   Flex
 } from '@chakra-ui/react'
-import { Container } from 'react-bootstrap';
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
 import Select from 'react-select';
+import $ from 'jquery'
+import 'jquery-mask-plugin'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
@@ -207,6 +205,18 @@ export const Pacientes = () => {
 
   const onSubmit = async (novopaciente) => {
 
+    novopaciente.cpf = novopaciente.cpf.replaceAll('-', '')
+    novopaciente.cpf = novopaciente.cpf.replaceAll('.', '')
+
+    novopaciente.telefone = novopaciente.telefone.replaceAll('(', '')
+    novopaciente.telefone = novopaciente.telefone.replaceAll(')', '')
+    novopaciente.telefone = novopaciente.telefone.replaceAll('-', '')
+    novopaciente.telefone = novopaciente.telefone.replaceAll(' ', '')
+
+    novopaciente.cep = novopaciente.cep.replaceAll('-', '')
+
+    novopaciente.tipo_sanguineo = novopaciente.tipo_sanguineo.toUpperCase()
+
     const pessoa = {
       cpf: novopaciente.cpf,
       data_nascimento: novopaciente.data_nascimento,
@@ -246,6 +256,20 @@ export const Pacientes = () => {
     // history('/diagnostico')
   };
   const onSubmitEdit = async (editpaciente) => {
+
+    editpaciente.cpf = editpaciente.cpf.replaceAll('-', '')
+    editpaciente.cpf = editpaciente.cpf.replaceAll('.', '')
+
+    editpaciente.telefone = editpaciente.telefone.replaceAll('(', '')
+    editpaciente.telefone = editpaciente.telefone.replaceAll(')', '')
+    editpaciente.telefone = editpaciente.telefone.replaceAll('-', '')
+    editpaciente.telefone = editpaciente.telefone.replaceAll(' ', '')
+
+    editpaciente.cep = editpaciente.cep.replaceAll('-', '')
+
+    editpaciente.tipo_sanguineo = editpaciente.tipo_sanguineo.toUpperCase()
+
+    console.log(editpaciente.cpf)
 
     const pessoa = {
       cpf: editpaciente.cpf,
@@ -320,6 +344,18 @@ export const Pacientes = () => {
     { label: 'Sergipe', value: 'SE' },
     { label: 'Tocantins', value: 'TO' },
   ];
+
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCEP').mask('00000-000')
+    $('#FormControlInputTipoSanguineo').mask('AA0', {
+      translation: {
+        'A': { pattern: /[ABOabo]/ },
+        '0': { pattern: /[+-]/ }
+      }
+    })
+  })
 
   return (
     <main style={{ backgroundColor: '#F8F8FF' }}>
@@ -431,7 +467,6 @@ export const Pacientes = () => {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...register("telefone")}
                     title="Digite apenas números"
                   />
@@ -466,7 +501,7 @@ export const Pacientes = () => {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Ex: A+"
+                    placeholder="Ex: AA+"
                     {...register("tipo_sanguineo")}
                   />
                   <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -553,7 +588,7 @@ export const Pacientes = () => {
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNumero">Numero*</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control formcomp-input"
                     id="FormControlInputNumero"
                     placeholder=""
@@ -593,13 +628,13 @@ export const Pacientes = () => {
           </ModalContent>
         </Modal>
 
-        <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
+        <Modal isOpen={isEditOpen} onClose={onCloseEdit} size={'lg'}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Editar Informações</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp">
+              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp" style={{paddingBottom: '1rem'}}>
 
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNome">Nome</label>
@@ -657,7 +692,6 @@ export const Pacientes = () => {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...resgisterEdit("telefone")}
                     title="Digite apenas números"
                   />
@@ -779,7 +813,7 @@ export const Pacientes = () => {
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNumero">Numero</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control formcomp-input"
                     id="FormControlInputNumero"
                     placeholder=""
@@ -840,8 +874,6 @@ export const Pacientes = () => {
       <div>
         <MyFooter />
       </div>
-
-
     </main>
   )
 }

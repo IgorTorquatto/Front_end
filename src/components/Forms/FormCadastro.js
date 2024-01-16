@@ -42,7 +42,16 @@ export const FormCadastro = () => {
   const [visible, setVisible] = useState(true)
   const { data: user } = useSelector((state) => state.tokens);
   const { handleHistorico } = useHistorico()
+  
   const onSubmit = async (novoMedico) => {
+
+    novoMedico.cpf = novoMedico.cpf.replaceAll('.', '')
+    novoMedico.cpf = novoMedico.cpf.replaceAll('-', '')
+
+    novoMedico.telefone = novoMedico.telefone.replaceAll('-', '')
+    novoMedico.telefone = novoMedico.telefone.replaceAll('(', '')
+    novoMedico.telefone = novoMedico.telefone.replaceAll(')', '')
+    novoMedico.telefone = novoMedico.telefone.replaceAll(' ', '')
    
     const pessoa = {
       cpf: novoMedico.cpf,
@@ -51,6 +60,7 @@ export const FormCadastro = () => {
       telefone: novoMedico.telefone,
       cargo: 'Médico',
     }
+
     await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
@@ -68,7 +78,7 @@ export const FormCadastro = () => {
       })
 
     }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
+      alert("Error ao cadastrar")
     })
   };
 
@@ -104,7 +114,7 @@ export const FormCadastro = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputNome">Nome</label>
+          <label htmlFor="FormControlInputNome">Nome*</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -119,7 +129,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputEmail">Endereço de email</label>
+          <label htmlFor="FormControlInputEmail">Endereço de email*</label>
           <input
             type="email"
             className="form-control formcomp-input"
@@ -133,7 +143,7 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCPF">CPF</label>
+          <label htmlFor="FormControlInputCPF">CPF*</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -148,7 +158,7 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCRM">CRM</label>
+          <label htmlFor="FormControlInputCRM">CRM*</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -162,7 +172,7 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputData">Data de nascimento</label>
+          <label htmlFor="FormControlInputData">Data de nascimento*</label>
           <input
             type="date"
             className="form-control formcomp-input"
@@ -178,7 +188,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputTel">Telefone</label>
+          <label htmlFor="FormControlInputTel">Telefone*</label>
           <input
             type="tel"
             className="form-control formcomp-input"
@@ -194,7 +204,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputEsp">Especialização</label>
+          <label htmlFor="FormControlInputEsp">Especialização*</label>
           <select
             className="form-control formcomp-input"
             id="FormControlInputEsp"
@@ -216,7 +226,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputSenha">Senha</label>
+          <label htmlFor="FormControlInputSenha">Senha*</label>
           <input
             type="password"
             className="form-control formcomp-input"
@@ -231,7 +241,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha</label>
+          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha*</label>
           <input
             type="password"
             className="form-control formcomp-input"
