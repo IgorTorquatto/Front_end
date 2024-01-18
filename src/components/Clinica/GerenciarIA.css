@@ -13,3 +13,19 @@
     flex-direction: row;
     padding-left: 20px;
 }
+
+.gerenciarIA-model-details {
+    display: flex;
+}
+
+.gerenciarIA-image-bank {
+    padding-top: 20px;
+    padding-left: 20px;
+}
+
+.gerenciarIA-requests {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
