@@ -1,0 +1,15 @@
+.gerenciarIA-top {
+    display: flex;
+    flex-direction: column;
+    padding-top: 10px;
+}
+
+.gerenciarIA-top h2 {
+    text-align: center;
+}
+
+.gerenciarIA-model-select {
+    display: flex;
+    flex-direction: row;
+    padding-left: 20px;
+}
