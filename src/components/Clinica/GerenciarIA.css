@@ -8,13 +8,8 @@
     text-align: center;
 }
 
-.gerenciarIA-model-select {
-    display: flex;
-    flex-direction: row;
-    padding-left: 20px;
-}
-
 .gerenciarIA-model-details {
+    margin-top: 40px;
     display: flex;
 }
 
@@ -25,6 +20,8 @@
 
 .gerenciarIA-requests {
     display: flex;
+    flex-direction: column;
+    gap: 30px;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
