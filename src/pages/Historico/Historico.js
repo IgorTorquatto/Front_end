@@ -42,6 +42,8 @@ export const Historico = () => {
 
   const [pageLoading, setPageLoading] = useState(true);
 
+  console.log(user.data)
+
   async function loadHistorico() {
     await api.get(`/diagnostico?id_medico=${user.data.id}`).then(({ data }) => {
       setDiagnosticos(data)
@@ -96,10 +98,6 @@ export const Historico = () => {
     }
    
   }
-
-  
-
-    
 
   return (
     <Box className='historico-container'>

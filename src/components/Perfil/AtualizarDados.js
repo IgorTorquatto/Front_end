@@ -15,6 +15,12 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api, apiUnAuth } from "../../services/api.ts";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
+import { 
+  cpf_mask_remove,
+  telefone_mask_remove, 
+} from "../Forms/form-masks.js";
+import $ from 'jquery'
+import 'jquery-mask-plugin'
 import "./AtualizarDados.css";
 
 export const AtualizarDados = ({ onCancel }) => {
@@ -29,11 +35,11 @@ export const AtualizarDados = ({ onCancel }) => {
         .email("Informe um email valido")
         .required("Informe um email valido"),
       telefone: yup.string().required("Informe um telefone valido"),
-      cpf: yup.string().required("Informe um cpf valido"),
+      cpf: yup.string().min(11, 'CPF incompleto').required("Informe um cpf valido"),
       data_nascimento: yup
         .string()
         .required("Informe uma data de nascimento valida"),
-      crm: yup.string().required("Informe um crm valido"),
+      crm: yup.string().min(6, "CRM incompleto").required("Informe um crm valido"),
       especialidade: yup.string().required("Informe uma especialidade valida"),
     })
     .required();
@@ -53,7 +59,10 @@ export const AtualizarDados = ({ onCancel }) => {
       telefone: edit_user.telefone,
       cargo: "Médico",
     };
-    console.log(edit_user);
+    
+    pessoa.cpf = cpf_mask_remove(pessoa.cpf)
+    pessoa.telefone = telefone_mask_remove(pessoa.telefone)
+
     await api
       .put(`/pessoa/${user.data.id_pessoa}`, pessoa)
       .then(({ data }) => {
@@ -68,7 +77,7 @@ export const AtualizarDados = ({ onCancel }) => {
           .put(`/medico/${user.data.id}`, medico)
           .then(({ data }) => {
             dispatch(editProfile(data.data));
-            history("/perfil");
+            window.location.reload()
           })
           .catch(({}) => {});
       })
@@ -80,6 +89,13 @@ export const AtualizarDados = ({ onCancel }) => {
   const handleCancel = () => {
     onCancel();
   };
+
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCRM').mask('000000')
+  });
+
   return (
     <>
       <div className="atualizarDados-container">
@@ -164,7 +180,6 @@ export const AtualizarDados = ({ onCancel }) => {
                   className="form-control formcomp-input"
                   id="FormControlInputTel"
                   placeholder="(99) 9 9999-9999"
-                  pattern="[0-9]*"
                   {...register("telefone")}
                   title="Digite apenas números"
                   defaultValue={user.data.pessoa.telefone}

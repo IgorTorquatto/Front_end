@@ -33,6 +33,11 @@ import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
 export const NavbarComp = ({ customClass, showEntrarButton }) => {
   const location = useLocation();
   const { data: user } = useSelector((state) => state.tokens);
+  let dis = false
+  if (user.data.cnpj) {
+    dis = true  
+  }
+
   const navbarClassName = customClass
     ? `custom-navbar ${customClass}`
     : "custom-navbar";
@@ -46,6 +51,10 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
 
   function PerfilPage() {
     history("/perfil");
+  }
+
+  function ClinicaPage() {
+    history("/clinica")
   }
 
   return (
@@ -64,6 +73,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                 className={
                   location.pathname.includes("/diagnostico") ? "active" : ""
                 }
+                disabled={dis}
               >
                 <div
                   className={
@@ -150,7 +160,14 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   <MenuItem
                     icon={<AiOutlineProfile />}
                     onClick={() => {
-                      PerfilPage();
+                      if (user.data.cnpj)
+                      {
+                        ClinicaPage();
+                      }
+                      else
+                      {
+                        PerfilPage();
+                      }
                     }}
                   >
                     Perfil

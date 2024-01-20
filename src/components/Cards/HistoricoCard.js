@@ -6,6 +6,8 @@ import { LuDownload } from "react-icons/lu";
 import './HistoricoCard.css'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { cpf_mask } from '../Forms/form-masks';
+
 export const HistoricoCard = ({ data }) => {
 
     const [downloadIconColor, setDownloadIconColor] = useState('white')
@@ -62,21 +64,6 @@ export const HistoricoCard = ({ data }) => {
     
         // Remove o link do documento
         document.body.removeChild(link);
-    }
-
-    const cpf_mask = (cpf) => {
-        let mask_cpf = ''
-        if (cpf.length == 11)
-        {
-            mask_cpf += cpf.slice(0, 3)
-            mask_cpf += '.'
-            mask_cpf += cpf.slice(3, 6)
-            mask_cpf += '.'
-            mask_cpf += cpf.slice(6, 9)
-            mask_cpf += '-'
-            mask_cpf += cpf.slice(9, 11)
-        }
-        return mask_cpf
     }
 
     return (

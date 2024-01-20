@@ -29,16 +29,41 @@ import {
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
 import Select from 'react-select';
+import {cpf_mask, 
+  telefone_mask, 
+  cpf_mask_remove, 
+  telefone_mask_remove,
+  cep_mask_remove
+} from '../../components/Forms/form-masks'
 import $ from 'jquery'
 import 'jquery-mask-plugin'
+
+yup.setLocale({
+  string: {
+    length: 'deve ter exatamente ${length} caracteres',
+    min: 'deve ter pelo menos ${min} caracteres',
+    max: 'deve ter no máximo ${max} caracteres',
+    email: 'tem o formato de e-mail inválido',
+    url: 'deve ter um formato de URL válida',
+    trim: 'não deve conter espaços no início ou no fim.',
+    lowercase: 'deve estar em maiúsculo',
+    uppercase: 'deve estar em minúsculo',
+  },
+  mixed: {
+    default: 'Não é válido',
+  },
+  number: {
+    min: 'Deve ser maior que ${min}',
+  },
+});
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
@@ -51,10 +76,10 @@ const schema = yup.object({
 const schemaEdit = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
@@ -205,15 +230,9 @@ export const Pacientes = () => {
 
   const onSubmit = async (novopaciente) => {
 
-    novopaciente.cpf = novopaciente.cpf.replaceAll('-', '')
-    novopaciente.cpf = novopaciente.cpf.replaceAll('.', '')
-
-    novopaciente.telefone = novopaciente.telefone.replaceAll('(', '')
-    novopaciente.telefone = novopaciente.telefone.replaceAll(')', '')
-    novopaciente.telefone = novopaciente.telefone.replaceAll('-', '')
-    novopaciente.telefone = novopaciente.telefone.replaceAll(' ', '')
-
-    novopaciente.cep = novopaciente.cep.replaceAll('-', '')
+    novopaciente.cpf = cpf_mask_remove(novopaciente.cpf)
+    novopaciente.telefone = telefone_mask_remove(novopaciente.telefone)
+    novopaciente.cep = cep_mask_remove(novopaciente.cep)
 
     novopaciente.tipo_sanguineo = novopaciente.tipo_sanguineo.toUpperCase()
 
@@ -240,7 +259,6 @@ export const Pacientes = () => {
         numero: novopaciente.numero,
         estado: novopaciente.estado,
       }
-      console.log(paciente)
 
       api.post('/paciente', paciente).then(({ data }) => {
         setLoadingCadastro(false)
@@ -257,19 +275,11 @@ export const Pacientes = () => {
   };
   const onSubmitEdit = async (editpaciente) => {
 
-    editpaciente.cpf = editpaciente.cpf.replaceAll('-', '')
-    editpaciente.cpf = editpaciente.cpf.replaceAll('.', '')
-
-    editpaciente.telefone = editpaciente.telefone.replaceAll('(', '')
-    editpaciente.telefone = editpaciente.telefone.replaceAll(')', '')
-    editpaciente.telefone = editpaciente.telefone.replaceAll('-', '')
-    editpaciente.telefone = editpaciente.telefone.replaceAll(' ', '')
-
-    editpaciente.cep = editpaciente.cep.replaceAll('-', '')
+    editpaciente.cpf = cpf_mask_remove(editpaciente.cpf)
+    editpaciente.telefone = telefone_mask_remove(editpaciente.telefone)
+    editpaciente.cep = cep_mask_remove(editpaciente.cep)
 
     editpaciente.tipo_sanguineo = editpaciente.tipo_sanguineo.toUpperCase()
-
-    console.log(editpaciente.cpf)
 
     const pessoa = {
       cpf: editpaciente.cpf,
@@ -291,7 +301,6 @@ export const Pacientes = () => {
         numero: editpaciente.numero,
         estado: editpaciente.estado,
       }
-      console.log(paciente)
 
       api.put(`/paciente/${patient.id}`, paciente).then(({ data }) => {
         history('/pacientes')
@@ -860,8 +869,8 @@ export const Pacientes = () => {
             <ModalCloseButton />
             <ModalBody>
               <Text>Name: {selectedPatient?.pessoa.nome}</Text>
-              <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
-              <Text>Telefone: {selectedPatient?.telefone}</Text>
+              <Text>CPF: {cpf_mask(selectedPatient?.pessoa.cpf)}</Text>
+              <Text>Telefone: {telefone_mask(selectedPatient?.pessoa.telefone)}</Text>
               <Text>Rua: {selectedPatient?.logradouro}</Text>
               <Text>Bairro: {selectedPatient?.bairro}</Text>
               <Text>Número: {selectedPatient?.numero}</Text>
