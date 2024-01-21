@@ -49,8 +49,8 @@ export const Diagnostico = () => {
   const { data: user } = useSelector((state) => state.tokens);
 
   const models = [
-    { value: '1', label: 'Pneumonia - Crianças de até 5 anos' },
-    { value: '2', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '1', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '2', label: 'Pneumonia - Crianças de até 5 anos' },
   ]
 
   const loadClinicas = async () => {
@@ -247,6 +247,7 @@ export const Diagnostico = () => {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
       id_medico: user.data.id,
+      id_clinica: clinica.id,
       id_paciente: patient.id,
       laudo_medico: pdfDataUri,
       data_hora: new Date(),
