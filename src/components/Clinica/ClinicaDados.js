@@ -17,6 +17,8 @@ import { api } from "../../services/api";
 import { useDispatch, useSelector } from "react-redux";
 import { ClinicaAlterarDados } from "./ClinicaAlterarDados";
 import { ClinicaGerenciarFuncionarios } from "./ClinicaGerenciarFuncionarios";
+import { cep_mask, telefone_mask, cnpj_mask } from "../Forms/form-masks";
+
 export const ClinicaDados = () => {
   const { data: user } = useSelector((state) => state.tokens);
   const [funcionarios, setFuncionarios]  = useState([])
@@ -82,19 +84,19 @@ export const ClinicaDados = () => {
             <div>
               <FaPhone />
               <strong>Telefone:</strong>
-              <span>{user.data.telefone}</span>
+              <span>{telefone_mask(user.data.telefone)}</span>
             </div>
           </div>
           <div className="column">
             <div>
               <FaIdCard />
               <strong>CNPJ:</strong>
-              <span>{user.data.cnpj}</span>
+              <span>{cnpj_mask(user.data.cnpj)}</span>
             </div>
             <div>
               <FaMapMarked />
               <strong>CEP:</strong>
-              <span>{user.data.cep}</span>
+              <span>{cep_mask(user.data.cep)}</span>
             </div>
             <div>
               <FaMap />
@@ -104,7 +106,7 @@ export const ClinicaDados = () => {
           </div>
         </div>
         <div className="btn-clinica-editar">
-          <Button leftIcon={<CiEdit />} colorScheme="blue" bgColor={'#007bff'} onClick={handleEditClick}> Editar</Button>
+          <Button leftIcon={<CiEdit />} colorScheme="blue" bgColor={'#0d6efd'} onClick={handleEditClick}> Editar</Button>
         </div>
       </div>
 
@@ -146,7 +148,7 @@ export const ClinicaDados = () => {
 
       </Box>
       <div className="btn-clinica-gerenciar">
-        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#007bff'} onClick={handleGerenciarClick}> Gerenciar</Button>
+        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#0d6efd'} onClick={handleGerenciarClick}> Gerenciar</Button>
       </div>
     </div>
     )}

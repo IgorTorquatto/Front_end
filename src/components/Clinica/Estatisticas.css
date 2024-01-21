@@ -1,14 +1,13 @@
 .container {  
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: .2fr 1fr 1fr 1fr;
+    grid-template-rows: .2fr 1fr 1fr;
     gap: 0px 0px;
     grid-auto-flow: row;
     grid-template-areas:
         "tituloPagina tituloPagina tituloPagina"
         "barAtendimentos barAtendimentos pieClassificacao"
-        "lineDoencas lineDoencas info1"
-        "info2 info2 info2";
+        "lineDoencas lineDoencas info1";
 }
 
 .container > div {
@@ -39,6 +38,4 @@
 .lineDoencas { grid-area: lineDoencas; }
 
 .info1 { grid-area: info1; }
-
-.info2 { grid-area: info2; }
   

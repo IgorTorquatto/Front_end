@@ -24,8 +24,8 @@
 #patientInformations p{
     margin-bottom: 0;
     font-family: poppins;
-    font-weight:100;
-    font-size: small;
+    font-weight: 200;
+    font-size: medium;
 }
 
 #patientInformations span{

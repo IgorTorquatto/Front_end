@@ -4,7 +4,7 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 import './Diagnostico.css';
 import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
+import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -12,7 +12,6 @@ import jsPDF from 'jspdf';
 import { useDispatch, useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
-import { imagemDeFundo } from '../../assets/logo d.png';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
 
@@ -54,12 +53,11 @@ export const Diagnostico = () => {
     { value: '2', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
   ]
 
-  const loadClinicas = async ()=>{
+  const loadClinicas = async () => {
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
-      console.log(data)
       setClinicas(data.data)
       const clinicasOptions= []
-      data.data.map(item=>{
+      data.data.map(item => {
         const clinica = {
           value: item.id,
           label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
@@ -68,7 +66,6 @@ export const Diagnostico = () => {
       })
 
       setClinicasArray(clinicasOptions)
-      
     })
   }
 
@@ -79,7 +76,6 @@ export const Diagnostico = () => {
 
   async function loadPatients() {
     await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
-      console.log(data)
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
@@ -120,7 +116,6 @@ export const Diagnostico = () => {
   useEffect(() => {
     if (prediction != null) {
       createPDF()
-
     }
   }, [prediction, observacoes])
 
@@ -240,7 +235,6 @@ export const Diagnostico = () => {
     if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0)
     {
       setobsState(false)
-      console.log("Sem descrição");
       return
     } else{
       setobsState(true)
@@ -261,10 +255,7 @@ export const Diagnostico = () => {
       resultado_real: resultLaudo == "1" ? predictionLabel : resultReal
     }
 
-    console.log(diagnostico)
-
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
-      console.log(data)
       downloadPDF(data.data.laudo_medico)
       history('/historico')
     }).catch(({ err }) => {
@@ -307,8 +298,8 @@ export const Diagnostico = () => {
   const handlePatient = (patient) => {
     setSelectedPatient(patient)
     setPatient(patientsArray.find(item => item.id === patient.value))
-
   }
+
   function calcularIdade(dataNascimento) {
     var dataAtual = new Date();
     var dataNasc = new Date(dataNascimento);
@@ -520,51 +511,50 @@ export const Diagnostico = () => {
 
           <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
             justifyContent='left' alignItems='left' mt='1.5rem'>
-            <Text justifySelf='center' style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
-              Classificação do modelo: {(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}
-            </Text>
-
-
-            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
-              <Text fontWeight={'bold'} mt='1rem' mb='-0.2rem'>
+            
+            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo} style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
+              <Text justifySelf='center'>
+                Classificação do modelo: <b>{(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}</b>
+              </Text>
+              <Text mb='-0.2rem'>
                 A classificação do modelo está correta?
               </Text>
               <Stack direction='row' gap='30px' mb='1.0rem' mt='0.5rem'>
                 <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
                 <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
               </Stack>
-            </RadioGroup>
 
-
-              {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
-              <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='0.3rem'>
-                <Text>
-                  Descrição do laudo
-                </Text>
-                <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
-
-
-
-            {resultLaudo == 2 && <Box><Text>Qual o diagnóstico correto?</Text>
+              {resultLaudo == 2 && <Box><Text>Qual o diagnóstico?</Text>
               <SelectChakra onChange={(e) => setResultReal(e.target.value)}>
                 <option value={"PNEUMONIA"}>Pneumonia</option>
                 <option value={"TURBECULOSE"}>Tuberculose</option>
                 <option value={"COVID"}>COVID-19</option>
-                <option value={"NORMAL"}>Saudável</option>
+                <option value={"NORMAL"}>Normal</option>
+                <option value={"OUTRO"}>Outro</option>
               </SelectChakra></Box>}
+            </RadioGroup>
+
+
+              <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
+                <Text mb='-0.05rem'>
+                  Descrição do laudo
+                </Text>
+                <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
+
             </Box>
+              {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
             {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
             </Box>
 
           <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
+            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a classificação do modelo</Text>
           </Box>
 
           <Box display='flex' mt='2rem' justifyContent='space-around'>
-            <Button colorScheme='blue' borderRadius='1rem' onClick={() => setPrediction(null)}>Voltar</Button>
-            <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
+            <Button colorScheme='blue' width={'10rem'} borderRadius='1rem' onClick={() => setPrediction(null)}>Voltar</Button>
+            <Button colorScheme='green' width={'10rem'} borderRadius='1rem' onClick={() => { submitLaudo() }}>Confirmar Laudo</Button>
           </Box>
           
         </Box>

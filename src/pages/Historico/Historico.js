@@ -10,19 +10,16 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
   Text,
   Divider,
   AbsoluteCenter,
-  Container,
   Spinner,
   Flex,
   Box,
   Select,
-  Button
 } from '@chakra-ui/react'
 import { GiSettingsKnobs } from "react-icons/gi";
 
@@ -45,12 +42,12 @@ export const Historico = () => {
 
   const [pageLoading, setPageLoading] = useState(true);
 
+  console.log(user.data)
+
   async function loadHistorico() {
     await api.get(`/diagnostico?id_medico=${user.data.id}`).then(({ data }) => {
       setDiagnosticos(data)
       setDiagnosticosArray(data)
-      console.log(data)
-
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -102,10 +99,6 @@ export const Historico = () => {
    
   }
 
-  
-
-    
-
   return (
     <Box className='historico-container'>
       <header>
@@ -115,6 +108,7 @@ export const Historico = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex> :
         <Box id='historico-body'>
+
           <Box id='main-content'>
             <Box display='flex' w='90%' m='1.0rem 0rem' mt='1.5rem'>
               <Select onChange={(e) => setSearchBy(e.target.value)} w='15%' icon={<GiSettingsKnobs />} mr='1rem' bgColor={'white'} cursor={'pointer'}>
@@ -125,6 +119,7 @@ export const Historico = () => {
               <Input w='15%' type='date' onChange={(e) => setInitDate(e.target.value)} />
               <Input w='15%' type='date' onChange={(e) => setEndDate(e.target.value)} />
             </Box>
+
             <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
               <ModalOverlay />
               <ModalContent w='100%'>
@@ -160,8 +155,8 @@ export const Historico = () => {
                     <Flex borderRadius='1rem' padding='0 1rem' background='#3b83c3' height='100%' justify='flex-start' alignItems='center' color='white' w='100%'>
                       <Box>
                         <Text fontWeight='bold' >Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.modelo}</Text>
-                        <Text fontWeight='bold' >Resultado do Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
-                        <Text fontWeight='bold' >Resultado Real: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_real}</Text>
+                        <Text fontWeight='bold' >Classificação do Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
+                        <Text fontWeight='bold' >Diagnóstico: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_real}</Text>
                       </Box>
 
                       <Flex w='100%' justify='center'>
@@ -190,15 +185,11 @@ export const Historico = () => {
 
                       </Flex>
                     </Flex>
-
-
-
-
                   </Box>
-
                 </ModalBody>
               </ModalContent>
             </Modal>
+
             <Box id='result-context'>
               {
                 diagnosticos.map((user, index) => {
@@ -210,6 +201,7 @@ export const Historico = () => {
                 })
               }
             </Box>
+            
           </Box>
         </Box>
       }

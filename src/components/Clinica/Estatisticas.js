@@ -56,7 +56,6 @@ export const Estatisticas = () => {
       <div class="info1 dashboard">
         <Radar options={optionsModelo} data={dataModelo}/>
       </div>
-      <div class="info2 dashboard"></div>
     </div>
   )
 }

@@ -63,14 +63,14 @@ export const FormLogin = () => {
           cnpj: null,
           senha: user.senha
         }
-    dispactch(loadSession(login))
+        dispactch(loadSession(login))
       } else {
         const login = {
           email: null,
           cnpj: user.data,
           senha: user.senha
         }
-    dispactch(loadSession(login))
+        dispactch(loadSession(login))
       }
     } catch { }
   };

@@ -14,15 +14,16 @@ import { Button } from '@chakra-ui/react';
 import { useHistorico } from '../../hooks/useHistorico';
 import $ from 'jquery';
 import 'jquery-mask-plugin'
+import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks'
 
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   email: yup.string().email('Informe um email valido').required('Informe um email valido'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().min(14, 'CPF incompleto').required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  crm: yup.string().required('Informe um crm valido'),
+  crm: yup.string().min(6, 'CRM deve conter 6 dígitos').required('Informe um crm valido'),
   especialidade: yup.string().required('Informe uma especialidade valida'),
   senha: yup.string().min(8, 'a senha deve conter 8 caracteres').required('Digite uma senha'),
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
@@ -42,7 +43,11 @@ export const FormCadastro = () => {
   const [visible, setVisible] = useState(true)
   const { data: user } = useSelector((state) => state.tokens);
   const { handleHistorico } = useHistorico()
+  
   const onSubmit = async (novoMedico) => {
+
+    novoMedico.cpf = cpf_mask_remove(novoMedico.cpf)
+    novoMedico.telefone = telefone_mask_remove(novoMedico.telefone)
    
     const pessoa = {
       cpf: novoMedico.cpf,
@@ -51,6 +56,7 @@ export const FormCadastro = () => {
       telefone: novoMedico.telefone,
       cargo: 'Médico',
     }
+
     await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
@@ -61,14 +67,13 @@ export const FormCadastro = () => {
       }
 
       apiUnAuth.post(`/clinica/${user.data.id}/medico`, medico).then(({ data }) => {
-       console.log(data)
-       handleHistorico(null)
+        handleHistorico(null)
       }).catch(({})=>{
 
       })
 
     }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
+      alert("Error ao cadastrar")
     })
   };
 
@@ -104,7 +109,7 @@ export const FormCadastro = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputNome">Nome</label>
+          <label htmlFor="FormControlInputNome">Nome*</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -119,7 +124,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputEmail">Endereço de email</label>
+          <label htmlFor="FormControlInputEmail">Endereço de email*</label>
           <input
             type="email"
             className="form-control formcomp-input"
@@ -133,7 +138,7 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCPF">CPF</label>
+          <label htmlFor="FormControlInputCPF">CPF*</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -148,7 +153,7 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCRM">CRM</label>
+          <label htmlFor="FormControlInputCRM">CRM*</label>
           <input
             type="text"
             className="form-control formcomp-input"
@@ -162,7 +167,7 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputData">Data de nascimento</label>
+          <label htmlFor="FormControlInputData">Data de nascimento*</label>
           <input
             type="date"
             className="form-control formcomp-input"
@@ -178,7 +183,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputTel">Telefone</label>
+          <label htmlFor="FormControlInputTel">Telefone*</label>
           <input
             type="tel"
             className="form-control formcomp-input"
@@ -194,7 +199,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputEsp">Especialização</label>
+          <label htmlFor="FormControlInputEsp">Especialização*</label>
           <select
             className="form-control formcomp-input"
             id="FormControlInputEsp"
@@ -216,7 +221,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputSenha">Senha</label>
+          <label htmlFor="FormControlInputSenha">Senha*</label>
           <input
             type="password"
             className="form-control formcomp-input"
@@ -231,7 +236,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha</label>
+          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha*</label>
           <input
             type="password"
             className="form-control formcomp-input"

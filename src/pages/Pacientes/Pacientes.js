@@ -5,8 +5,6 @@ import './Pacientes.css'
 
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
-import { CiEdit } from "react-icons/ci";
-import { FaBars } from "react-icons/fa";
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -25,22 +23,47 @@ import {
   Text,
   Input,
   Select as ChakraSelect,
-  Stack,
   Spinner,
   Flex
 } from '@chakra-ui/react'
-import { Container } from 'react-bootstrap';
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
 import Select from 'react-select';
+import {cpf_mask, 
+  telefone_mask, 
+  cpf_mask_remove, 
+  telefone_mask_remove,
+  cep_mask_remove
+} from '../../components/Forms/form-masks'
+import $ from 'jquery'
+import 'jquery-mask-plugin'
+
+yup.setLocale({
+  string: {
+    length: 'deve ter exatamente ${length} caracteres',
+    min: 'deve ter pelo menos ${min} caracteres',
+    max: 'deve ter no máximo ${max} caracteres',
+    email: 'tem o formato de e-mail inválido',
+    url: 'deve ter um formato de URL válida',
+    trim: 'não deve conter espaços no início ou no fim.',
+    lowercase: 'deve estar em maiúsculo',
+    uppercase: 'deve estar em minúsculo',
+  },
+  mixed: {
+    default: 'Não é válido',
+  },
+  number: {
+    min: 'Deve ser maior que ${min}',
+  },
+});
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
@@ -53,10 +76,10 @@ const schema = yup.object({
 const schemaEdit = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
@@ -207,6 +230,12 @@ export const Pacientes = () => {
 
   const onSubmit = async (novopaciente) => {
 
+    novopaciente.cpf = cpf_mask_remove(novopaciente.cpf)
+    novopaciente.telefone = telefone_mask_remove(novopaciente.telefone)
+    novopaciente.cep = cep_mask_remove(novopaciente.cep)
+
+    novopaciente.tipo_sanguineo = novopaciente.tipo_sanguineo.toUpperCase()
+
     const pessoa = {
       cpf: novopaciente.cpf,
       data_nascimento: novopaciente.data_nascimento,
@@ -230,7 +259,6 @@ export const Pacientes = () => {
         numero: novopaciente.numero,
         estado: novopaciente.estado,
       }
-      console.log(paciente)
 
       api.post('/paciente', paciente).then(({ data }) => {
         setLoadingCadastro(false)
@@ -246,6 +274,12 @@ export const Pacientes = () => {
     // history('/diagnostico')
   };
   const onSubmitEdit = async (editpaciente) => {
+
+    editpaciente.cpf = cpf_mask_remove(editpaciente.cpf)
+    editpaciente.telefone = telefone_mask_remove(editpaciente.telefone)
+    editpaciente.cep = cep_mask_remove(editpaciente.cep)
+
+    editpaciente.tipo_sanguineo = editpaciente.tipo_sanguineo.toUpperCase()
 
     const pessoa = {
       cpf: editpaciente.cpf,
@@ -267,7 +301,6 @@ export const Pacientes = () => {
         numero: editpaciente.numero,
         estado: editpaciente.estado,
       }
-      console.log(paciente)
 
       api.put(`/paciente/${patient.id}`, paciente).then(({ data }) => {
         history('/pacientes')
@@ -320,6 +353,18 @@ export const Pacientes = () => {
     { label: 'Sergipe', value: 'SE' },
     { label: 'Tocantins', value: 'TO' },
   ];
+
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCEP').mask('00000-000')
+    $('#FormControlInputTipoSanguineo').mask('AA0', {
+      translation: {
+        'A': { pattern: /[ABOabo]/ },
+        '0': { pattern: /[+-]/ }
+      }
+    })
+  })
 
   return (
     <main style={{ backgroundColor: '#F8F8FF' }}>
@@ -431,7 +476,6 @@ export const Pacientes = () => {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...register("telefone")}
                     title="Digite apenas números"
                   />
@@ -466,7 +510,7 @@ export const Pacientes = () => {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Ex: A+"
+                    placeholder="Ex: AA+"
                     {...register("tipo_sanguineo")}
                   />
                   <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -553,7 +597,7 @@ export const Pacientes = () => {
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNumero">Numero*</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control formcomp-input"
                     id="FormControlInputNumero"
                     placeholder=""
@@ -593,13 +637,13 @@ export const Pacientes = () => {
           </ModalContent>
         </Modal>
 
-        <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
+        <Modal isOpen={isEditOpen} onClose={onCloseEdit} size={'lg'}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Editar Informações</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp">
+              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp" style={{paddingBottom: '1rem'}}>
 
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNome">Nome</label>
@@ -657,7 +701,6 @@ export const Pacientes = () => {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...resgisterEdit("telefone")}
                     title="Digite apenas números"
                   />
@@ -779,7 +822,7 @@ export const Pacientes = () => {
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNumero">Numero</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control formcomp-input"
                     id="FormControlInputNumero"
                     placeholder=""
@@ -826,8 +869,8 @@ export const Pacientes = () => {
             <ModalCloseButton />
             <ModalBody>
               <Text>Name: {selectedPatient?.pessoa.nome}</Text>
-              <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
-              <Text>Telefone: {selectedPatient?.telefone}</Text>
+              <Text>CPF: {cpf_mask(selectedPatient?.pessoa.cpf)}</Text>
+              <Text>Telefone: {telefone_mask(selectedPatient?.pessoa.telefone)}</Text>
               <Text>Rua: {selectedPatient?.logradouro}</Text>
               <Text>Bairro: {selectedPatient?.bairro}</Text>
               <Text>Número: {selectedPatient?.numero}</Text>
@@ -840,8 +883,6 @@ export const Pacientes = () => {
       <div>
         <MyFooter />
       </div>
-
-
     </main>
   )
 }
