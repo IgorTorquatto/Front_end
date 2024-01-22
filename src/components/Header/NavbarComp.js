@@ -6,6 +6,7 @@ import "./NavBarComp.css";
 
 import { AiOutlineProfile } from "react-icons/ai";
 import { MdOutlineExitToApp } from "react-icons/md";
+import { FaRegBuilding } from "react-icons/fa";
 import { Avatar, Box, Text, IconButton } from "@chakra-ui/react";
 import {
   TriangleDownIcon,
@@ -23,10 +24,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
 } from "@chakra-ui/react";
 import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
 
@@ -137,18 +134,16 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
               alignItems={"center"}
               verticalAlign="center"
             >
-              <Avatar
-                name={user?.data?.pessoa?.nome}
-                src={user?.data?.foto_perfil}
-              />
+              
               <Menu>
                 <MenuButton
-                  as={IconButton}
+                  as={Avatar}
                   aria-label="Options"
-                  icon={<HamburgerIcon />}
+                  icon={ <Avatar name={user?.data?.pessoa?.nome} src={user?.data?.foto_perfil}/> }
                   variant="outline"
                   border="none"
                   colorScheme="white"
+                  cursor={'pointer'}
                 />
                 <MenuList
                   colorScheme="white"
@@ -171,6 +166,11 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                     }}
                   >
                     Perfil
+                  </MenuItem>
+
+                  <MenuItem
+                  icon={ <FaRegBuilding/> }>
+                    Clínica
                   </MenuItem>
 
                   <MenuItem
