@@ -30,7 +30,6 @@ export const Historico = () => {
   const { data: user } = useSelector((state) => state.tokens);
 
   const [diagnosticosArray, setDiagnosticosArray] = useState([]);
-  const [diagnosticosOnDisplay, setDiagnosticosOnDisplay] = useState([]);
   const [diagnosticos, setDiagnosticos] = useState([]);
   const [diagnostico, setDiagnostico] = useState(null);
   const [searchBy, setSearchBy] = useState('nome');

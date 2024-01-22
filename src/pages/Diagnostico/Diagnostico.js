@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import jsPDF from 'jspdf';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
 import { MyFooter } from '../../components/Footer/Footer'
