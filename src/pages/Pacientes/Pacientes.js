@@ -88,6 +88,7 @@ const schemaEdit = yup.object({
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
+
 export const Pacientes = () => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
@@ -127,7 +128,7 @@ export const Pacientes = () => {
   const [clinicasArray, setClinicasArray] = useState([]);
 
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
+    await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
 
@@ -137,6 +138,7 @@ export const Pacientes = () => {
   }
 
   const loadClinicas = async ()=>{
+    if (user.data.clinica) { return }
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       console.log(data)
       setClinicas(data.data)
@@ -179,6 +181,10 @@ export const Pacientes = () => {
 
   useEffect(()=>{
     if(clinica){
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
         setPageLoading(false)
@@ -373,7 +379,7 @@ export const Pacientes = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex>
         :
-        !clinica ? 
+        !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
           <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>

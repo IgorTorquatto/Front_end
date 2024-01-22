@@ -51,11 +51,12 @@ export const Diagnostico = () => {
   const { data: user } = useSelector((state) => state.tokens);
 
   const models = [
-    { value: '1', label: 'Pneumonia - Crianças de até 5 anos' },
-    { value: '2', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '1', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '2', label: 'Pneumonia - Crianças de até 5 anos' },
   ]
 
   const loadClinicas = async () => {
+    if (user.data.clinica) { return }
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       setClinicas(data.data)
       const clinicasOptions= []
@@ -77,7 +78,7 @@ export const Diagnostico = () => {
   }
 
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
+    await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
@@ -105,15 +106,18 @@ export const Diagnostico = () => {
     })()
   }, [])
 
-  useEffect(()=>{
-    if(clinica){
+  useEffect(() => {
+    if (clinica) {
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
-      setPageLoading(false)
-
+        setPageLoading(false)
       })
     }
-  },[clinica])
+  }, [clinica])
   
   useEffect(() => {
     if (prediction != null) {
@@ -239,8 +243,6 @@ export const Diagnostico = () => {
         setOutroLaudoErro(true)
         return
       }
-      
-      setResultReal(outroLaudo)
     }
     setOutroLaudoErro(false)
     
@@ -266,7 +268,7 @@ export const Diagnostico = () => {
       data_hora: new Date(),
       mapa_calor: "data:image/jpeg;base64," + imageCam,
       resultado_modelo: predictionLabel,
-      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal
+      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal === "OUTRO" ? outroLaudo : resultReal
     }
 
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
@@ -346,7 +348,7 @@ export const Diagnostico = () => {
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Tipo de exame: Raio X do tórax`, 20, 80);
+    doc.text(`Exame: Raio X do tórax`, 20, 80);
 
     doc.rect(15, 90, 180, 150);
     doc.setFontSize(16);
@@ -405,7 +407,7 @@ export const Diagnostico = () => {
       {pageLoading ?  <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
       <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
         </Flex> : 
-        !clinica ? 
+        !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
           <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
