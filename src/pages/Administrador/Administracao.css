@@ -11,3 +11,10 @@
 .administracao-header h2{
     color: white;
 }
+
+.administracao-FormDetalhesIA{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 150px;
+}

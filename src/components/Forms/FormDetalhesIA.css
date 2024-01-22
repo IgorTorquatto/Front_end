@@ -1,0 +1,29 @@
+.form-fichaTecnica {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 50px;
+}
+
+.form-group {
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    width: 340px;
+    justify-content: space-between;
+    position: relative;
+}
+
+.form-group input{
+    border: 1px solid #3d3d3d;
+    border-radius: 4px;
+    padding: 3px 6px;
+    outline: none;
+    width: 200px;
+}
+
+.form-group input[type="checkbox"]{
+    width: 20px;
+    position: absolute;
+    right: 180px;
+}

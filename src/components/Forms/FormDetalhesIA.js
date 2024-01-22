@@ -1,14 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import './FormDetalhesIA.css';
 
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api, apiUnAuth } from '../../services/api.ts'
-import { useDispatch, useSelector } from 'react-redux';
-import { Button } from '@chakra-ui/react';
-import { useHistorico } from '../../hooks/useHistorico';
 
 const schema = yup.object({
     nome: yup.string().required('Informe o nome do modelo'),
@@ -58,7 +54,7 @@ export const FormDetalhesIA = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit(onSubmit)} className='form fichaTecnica'>
+            <form onSubmit={handleSubmit(onSubmit)} className='form-fichaTecnica'>
                 {detalhesFicha.map((element, key) =>
                     <div key={key} className='form-group'>
                         <label htmlFor='formGroupNome'>{element.label}</label>
