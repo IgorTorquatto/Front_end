@@ -160,13 +160,16 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                     Perfil
                   </MenuItem>
                   
-                  <MenuDivider />
                   
+                  {user.data.crm &&
+                  <>
+                  <MenuDivider />
                   <MenuGroup title="Clínicas" fontSize={'1.1rem'}>
                     <MedicoClinicas medico_id={user.data.id} clinica_id={user.data.clinica ? user.data.clinica.id : null} />
                   </MenuGroup>
-
                   <MenuDivider />
+                  </>
+                  }
 
                   <MenuItem
                     icon={<MdOutlineExitToApp />}

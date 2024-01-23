@@ -15,7 +15,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -123,7 +122,8 @@ export const Pacientes = () => {
   const local = useLocation()
 
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
+    let id = user.data.cnpj ? user.data.id : user.data.clinica.id
+    await api.get(`/paciente?id_clinica=${id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
 
@@ -133,6 +133,7 @@ export const Pacientes = () => {
   }
 
   const loadClinicas = async ()=>{
+    if (user.data.cnpj) { return }
     if (user.data.clinica) { return }
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       console.log(data)
@@ -171,6 +172,13 @@ export const Pacientes = () => {
     loadClinicas().then(()=>{
       setPageLoading(false)
     })
+
+    if (user.data.cnpj) {
+      setPageLoading(true)
+      loadPatients().then(() => {
+        setPageLoading(false)
+      })
+    }
   }, [])
 
   useEffect(()=>{
@@ -385,7 +393,7 @@ export const Pacientes = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex>
         :
-        !user.data.clinica ? 
+        user.data.crm && !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
           <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
