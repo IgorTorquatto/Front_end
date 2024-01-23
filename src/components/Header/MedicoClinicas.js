@@ -2,12 +2,15 @@ import { Avatar, MenuItem } from "@chakra-ui/react";
 import { api } from "../../services/api"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const MedicoClinicas = (medico_id, clinica_id) => {
 
     const [clinicas, setClinicas] = useState([]);
     const [clinicaModify, setClinicaModify] = useState(null);
     const { data: user } = useSelector((state) => state.tokens);
+    const history = useNavigate()
+    const local = useLocation()
 
     const loadClinicas = async () => {
         await api.get(`/medico/${medico_id.medico_id}/clinica`).then(({data})=>{
@@ -18,7 +21,7 @@ export const MedicoClinicas = (medico_id, clinica_id) => {
 
     useEffect(() => {
         if (clinicaModify){
-            window.location.reload()
+            history(local.pathname)
             setClinicaModify(false)
         }
     }, clinicaModify)

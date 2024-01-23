@@ -1,16 +1,15 @@
 import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Pacientes.css'
-
 import { useEffect, useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api.ts'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Box, Textarea, Button, Modal,
   ModalOverlay,
@@ -108,24 +107,20 @@ export const Pacientes = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
 
-  const [showPassword, setShowPassword] = useState('password')
-  const [visible, setVisible] = useState(true)
-  const [page, setPage] = useState(1)
   const [selectedState, setSelectedState] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientsArray, setPatientsArray] = useState([]);
   const [patients, setPatiens] = useState([]);
-  const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
   const [loadingCadastro, setLoadingCadastro] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const [buttonEditColor, setButtonEditColor] = useState('white');
-  const [buttonInfoColor, setButtonInfoColor] = useState('white');
   const [pageLoading, setPageLoading] = useState(true);
   const [clinica, setClinica] = useState(null);
   const [clinicas, setClinicas] = useState([]);
   const [clinicasArray, setClinicasArray] = useState([]);
+
+  const local = useLocation()
 
   async function loadPatients() {
     await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
@@ -162,7 +157,6 @@ export const Pacientes = () => {
   }
 
   const searchPatient = (search) => {
-    console.log(search.target.value)
     if (searchBy === 'nome') {
       var patients = patientsArray.filter(item => item.pessoa.nome.toLowerCase().includes(search.target.value.toLowerCase()))
       setPatiens(patients)
@@ -190,7 +184,19 @@ export const Pacientes = () => {
         setPageLoading(false)
       })
     }
-  },[clinica])
+  }, [clinica])
+
+  let pacientes_load = false;
+  useEffect(()=>{
+    if(pacientes_load){ return }
+
+    if (user.data.clinica) {
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
+    }
+  }, [user.data.clinica])
 
   useEffect(() => {
     if (patient) {
