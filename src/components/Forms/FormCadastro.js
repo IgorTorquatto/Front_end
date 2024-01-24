@@ -14,15 +14,16 @@ import { Button } from '@chakra-ui/react';
 import { useHistorico } from '../../hooks/useHistorico';
 import $ from 'jquery';
 import 'jquery-mask-plugin'
+import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks'
 
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   email: yup.string().email('Informe um email valido').required('Informe um email valido'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().min(14, 'CPF incompleto').required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  crm: yup.string().required('Informe um crm valido'),
+  crm: yup.string().min(6, 'CRM deve conter 6 dígitos').required('Informe um crm valido'),
   especialidade: yup.string().required('Informe uma especialidade valida'),
   senha: yup.string().min(8, 'a senha deve conter 8 caracteres').required('Digite uma senha'),
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
@@ -45,13 +46,8 @@ export const FormCadastro = () => {
   
   const onSubmit = async (novoMedico) => {
 
-    novoMedico.cpf = novoMedico.cpf.replaceAll('.', '')
-    novoMedico.cpf = novoMedico.cpf.replaceAll('-', '')
-
-    novoMedico.telefone = novoMedico.telefone.replaceAll('-', '')
-    novoMedico.telefone = novoMedico.telefone.replaceAll('(', '')
-    novoMedico.telefone = novoMedico.telefone.replaceAll(')', '')
-    novoMedico.telefone = novoMedico.telefone.replaceAll(' ', '')
+    novoMedico.cpf = cpf_mask_remove(novoMedico.cpf)
+    novoMedico.telefone = telefone_mask_remove(novoMedico.telefone)
    
     const pessoa = {
       cpf: novoMedico.cpf,
@@ -71,8 +67,7 @@ export const FormCadastro = () => {
       }
 
       apiUnAuth.post(`/clinica/${user.data.id}/medico`, medico).then(({ data }) => {
-       console.log(data)
-       handleHistorico(null)
+        handleHistorico(null)
       }).catch(({})=>{
 
       })

@@ -7,13 +7,20 @@ import { api } from "../../services/api";
 import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { editProfile } from "../../store/ducks/tokens/actions";
+import { 
+  cnpj_mask_remove,
+  cep_mask_remove,
+  telefone_mask_remove,
+} from "../Forms/form-masks";
+import $ from 'jquery'
+import 'jquery-mask-plugin'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string(),
   email: yup.string().email(),
-  cnpj: yup.string().required('Informe um cpf valido'),
-  cep: yup.string(),
+  cnpj: yup.string().required('Informe um CNPJ válido'),
+  cep: yup.string().required('Informa o CEP'),
   logradouro: yup.string(),
   bairro: yup.string(),
   cidade: yup.string(),
@@ -30,7 +37,11 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
   });
   console.log(user.data)
   const onSubmit = async (editClinica) => {
-    console.log(editClinica)
+
+    editClinica.cnpj = cnpj_mask_remove(editClinica.cnpj)
+    editClinica.telefone = telefone_mask_remove(editClinica.telefone)
+    editClinica.cep = cep_mask_remove(editClinica.cep)
+
     await api.put(`/clinica/${user.data.id}`, editClinica).then(({ data }) => {
       console.log(data)
       dispatch(editProfile(data.data));
@@ -42,6 +53,12 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
   const handleVoltarClick = () => {
     voltarParaClinicaDados(); // Chama a função para voltar à renderização de ClinicaDados
   };
+
+  $(() => {
+    $('#FormControlInputCNPJ').mask('00.000.000/0000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('.FormControlInputCEP').mask('00000-000')
+  })
 
   return (
     <>
@@ -108,7 +125,6 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
                   className="form-control formcomp-input"
                   id="FormControlInputTel"
                   placeholder="Insera seu telefone"
-                  pattern="[0-9]*"
                   title="Digite apenas números"
                   {...register("telefone")}
                   defaultValue={user.data?.telefone}
@@ -122,7 +138,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
               <label htmlFor="FormControlInputEndereco">CEP</label>
               <input
                 type="text"
-                className="form-control formcomp-input"
+                className="form-control formcomp-input FormControlInputCEP"
                 id="FormControlInputEndereco"
                 placeholder="Insira o CEP da clínica"
                 {...register("cep")}

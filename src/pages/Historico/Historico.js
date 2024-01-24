@@ -30,7 +30,6 @@ export const Historico = () => {
   const { data: user } = useSelector((state) => state.tokens);
 
   const [diagnosticosArray, setDiagnosticosArray] = useState([]);
-  const [diagnosticosOnDisplay, setDiagnosticosOnDisplay] = useState([]);
   const [diagnosticos, setDiagnosticos] = useState([]);
   const [diagnostico, setDiagnostico] = useState(null);
   const [searchBy, setSearchBy] = useState('nome');
@@ -43,7 +42,15 @@ export const Historico = () => {
   const [pageLoading, setPageLoading] = useState(true);
 
   async function loadHistorico() {
-    await api.get(`/diagnostico?id_medico=${user.data.id}`).then(({ data }) => {
+
+    if (user.data.crm) {
+      if (!user.data.clinica){
+        return
+      }
+    }
+
+    let id = user.data.cnpj ? user.data.id : user.data.clinica.id
+    await api.get(`/diagnostico?id_clinica=${id}`).then(({ data }) => {
       setDiagnosticos(data)
       setDiagnosticosArray(data)
     }).catch(({ err }) => {
@@ -96,10 +103,6 @@ export const Historico = () => {
     }
    
   }
-
-  
-
-    
 
   return (
     <Box className='historico-container'>
