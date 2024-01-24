@@ -1,22 +1,20 @@
 import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Pacientes.css'
-
 import { useEffect, useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api.ts'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Box, Textarea, Button, Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -88,6 +86,7 @@ const schemaEdit = yup.object({
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
+
 export const Pacientes = () => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
@@ -107,27 +106,24 @@ export const Pacientes = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
 
-  const [showPassword, setShowPassword] = useState('password')
-  const [visible, setVisible] = useState(true)
-  const [page, setPage] = useState(1)
   const [selectedState, setSelectedState] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientsArray, setPatientsArray] = useState([]);
   const [patients, setPatiens] = useState([]);
-  const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
   const [loadingCadastro, setLoadingCadastro] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const [buttonEditColor, setButtonEditColor] = useState('white');
-  const [buttonInfoColor, setButtonInfoColor] = useState('white');
   const [pageLoading, setPageLoading] = useState(true);
   const [clinica, setClinica] = useState(null);
   const [clinicas, setClinicas] = useState([]);
   const [clinicasArray, setClinicasArray] = useState([]);
 
+  const local = useLocation()
+
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
+    let id = user.data.cnpj ? user.data.id : user.data.clinica.id
+    await api.get(`/paciente?id_clinica=${id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
 
@@ -137,6 +133,8 @@ export const Pacientes = () => {
   }
 
   const loadClinicas = async ()=>{
+    if (user.data.cnpj) { return }
+    if (user.data.clinica) { return }
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       console.log(data)
       setClinicas(data.data)
@@ -160,7 +158,6 @@ export const Pacientes = () => {
   }
 
   const searchPatient = (search) => {
-    console.log(search.target.value)
     if (searchBy === 'nome') {
       var patients = patientsArray.filter(item => item.pessoa.nome.toLowerCase().includes(search.target.value.toLowerCase()))
       setPatiens(patients)
@@ -175,16 +172,39 @@ export const Pacientes = () => {
     loadClinicas().then(()=>{
       setPageLoading(false)
     })
+
+    if (user.data.cnpj) {
+      setPageLoading(true)
+      loadPatients().then(() => {
+        setPageLoading(false)
+      })
+    }
   }, [])
 
   useEffect(()=>{
     if(clinica){
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
         setPageLoading(false)
       })
     }
-  },[clinica])
+  }, [clinica])
+
+  let pacientes_load = false;
+  useEffect(()=>{
+    if(pacientes_load){ return }
+
+    if (user.data.clinica) {
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
+    }
+  }, [user.data.clinica])
 
   useEffect(() => {
     if (patient) {
@@ -373,7 +393,7 @@ export const Pacientes = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex>
         :
-        !clinica ? 
+        user.data.crm && !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
           <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>

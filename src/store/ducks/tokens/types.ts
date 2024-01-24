@@ -27,7 +27,8 @@ export interface User {
     nome: string,
     telefone: string,
     cargo: string
-  }
+  },
+  clinica: object,
 }
 
 export interface TokenData {

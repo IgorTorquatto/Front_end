@@ -40,7 +40,6 @@
 #hist-download-button-context{
     grid-area: hist-download-button-context;
     text-align: right;
-    z-index: 99;
 }
 
 #paciente-nome {

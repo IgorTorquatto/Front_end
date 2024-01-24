@@ -1,20 +1,12 @@
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/noto_lungs.png";
 import "./NavBarComp.css";
 
 import { AiOutlineProfile } from "react-icons/ai";
 import { MdOutlineExitToApp } from "react-icons/md";
-import { Avatar, Box, Text, IconButton } from "@chakra-ui/react";
-import {
-  TriangleDownIcon,
-  AddIcon,
-  ExternalLinkIcon,
-  RepeatIcon,
-  EditIcon,
-  HamburgerIcon,
-} from "@chakra-ui/icons";
+import { FaRegBuilding } from "react-icons/fa";
+import { Avatar, Box, Text, IconButton, MenuGroup, MenuDivider } from "@chakra-ui/react";
 import { loadLogout, loadSession } from "../../store/ducks/tokens/actions.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,12 +15,9 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
 } from "@chakra-ui/react";
 import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
+import { MedicoClinicas } from "./MedicoClinicas";
 
 export const NavbarComp = ({ customClass, showEntrarButton }) => {
   const location = useLocation();
@@ -65,7 +54,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
             <DiagnosticaLogo />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          {user.logged && <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="center-nav-links">
               <Nav.Link
                 as={Link}
@@ -128,7 +117,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                 </div>
               </Nav.Link>
             </Nav>
-          </Navbar.Collapse>
+          </Navbar.Collapse>}
 
           {user.logged ? (
             <Box
@@ -137,18 +126,16 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
               alignItems={"center"}
               verticalAlign="center"
             >
-              <Avatar
-                name={user?.data?.pessoa?.nome}
-                src={user?.data?.foto_perfil}
-              />
+              
               <Menu>
                 <MenuButton
-                  as={IconButton}
+                  as={Avatar}
                   aria-label="Options"
-                  icon={<HamburgerIcon />}
+                  icon={ <Avatar name={user?.data?.pessoa?.nome} src={user?.data?.foto_perfil}/> }
                   variant="outline"
                   border="none"
                   colorScheme="white"
+                  cursor={'pointer'}
                 />
                 <MenuList
                   colorScheme="white"
@@ -172,6 +159,17 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   >
                     Perfil
                   </MenuItem>
+                  
+                  
+                  {user.data.crm &&
+                  <>
+                  <MenuDivider />
+                  <MenuGroup title="Clínicas" fontSize={'1.1rem'}>
+                    <MedicoClinicas medico_id={user.data.id} clinica_id={user.data.clinica ? user.data.clinica.id : null} />
+                  </MenuGroup>
+                  <MenuDivider />
+                  </>
+                  }
 
                   <MenuItem
                     icon={<MdOutlineExitToApp />}
