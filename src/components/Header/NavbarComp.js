@@ -127,7 +127,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
               verticalAlign="center"
             >
               <Avatar
-                name={user.data.pessoa.nome}
+                name={user.data?.pessoa?.nome}
                 src="https://bit.ly/broken-link"
               />
               <Menu>
