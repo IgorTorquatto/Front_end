@@ -29,7 +29,7 @@ export const MyFooter = () => {
         </div>
 
         <div className="col-md-auto mr-10 my-3">
-          <h5 style={{ color: "#F8F8FF" }}>Grupo Diagnóstica</h5>
+          <h5 style={{ color: "#F8F8FF" }}>Grupo d.IAgnóstica</h5>
           <a
             className="f_location"
             href="https://maps.app.goo.gl/ocJoRj6kGdzqgTj59"

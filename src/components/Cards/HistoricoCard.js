@@ -6,6 +6,8 @@ import { LuDownload } from "react-icons/lu";
 import './HistoricoCard.css'
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
+import { cpf_mask } from '../Forms/form-masks';
+
 export const HistoricoCard = ({ data }) => {
 
     const [downloadIconColor, setDownloadIconColor] = useState('white')
@@ -62,24 +64,27 @@ export const HistoricoCard = ({ data }) => {
     
         // Remove o link do documento
         document.body.removeChild(link);
-      }
+    }
 
     return (
-        <Box className='historico-card-container' cursor={'pointer'} >
+        <Box id='historico-card-container' cursor={'pointer'} >
             <Box className='card-title-context'>
-                <span className='hcard-text'>Modelo: {data.modelo}</span>
-                <span className='hcard-text'>Data e Hora: {dayjs(new Date(data.data_hora)).format('DD/MM/YYYY')}</span>
-            </Box>
-            <Box className='historico-card-body'>
-                <Box id='paciente-info'>
-                    <span className='hcard-text'>Paciente: {data.paciente.pessoa.nome}</span>
-                    <span className='hcard-text'>CPF: {data.paciente.pessoa.cpf}</span>
+                <Box id='paciente-nome'>
+                    <span className='hcard-text'>Nome: <b>{data.paciente.pessoa.nome}</b></span>
                 </Box>
+
+                <Box id='paciente-cpf'>
+                    <span className='hcard-text'>CPF: <b>{cpf_mask(data.paciente.pessoa.cpf)}</b></span>
+                </Box>
+
                 <Box id='resultado-exame'>
-                    <span className='hcard-text'>Resultado: {data.resultado_real}</span>
-
-
+                    <span className='hcard-text'>Diagnóstico: <b>{data.resultado_real}</b></span>
                 </Box>
+                
+                <Box id='data-info'>
+                    <span className='hcard-text right'>{dayjs(new Date(data.data_hora)).format('DD/MM/YYYY')}</span>
+                </Box>
+
                 <Box id='hist-download-button-context'>
                     <button type="button" className="btn btn-outline-light" onClick={(event) => {
                         event.stopPropagation();
@@ -89,8 +94,8 @@ export const HistoricoCard = ({ data }) => {
                         onMouseLeave={() => changeIconColor("out")}>
                         <LuDownload color={downloadIconColor} size={'24px'} />
                     </button>
-
                 </Box>
+
             </Box>
         </Box>
     );

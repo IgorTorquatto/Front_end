@@ -2,7 +2,7 @@ import React from "react";
 import { Menu, MenuItem } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { loadLogout } from "../../store/ducks/tokens/actions.ts";
+import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
 import { MdOutlineExitToApp } from "react-icons/md";
 import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
@@ -15,9 +15,15 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api, apiUnAuth } from "../../services/api.ts";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
+import { 
+  cpf_mask_remove,
+  telefone_mask_remove, 
+} from "../Forms/form-masks.js";
+import $ from 'jquery'
+import 'jquery-mask-plugin'
 import "./AtualizarDados.css";
 
-export const AtualizarDados = () => {
+export const AtualizarDados = ({ onCancel }) => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -29,20 +35,12 @@ export const AtualizarDados = () => {
         .email("Informe um email valido")
         .required("Informe um email valido"),
       telefone: yup.string().required("Informe um telefone valido"),
-      cpf: yup.string().required("Informe um cpf valido"),
+      cpf: yup.string().min(11, 'CPF incompleto').required("Informe um cpf valido"),
       data_nascimento: yup
         .string()
         .required("Informe uma data de nascimento valida"),
-      crm: yup.string().required("Informe um crm valido"),
+      crm: yup.string().min(6, "CRM incompleto").required("Informe um crm valido"),
       especialidade: yup.string().required("Informe uma especialidade valida"),
-      senha: yup
-        .string()
-        .min(8, "a senha deve conter 8 caracteres")
-        .required("Digite uma senha"),
-      confirmarSenha: yup
-        .string()
-        .required("Digite sua senha novamente")
-        .oneOf([yup.ref("senha")], "As senhas devem ser iguais"),
     })
     .required();
   const {
@@ -53,34 +51,33 @@ export const AtualizarDados = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (user) => {
+  const onSubmit = async (edit_user) => {
     const pessoa = {
-      cpf: user.cpf,
-      data_nascimento: user.data_nascimento,
-      nome: user.nome,
-      telefone: user.telefone,
+      cpf: edit_user.cpf,
+      data_nascimento: edit_user.data_nascimento,
+      nome: edit_user.nome,
+      telefone: edit_user.telefone,
       cargo: "Médico",
     };
-    await apiUnAuth
-      .post("/pessoa", pessoa)
+    
+    pessoa.cpf = cpf_mask_remove(pessoa.cpf)
+    pessoa.telefone = telefone_mask_remove(pessoa.telefone)
+
+    await api
+      .put(`/pessoa/${user.data.id_pessoa}`, pessoa)
       .then(({ data }) => {
         const medico = {
           id_pessoa: data.data.id,
-          crm: user.crm,
-          especialidade: user.especialidade,
-          senha: user.senha,
-          email: user.email,
+          crm: edit_user.crm,
+          especialidade: edit_user.especialidade,
+          email: edit_user.email,
         };
 
-        apiUnAuth
-          .post("/medico", medico)
+        api
+          .put(`/medico/${user.data.id}`, medico)
           .then(({ data }) => {
-            const login = {
-              email: user.email,
-              senha: user.senha,
-            };
-            dispatch(loadSession(login));
-            history("/sobre");
+            dispatch(editProfile(data.data));
+            window.location.reload()
           })
           .catch(({}) => {});
       })
@@ -88,6 +85,16 @@ export const AtualizarDados = () => {
         // alert("Error ao cadastrar")
       });
   };
+
+  const handleCancel = () => {
+    onCancel();
+  };
+
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCRM').mask('000000')
+  });
 
   return (
     <>
@@ -97,10 +104,10 @@ export const AtualizarDados = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="custom-formcomp mt-4"
         >
-          <div className="row">
+          <div className="row perfil-row">
             <div className="col-md-6">
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputNome">Nome: </label>
+                <label htmlFor="FormControlInputNome">Nome</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
@@ -114,7 +121,7 @@ export const AtualizarDados = () => {
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputEmail">
                   {" "}
-                  Endereço de email:{" "}
+                  Endereço de email{" "}
                 </label>
                 <input
                   type="email"
@@ -122,28 +129,31 @@ export const AtualizarDados = () => {
                   id="FormControlInputEmail"
                   {...register("email")}
                   placeholder="novoemail@email.com"
+                  defaultValue={user.data.email}
                 />
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputCPF">CPF: </label>
+                <label htmlFor="FormControlInputCPF">CPF</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputCPF"
                   placeholder="Atualize o seu CPF"
                   {...register("cpf")}
+                  defaultValue={user.data.pessoa.cpf}
                 />
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputCRM">CRM: </label>
+                <label htmlFor="FormControlInputCRM">CRM</label>
                 <input
                   type="text"
                   className="form-control formcomp-input"
                   id="FormControlInputCRM"
                   placeholder="Atualize o seu CRM"
                   {...register("crm")}
+                  defaultValue={user.data.crm}
                 />
               </div>
             </div>
@@ -151,7 +161,7 @@ export const AtualizarDados = () => {
             <div className="col-md-6">
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputData">
-                  Data de Nascimento:{" "}
+                  Data de nascimento{" "}
                 </label>
                 <input
                   type="date"
@@ -159,28 +169,30 @@ export const AtualizarDados = () => {
                   id="FormControlInputData"
                   placeholder="Digite seu nome completo"
                   {...register("data_nascimento")}
+                  defaultValue={user.data.pessoa.data_nascimento}
                 />
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputTel"> Telefone: </label>
+                <label htmlFor="FormControlInputTel">Telefone</label>
                 <input
                   type="tel"
                   className="form-control formcomp-input"
                   id="FormControlInputTel"
                   placeholder="(99) 9 9999-9999"
-                  pattern="[0-9]*"
                   {...register("telefone")}
                   title="Digite apenas números"
+                  defaultValue={user.data.pessoa.telefone}
                 />
               </div>
 
               <div className="form-group mt-2 ">
-                <label htmlFor="FormControlInputEsp">Especialização: </label>
+                <label htmlFor="FormControlInputEsp">Especialização</label>
                 <select
                   className="form-control formcomp-input"
                   id="FormControlInputEsp"
                   {...register("especialidade")}
+                  defaultValue={user.data.especialidade}
                 >
                   <option value="" disabled selected>
                     Escolha um dos itens listados
@@ -198,7 +210,11 @@ export const AtualizarDados = () => {
             <button type="submit" className="btn-salvar">
               Atualizar dados
             </button>
-            <button type="button" className="btn-cancelar">
+            <button
+              type="button"
+              className="btn-cancelar"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
           </div>

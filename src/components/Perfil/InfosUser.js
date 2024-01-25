@@ -1,19 +1,16 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import {
-  FaUser,
-  FaEnvelope,
-  FaCalendarAlt,
-  FaPhone,
-  FaBriefcase,
-  FaBuilding,
-  FaRegIdCard
-} from "react-icons/fa";
+import {FaUser,FaEnvelope,FaCalendarAlt,FaPhone,FaBriefcase,FaBuilding,FaRegIdCard,FaIdCard} from "react-icons/fa";
 import "./InfosUser.css";
+import { 
+  cpf_mask,
+  telefone_mask,
+  data_mask, 
+} from "../Forms/form-masks";
 
 export const InfosUser = () => {
   const { data: user } = useSelector((state) => state.tokens);
-  console.log(user)
+
   return (
     <>
       <div className="infosuser-info">
@@ -30,12 +27,11 @@ export const InfosUser = () => {
             </div>
             <div>
               <FaCalendarAlt />
-              <strong>Data de Nascimento:</strong>{" "}
-              {user.data.pessoa.data_nascimento}
+              <strong>Data de Nascimento: </strong> {data_mask(user.data.pessoa.data_nascimento)}
             </div>
             <div>
               <FaPhone />
-              <strong>Telefone:</strong> {user.data.pessoa.telefone}
+              <strong>Telefone:</strong> {telefone_mask(user.data.pessoa.telefone)}
             </div>
             <div>
               <FaBriefcase />
@@ -44,12 +40,12 @@ export const InfosUser = () => {
           </div>
           <div className="column">
               <div>
-                <FaRegIdCard />
+                <FaIdCard />
                 <strong>CRM:</strong> {user.data.crm}
               </div>
               <div>
                 <FaRegIdCard />
-                <strong>CPF:</strong> {user.data.crm}
+                <strong>CPF:</strong> {cpf_mask(user.data.pessoa.cpf)}
               </div>
               <div>
                 <FaCalendarAlt />
@@ -58,10 +54,6 @@ export const InfosUser = () => {
               <div>
                 <FaBuilding />
                 <strong>Clínica:</strong> {user.data.pessoa.clinica}
-              </div>
-              <div>
-                <FaBuilding />
-                <strong>Exemplo:</strong> {user.data.pessoa.clinica}
               </div>
           </div>
         </div>

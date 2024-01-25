@@ -1,42 +1,69 @@
 import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Pacientes.css'
-
 import { useEffect, useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
-import { CiEdit } from "react-icons/ci";
-import { FaBars  } from "react-icons/fa";
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api.ts'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Box, Textarea, Button, Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
   Text,
   Input,
-  Select,
-  Stack
+  Select as ChakraSelect,
+  Spinner,
+  Flex
 } from '@chakra-ui/react'
-import { Container } from 'react-bootstrap';
+import { MyFooter } from '../../components/Footer/Footer'
+import PatientCard from '../../components/Cards/PatientCard';
+import Select from 'react-select';
+import {cpf_mask, 
+  telefone_mask, 
+  cpf_mask_remove, 
+  telefone_mask_remove,
+  cep_mask_remove
+} from '../../components/Forms/form-masks'
+import $ from 'jquery'
+import 'jquery-mask-plugin'
+
+yup.setLocale({
+  string: {
+    length: 'deve ter exatamente ${length} caracteres',
+    min: 'deve ter pelo menos ${min} caracteres',
+    max: 'deve ter no máximo ${max} caracteres',
+    email: 'tem o formato de e-mail inválido',
+    url: 'deve ter um formato de URL válida',
+    trim: 'não deve conter espaços no início ou no fim.',
+    lowercase: 'deve estar em maiúsculo',
+    uppercase: 'deve estar em minúsculo',
+  },
+  mixed: {
+    default: 'Não é válido',
+  },
+  number: {
+    min: 'Deve ser maior que ${min}',
+  },
+});
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
+  cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
   cidade: yup.string().required('Informe uma cidade valida'),
@@ -47,22 +74,24 @@ const schema = yup.object({
 const schemaEdit = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
+  cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
   bairro: yup.string().required('Informe um bairro valido'),
   cidade: yup.string().required('Informe uma cidade valida'),
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
+
 export const Pacientes = () => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
     resolver: yupResolver(schema),
-    shouldUnregister:true
+    shouldUnregister: true
   });
 
   const { register: resgisterEdit, handleSubmit: handleSubmitEdit, formState: { errors: errorsEdit }, setValue } = useForm({
@@ -77,20 +106,24 @@ export const Pacientes = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
 
-  const [showPassword, setShowPassword] = useState('password')
-  const [visible, setVisible] = useState(true)
-  const [page, setPage] = useState(1)
   const [selectedState, setSelectedState] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientsArray, setPatientsArray] = useState([]);
   const [patients, setPatiens] = useState([]);
-  const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
   const [loadingCadastro, setLoadingCadastro] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-async function loadPatients() {
-    await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
+  const [pageLoading, setPageLoading] = useState(true);
+  const [clinica, setClinica] = useState(null);
+  const [clinicas, setClinicas] = useState([]);
+  const [clinicasArray, setClinicasArray] = useState([]);
+
+  const local = useLocation()
+
+  async function loadPatients() {
+    let id = user.data.cnpj ? user.data.id : user.data.clinica.id
+    await api.get(`/paciente?id_clinica=${id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
 
@@ -99,8 +132,32 @@ async function loadPatients() {
     })
   }
 
+  const loadClinicas = async ()=>{
+    if (user.data.cnpj) { return }
+    if (user.data.clinica) { return }
+    await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
+      console.log(data)
+      setClinicas(data.data)
+      const clinicasOptions= []
+      data.data.map(item=>{
+        const clinica = {
+          value: item.id,
+          label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
+        }
+        clinicasOptions.push(clinica)
+      })
+
+      setClinicasArray(clinicasOptions)
+      
+    })
+  }
+
+  const handleClinica = (clinicaSelecionada) =>{
+    const clinicaFind = clinicas.find(clinica=> clinica.id === clinicaSelecionada.value)
+    setClinica(clinicaFind)
+  }
+
   const searchPatient = (search) => {
-    console.log(search.target.value)
     if (searchBy === 'nome') {
       var patients = patientsArray.filter(item => item.pessoa.nome.toLowerCase().includes(search.target.value.toLowerCase()))
       setPatiens(patients)
@@ -112,8 +169,42 @@ async function loadPatients() {
   }
 
   useEffect(() => {
-    loadPatients()
+    loadClinicas().then(()=>{
+      setPageLoading(false)
+    })
+
+    if (user.data.cnpj) {
+      setPageLoading(true)
+      loadPatients().then(() => {
+        setPageLoading(false)
+      })
+    }
   }, [])
+
+  useEffect(()=>{
+    if(clinica){
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
+    }
+  }, [clinica])
+
+  let pacientes_load = false;
+  useEffect(()=>{
+    if(pacientes_load){ return }
+
+    if (user.data.clinica) {
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
+    }
+  }, [user.data.clinica])
 
   useEffect(() => {
     if (patient) {
@@ -121,6 +212,7 @@ async function loadPatients() {
       setValue('cpf', patient.pessoa.cpf);
       setValue('estado', patient.estado);
       setValue('sexo', patient.sexo);
+      setValue('cep', patient.cep);
       setValue('logradouro', patient.logradouro);
       setValue('numero', patient.numero);
       setValue('tipo_sanguineo', patient.tipo_sanguineo);
@@ -145,8 +237,7 @@ async function loadPatients() {
   }
 
   const openInfo = (paciente) => {
-    if (paciente) 
-    {
+    if (paciente) {
       setSelectedPatient(paciente)
     }
     setIsInfoOpen(true);
@@ -158,6 +249,12 @@ async function loadPatients() {
   };
 
   const onSubmit = async (novopaciente) => {
+
+    novopaciente.cpf = cpf_mask_remove(novopaciente.cpf)
+    novopaciente.telefone = telefone_mask_remove(novopaciente.telefone)
+    novopaciente.cep = cep_mask_remove(novopaciente.cep)
+
+    novopaciente.tipo_sanguineo = novopaciente.tipo_sanguineo.toUpperCase()
 
     const pessoa = {
       cpf: novopaciente.cpf,
@@ -171,17 +268,17 @@ async function loadPatients() {
     await api.post('/pessoa', pessoa).then(({ data }) => {
       const paciente = {
         id_pessoa: data.data.id,
-        id_medico: user.data.id,
+        id_clinica: clinica.id,
         sexo: novopaciente.sexo,
         tipo_sanguineo: novopaciente.tipo_sanguineo,
         detalhes_clinicos: novopaciente.detalhes_clinicos,
+        cep: novopaciente.cep,
         logradouro: novopaciente.logradouro,
         bairro: novopaciente.bairro,
         cidade: novopaciente.cidade,
         numero: novopaciente.numero,
         estado: novopaciente.estado,
       }
-      console.log(paciente)
 
       api.post('/paciente', paciente).then(({ data }) => {
         setLoadingCadastro(false)
@@ -197,6 +294,12 @@ async function loadPatients() {
     // history('/diagnostico')
   };
   const onSubmitEdit = async (editpaciente) => {
+
+    editpaciente.cpf = cpf_mask_remove(editpaciente.cpf)
+    editpaciente.telefone = telefone_mask_remove(editpaciente.telefone)
+    editpaciente.cep = cep_mask_remove(editpaciente.cep)
+
+    editpaciente.tipo_sanguineo = editpaciente.tipo_sanguineo.toUpperCase()
 
     const pessoa = {
       cpf: editpaciente.cpf,
@@ -218,7 +321,6 @@ async function loadPatients() {
         numero: editpaciente.numero,
         estado: editpaciente.estado,
       }
-      console.log(paciente)
 
       api.put(`/paciente/${patient.id}`, paciente).then(({ data }) => {
         history('/pacientes')
@@ -237,6 +339,10 @@ async function loadPatients() {
   const handleChange = (selectedState) => {
     setSelectedState(selectedState);
   };
+
+  const changeButtonContent = (setFunction, mouseEvent) => {
+    mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3')
+  }
 
   const states = [
     { label: 'Acre', value: 'AC' },
@@ -268,55 +374,67 @@ async function loadPatients() {
     { label: 'Tocantins', value: 'TO' },
   ];
 
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCEP').mask('00000-000')
+    $('#FormControlInputTipoSanguineo').mask('AA0', {
+      translation: {
+        'A': { pattern: /[ABOabo]/ },
+        '0': { pattern: /[+-]/ }
+      }
+    })
+  })
+
   return (
-    <main>
+    <main style={{ backgroundColor: '#F8F8FF' }}>
       <header><NavbarComp showEntrarButton={true} /></header>
-      <Box m='2rem 0' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
-        <Box display='flex' w='100%' >
-          <Select onChange={(e)=>setSearchBy(e.target.value)} w='20%'  ml='10%' icon={<GiSettingsKnobs/>} mr='1rem'>
-            <option value='nome'>Nome</option>
-            <option value='cpf'>CPF</option>
-          </Select>
-          <Input placeholder='Procurar paciente'  mr='0.5rem' onChange={searchPatient} />
-          <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
-        </Box>
+      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+        <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
+      </Flex>
+        :
+        user.data.crm && !user.data.clinica ? 
+        <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
+          <Box w='80%'>
+          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
+            <Select
+            
+              value={clinica}
+              onChange={handleClinica}
+              options={clinicasArray}
+              isSearchable
+              placeholder="Digite para buscar..."
+            />
+          </Box>
+        </Box> : 
+        <Box m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+          <Box display='flex' w='90%' >
+            <ChakraSelect onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem' bg={'white'}>
+              <option value='nome'>Nome</option>
+              <option value='cpf'>CPF</option>
+            </ChakraSelect>
+            <Input placeholder='Procurar paciente' mr='0.5rem' onChange={searchPatient} bg={'white'} />
+            <Button colorScheme='blue' alignSelf='flex-end' w='20%' mr='10%' onClick={onOpen} >Cadastrar Paciente</Button>
+          </Box>
 
-        <Box
-          w='80%'
-          h='80%'
-        >
-          {patients.map(paciente => (
-            <Box color='white' className='patientBox'  padding='0.5rem' borderRadius='1rem' margin='2rem 0' display='flex' justifyContent='center' alignItems='center' background='#3b83c3'>
-              <Box display='flex' padding='0.5rem' w='100%'>
-                <div id='patientInformations'>
-                  <div>
-                    <p>
-                      PACIENTE: 
-                    </p>
-                      <span style={{ fontSize: 'larger' }}>{paciente.pessoa.nome}</span>
-                  </div>
-                  <div>
-                    <p>
-                      CPF: 
-                    </p>
-                    <span style={{ fontSize: 'larger'}}>{paciente.pessoa.cpf}</span>
-                </div>
-                </div>
+       
+
+            <Box m='2rem 0' w='100%' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
+
+              <Box
+                w='80%'
+                h='80%'
+              >
+                {patients.map(paciente => (
+                  <PatientCard paciente={paciente} openEdit={openEdit} openInfo={openInfo} />
+                ))}
+
               </Box>
-            <Stack spacing={3}>
-              <Button leftIcon={<FaBars />} onClick={() => { openInfo(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
-                Informações
-              </Button>
-              <Button leftIcon={<CiEdit />} onClick={() => { openEdit(paciente) }} colorScheme='linkedin' variant='solid' border='2px solid #1a4b7b'>
-                Editar
-              </Button>
-            </Stack>
             </Box>
-
-          ))}
-
-
-        </Box>
+          </Box> 
+          
+        }
+      <Box>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
@@ -378,7 +496,6 @@ async function loadPatients() {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...register("telefone")}
                     title="Digite apenas números"
                   />
@@ -413,7 +530,7 @@ async function loadPatients() {
                     type="text"
                     className="form-control formcomp-input"
                     id="FormControlInputTipoSanguineo"
-                    placeholder="Ex: A+"
+                    placeholder="Ex: AA+"
                     {...register("tipo_sanguineo")}
                   />
                   <div className={errors.tipo_sanguineo ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -439,6 +556,20 @@ async function loadPatients() {
                     <p>{errors.detalhes_clinicos?.message}</p>
                   </div>
 
+                </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCEP">CEP*</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCEP"
+                    placeholder=""
+                    {...register("cep")}
+                  />
+                  <div className={errors.cep ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errors.cep?.message}</p>
+                  </div>
                 </div>
 
                 <div className="form-group mt-2 ">
@@ -486,7 +617,7 @@ async function loadPatients() {
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNumero">Numero*</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control formcomp-input"
                     id="FormControlInputNumero"
                     placeholder=""
@@ -526,13 +657,13 @@ async function loadPatients() {
           </ModalContent>
         </Modal>
 
-        <Modal isOpen={isEditOpen} onClose={onCloseEdit}>
+        <Modal isOpen={isEditOpen} onClose={onCloseEdit} size={'lg'}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Editar Informações</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp">
+              <form onSubmit={handleSubmitEdit(onSubmitEdit)} className="custom-formcomp" style={{paddingBottom: '1rem'}}>
 
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNome">Nome</label>
@@ -590,7 +721,6 @@ async function loadPatients() {
                     className="form-control formcomp-input"
                     id="FormControlInputTel"
                     placeholder="(99) 9 9999-9999"
-                    pattern="[0-9]*"
                     {...resgisterEdit("telefone")}
                     title="Digite apenas números"
                   />
@@ -652,6 +782,20 @@ async function loadPatients() {
                   </div>
 
                 </div>
+                <div className="form-group mt-2 ">
+                  <label htmlFor="FormControlInputCEP">CEP</label>
+                  <input
+                    type="text"
+                    className="form-control formcomp-input"
+                    id="FormControlInputCEP"
+                    placeholder=""
+                    {...resgisterEdit("cep")}
+                  />
+                  <div className={errorsEdit.cep ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+                    <AiOutlineInfoCircle />
+                    <p>{errorsEdit.cep?.message}</p>
+                  </div>
+                </div>
 
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputLogradouro">Logradouro</label>
@@ -698,7 +842,7 @@ async function loadPatients() {
                 <div className="form-group mt-2 ">
                   <label htmlFor="FormControlInputNumero">Numero</label>
                   <input
-                    type="text"
+                    type="number"
                     className="form-control formcomp-input"
                     id="FormControlInputNumero"
                     placeholder=""
@@ -730,8 +874,8 @@ async function loadPatients() {
                     <p>{errorsEdit.estado?.message}</p>
                   </div>
                 </div>
-                
-                <Button type="submit" isLoading={loadingCadastro} mt = '0.8rem' >Editar</Button>
+
+                <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} mt='0.8rem' >Editar</Button>
 
               </form>
             </ModalBody>
@@ -740,24 +884,25 @@ async function loadPatients() {
         </Modal>
         <Modal isOpen={isInfoOpen} onClose={closeInfo}>
           <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Informações do Paciente</ModalHeader>
-                <ModalCloseButton />
-                  <ModalBody>
-                    <Text>Name: {selectedPatient?.pessoa.nome}</Text>
-                    <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
-                    <Text>Telefone: {selectedPatient?.telefone}</Text>
-                    <Text>Rua: {selectedPatient?.logradouro}</Text>
-                    <Text>Bairro: {selectedPatient?.bairro}</Text>
-                    <Text>Número: {selectedPatient?.numero}</Text>
-                    <Text>Cidade: {selectedPatient?.cidade}</Text>
-                  </ModalBody>
-            </ModalContent>
+          <ModalContent>
+            <ModalHeader>Informações do Paciente</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Name: {selectedPatient?.pessoa.nome}</Text>
+              <Text>CPF: {cpf_mask(selectedPatient?.pessoa.cpf)}</Text>
+              <Text>Telefone: {telefone_mask(selectedPatient?.pessoa.telefone)}</Text>
+              <Text>Rua: {selectedPatient?.logradouro}</Text>
+              <Text>Bairro: {selectedPatient?.bairro}</Text>
+              <Text>Número: {selectedPatient?.numero}</Text>
+              <Text>Cidade: {selectedPatient?.cidade}</Text>
+            </ModalBody>
+          </ModalContent>
         </Modal>
       </Box>
 
-
-
+      <div>
+        <MyFooter />
+      </div>
     </main>
   )
 }

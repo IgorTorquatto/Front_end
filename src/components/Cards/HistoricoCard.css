@@ -1,15 +1,17 @@
-.historico-card-container{
+@import url('https://fonts.googleapis.com/css2?family=Hedvig+Letters+Sans&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+#historico-card-container{
     height: 100%;
     width: 100%;
-    background-color: #3B83C3 !important;
+    background-color: #0b2a45 !important;
     flex-direction: column;
     display: flex;
     padding: 15px 10px;
-    border-radius: 15px;
+    border-radius: 10px;
     transition: all 200ms;
 }
 
-.historico-card-container:hover{
+#historico-card-container:hover{
     /* box-shadow:'0px 4px 4px 0px rgba(0, 0, 0, 0.25)'; */
     transform: scale(1.05);
     box-shadow: -10px 10px 25px 1px rgba(0,0,0,0.25);
@@ -18,48 +20,38 @@
 }
 
 .card-title-context{
-    background-color: #002F59;
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: space-around;
-    padding: 2px 20px;
-    border-radius: 15px;
-    margin-bottom: 10px;
-}
-
-.historico-card-body{
-    display: flex;
-    justify-content: space-around;
+    display: grid;
+    gap: 5px 5px;
+    grid-auto-flow: row;
+    grid-template-areas: 
+        "paciente-nome data-info"
+        "paciente-cpf  hist-download-button-context"
+        "resultado-exame hist-download-button-context";    
     padding: 0px 10px;
+    width: 100%;
 }
 
-.hcard-text{
-    color: #ffffff;
-    margin-bottom: 2px;
+#data-info {
+    grid-area: data-info;
+    text-align: right;
 }
+
 
 #hist-download-button-context{
-    flex-grow: 1;
-    align-items: center;
-    justify-content: flex-end;
-    display: flex;
-    z-index: 99;
+    grid-area: hist-download-button-context;
+    text-align: right;
 }
 
-#paciente-info{
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    justify-content: center;
+#paciente-nome {
+    grid-area: paciente-nome;
+}
+
+#paciente-cpf {
+    grid-area: paciente-cpf;
 }
 
 #resultado-exame{
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    grid-area: resultado-exame;
 }
 
 #result-icon-context{
@@ -72,9 +64,18 @@
     cursor: pointer;
 }
 
+.hcard-text{
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
 #icon-context{
     border: 1px dashed rgba(255, 255, 255, 0.705);
     margin-right: 4px;
     height: 24px;
     width: 24px;
+}
+
+#historico-card-container span{
+    font-family: poppins;
 }

@@ -7,6 +7,7 @@ import { AccordionComp } from "../../components/Accordion/AccordionComp";
 import { MyFooter } from "../../components/Footer/Footer";
 
 export const Home = () => {
+
   return (
     <>
       <div className="home-container">

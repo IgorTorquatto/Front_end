@@ -9,7 +9,7 @@ import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import "./AlterarSenha.css";
 
-export const AlterarSenha = () => {
+export const AlterarSenha = ({ onCancel }) => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
@@ -80,6 +80,9 @@ export const AlterarSenha = () => {
         // alert("Error ao cadastrar")
       });
   };
+  const handleCancel = () => {
+    onCancel();
+  };
 
   return (
     <>
@@ -89,10 +92,10 @@ export const AlterarSenha = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="custom-formcomp mt-4"
         >
-          <div className="row">
+          <div className="row perfil-row">
             <div className="col-md-6 alterarSenha-inputs">
               <div className="form-group mt-2">
-                <label htmlFor="FormControlInputSenha">Senha:</label>
+                <label htmlFor="FormControlInputSenha">Senha</label>
                 <input
                   type="password"
                   className="form-control formcomp-input"
@@ -112,7 +115,7 @@ export const AlterarSenha = () => {
 
               <div className="form-group mt-5">
                 <label htmlFor="FormControlInputConfirmarSenha">
-                  Confirmar senha:
+                  Confirmar senha
                 </label>
                 <input
                   type="password"
@@ -139,7 +142,11 @@ export const AlterarSenha = () => {
             <button type="submit" className="btn-salvar">
               Atualizar dados
             </button>
-            <button type="button" className="btn-cancelar">
+            <button
+              type="button"
+              className="btn-cancelar"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
           </div>

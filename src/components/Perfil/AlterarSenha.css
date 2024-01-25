@@ -1,22 +1,25 @@
-.alterarSenha-container{
-    height: 80vh;
-}
-
 .alterarSenha-container h2 {
-    margin-bottom: 60px;
-    font-size: 28px;
-    text-align: center;
+  margin-bottom: 40px;
+  margin-top: 20px;
+  font-size: 25px;
+  text-align: center;
 }
 
 .alterarSenha-buttons {
   position: absolute;
   bottom: 0;
   right: 30px;
-  margin-bottom: 20px;
-  margin-right: 30px;
+  font-size: 14px;
+  margin-bottom: 200px;
+  margin-right: 80px;
 }
 
-.alterarSenha-inputs{
-    margin: 0 auto;
-    margin-top: 60px;
+.alterarSenha-inputs {
+  margin: 0 auto;
+  margin-top: 60px;
+}
+
+.perfil-row{
+  margin-left: 5px;
+  max-width: 98%;
 }

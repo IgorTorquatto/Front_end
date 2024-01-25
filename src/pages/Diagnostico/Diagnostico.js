@@ -2,18 +2,16 @@ import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
+import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra } from '@chakra-ui/react'
+import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner, Flex, Input, Center } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
-import PDFReport from '../../components/Pdf/PdfViewer'
-import { Document, Page } from 'react-pdf';
 import jsPDF from 'jspdf';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
-import {imagemDeFundo} from '../../assets/logo d.png';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
 
@@ -31,26 +29,56 @@ export const Diagnostico = () => {
   const [imageCam, setImageCam] = useState(null);
   const [error, setError] = useState(false);
   const [pdfDataUri, setPdfDataUri] = useState(null);
-  const [termo, setTermo] = useState(false);
+  const [termo, setTermo] = useState(null);
   const [downloadLaudo, setDownloadLaudo] = useState(false);
+  const [outroLaudo, setOutroLaudo] = useState(null)
+  const [outroLaudoErro, setOutroLaudoErro] = useState(false)
   const [observacoes, setObservacoes] = useState('Seu laudo vem aqui...');
   const [loadingLaudo, setLoadingLaudo] = useState(false)
   const [resultLaudo, setResultLaudo] = useState(null)
   const [resultReal, setResultReal] = useState(null);
   const [laudoError, setLaudoError] = useState(false);
+  const [obsState, setobsState] = useState(true);
+
+  const [pageLoading, setPageLoading] = useState(true);
+
+  const [clinica, setClinica] = useState(null);
+  const [clinicas, setClinicas] = useState([]);
+  const [clinicasArray, setClinicasArray] = useState([]);
 
   const history = useNavigate()
-  
+
   const { data: user } = useSelector((state) => state.tokens);
 
   const models = [
-    { value: '1', label: 'Pneumonia - Crianças de até 5 anos' },
-    { value: '2', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '1', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '2', label: 'Pneumonia - Crianças de até 5 anos' },
   ]
 
+  const loadClinicas = async () => {
+    if (user.data.clinica) { return }
+    await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
+      setClinicas(data.data)
+      const clinicasOptions= []
+      data.data.map(item => {
+        const clinica = {
+          value: item.id,
+          label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
+        }
+        clinicasOptions.push(clinica)
+      })
+
+      setClinicasArray(clinicasOptions)
+    })
+  }
+
+  const handleClinica = (clinicaSelecionada) =>{
+    const clinicaFind = clinicas.find(clinica => clinica.id === clinicaSelecionada.value)
+    setClinica(clinicaFind)
+  }
+
   async function loadPatients() {
-    await api.get(`/paciente?id_medico=${user.data.id}`).then(({ data }) => {
-      console.log(data)
+    await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
@@ -66,16 +94,34 @@ export const Diagnostico = () => {
     })
   }
 
+  const handleCheckboxChange = (e, setter) => {
+    setter(e.target.checked);
+  };
+
   useEffect(() => {
     (async () => {
-      await loadPatients()
+      await loadClinicas().then(() => {
+        setPageLoading(false)
+      })
     })()
   }, [])
 
   useEffect(() => {
+    if (clinica) {
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
+    }
+  }, [clinica])
+  
+  useEffect(() => {
     if (prediction != null) {
       createPDF()
-
     }
   }, [prediction, observacoes])
 
@@ -87,25 +133,25 @@ export const Diagnostico = () => {
       const reader = new FileReader();
       reader.onload = (event) => {
         // Cria uma nova imagem
-      const img = new Image();
-      img.src = event.target.result;
+        const img = new Image();
+        img.src = event.target.result;
 
-      img.onload = () => {
-        // Cria um canvas
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = img.width;
-        canvas.height = img.height;
+        img.onload = () => {
+          // Cria um canvas
+          const canvas = document.createElement('canvas');
+          const context = canvas.getContext('2d');
+          canvas.width = img.width;
+          canvas.height = img.height;
 
-        // Desenha a imagem no canvas
-        context.drawImage(img, 0, 0, img.width, img.height);
+          // Desenha a imagem no canvas
+          context.drawImage(img, 0, 0, img.width, img.height);
 
-        // Converte o conteúdo do canvas para JPEG
-        const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+          // Converte o conteúdo do canvas para JPEG
+          const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.9);
 
-        // Atualiza o estado com a imagem JPEG
-        setUploadedImage(jpegDataUrl);
-      };
+          // Atualiza o estado com a imagem JPEG
+          setUploadedImage(jpegDataUrl);
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -186,28 +232,46 @@ export const Diagnostico = () => {
   }
 
   async function submitLaudo() {
-    if(!resultLaudo){
+    if (!resultLaudo) {
       setLaudoError(true)
       return
-    }else{
-      setLaudoError(false)
+    } 
+    setLaudoError(false)
+
+    if (resultReal === 'OUTRO') {
+      if (outroLaudo === '' || !outroLaudo) {
+        setOutroLaudoErro(true)
+        return
+      }
     }
+    setOutroLaudoErro(false)
+    
+    if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0) {
+      setobsState(false)
+      return
+    } 
+    setobsState(true)
+
+    if(termo == null || termo == false) {
+      setTermo(false)
+      return
+    }
+
+    
     const diagnostico = {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
       id_medico: user.data.id,
+      id_clinica: clinica.id,
       id_paciente: patient.id,
       laudo_medico: pdfDataUri,
       data_hora: new Date(),
       mapa_calor: "data:image/jpeg;base64," + imageCam,
       resultado_modelo: predictionLabel,
-      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal
+      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal === "OUTRO" ? outroLaudo : resultReal
     }
 
-    console.log(diagnostico)
-
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
-      console.log(data)
       downloadPDF(data.data.laudo_medico)
       history('/historico')
     }).catch(({ err }) => {
@@ -250,8 +314,8 @@ export const Diagnostico = () => {
   const handlePatient = (patient) => {
     setSelectedPatient(patient)
     setPatient(patientsArray.find(item => item.id === patient.value))
-
   }
+
   function calcularIdade(dataNascimento) {
     var dataAtual = new Date();
     var dataNasc = new Date(dataNascimento);
@@ -265,11 +329,14 @@ export const Diagnostico = () => {
 
   const createPDF = async () => {
     const doc = new jsPDF();
-    doc.setFontSize(25);
-    doc.setFont('georgia', 'bold');
+    doc.setFontSize(22);
+    doc.setFont('helvetica', 'bold');
     doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
 
+
+
     doc.rect(15, 35, 180, 30);
+    doc.setFont('helvetica', 'normal');
     doc.setFontSize(14);
     doc.text(`Paciente: ${patient?.pessoa?.nome}`, 20, 42);
     doc.text(`Idade: ${calcularIdade(patient?.pessoa?.data_nascimento)}`, 20, 52);
@@ -281,30 +348,49 @@ export const Diagnostico = () => {
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Tipo de exame: Raio X do tórax`, 20, 80);
+    doc.text(`Exame: Raio X do tórax`, 20, 80);
 
-    doc.rect(15, 90, 180, 170);
+    doc.rect(15, 90, 180, 150);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.text(`Laudo Médico:`, 20, 100);
     doc.setFontSize(14);
+    doc.setFont('helvetica', 'normal');
+
+    doc.addImage(DiagnosticaLogoBW, 'PNG', 45, 140, 120, 72)
+
+
+    // Para não deixar o texto escapar do PDF
+
+    const maxWidth = 160;
+    const text = `${observacoes}`;
+    const lines = doc.splitTextToSize(text, maxWidth);
+
+    const lineHeight = 10;
+    lines.forEach((line, index) => {
+      doc.text(line, 20, 120 + index * lineHeight);
+    });
+
+    doc.rect(15, 245, 180, 20);
+    doc.setFontSize(16);
     doc.setFont('helvetica', 'italic');
-    doc.text(`${observacoes}`, 20, 120);
+    doc.text(`D.IAgnóstica, seu assistente em diagnósticos.\nUniversidade Federal do Cariri - grupodiagnosticatic@gmail.com`, 20, 254);
 
     doc.addPage();
 
-    doc.rect(15, 28, 180, 10)
+    doc.rect(15, 10, 180, 10)
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text("Mapa de Calor", 20, 35);
+    doc.text("Mapa de Calor", 20, 17);
 
+    doc.addImage(imageCam, 'JPEG', 40, 22, 135, 270);
 
-    doc.setFillColor(0, 0, 0);
-    doc.rect(15, 45, 180, 200, 'F');
-    doc.addImage(imageCam, 'JPEG', -5, 55, 210, 180);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'italic');
+    doc.text('*O nível de ativação representa as regiões da imagem mais cruciais para a \nclassificação.', 20, 285);
 
-    // Converte o PDF para base64
+    // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
 
     // Atualizar o número de páginas para exibição no visor de PDF
@@ -315,21 +401,27 @@ export const Diagnostico = () => {
     // pdfContainer.innerHTML = `<embed src="${pdfDataUri}" width="100%" height="500px" type="application/pdf" />`;
   };
 
-  const calcularPredicao = (predicao)=>{
-    if(predicao > 0){
-      return "PNEUMONIA"
-    }
-    if(predicao < 0){
-      return "TURBECULOSE"
-    }
-    if(predicao > 0 && predicao < 1){
-      return "COVID"
-    }
-  }
   return (
-    <body>
+    <body style={{backgroundColor: '#F8F8FF'}}>
       <header><NavbarComp showEntrarButton={true} /></header>
-      {!prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
+      {pageLoading ?  <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+      <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
+        </Flex> : 
+        !user.data.clinica ? 
+        <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
+          <Box w='80%'>
+          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
+            <Select
+            
+              value={clinica}
+              onChange={handleClinica}
+              options={clinicasArray}
+              isSearchable
+              placeholder="Digite para buscar..."
+            />
+          </Box>
+        </Box> :
+        !prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
         <Box w='30%' padding='4rem 0'>
           <Box w='100%' >
             <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O PACIENTE</Text>
@@ -375,7 +467,7 @@ export const Diagnostico = () => {
             display='flex'
             alignItems='center'
             justifyContent='center'
-            background='d8d8d8'
+            background='#F8F8F9'
           >
             {!uploadedImage &&
               <Box lineHeight='0.5rem'>
@@ -403,7 +495,7 @@ export const Diagnostico = () => {
 
 
           </Box>
-          
+
           <Button w='100%' colorScheme={error ? 'red' : 'blue'} isLoading={loadingLaudo} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
           <Box display='flex' justifyContent='space-between'>
             <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
@@ -424,74 +516,83 @@ export const Diagnostico = () => {
 
         </Box>
       </Box> :
-        <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
-          <Box margin='4rem 0' w='50%'>
-            <Box display='flex' justifyContent='space-between'>
-              <Box>
-                <Text>Nome: {patient?.pessoa?.nome}</Text>
-                <Text>CPF: {patient?.pessoa?.cpf}</Text>
-              </Box>
-              <Box>
-                <Text>Idade: {calcularIdade(patient?.pessoa?.data_nascimento)}</Text>
-              </Box>
-
-            </Box>
-            <Box padding='0.5rem' background='#323639'>
-              <div>
-                <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
-              </div>
-            </Box>
-
-
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
-              justifyContent='left' alignItems='center' mt='1.5rem'>
-              <Text justifySelf='center'>
-                Laudo do modelo: {(Math.floor(prediction * 100) / 100)*100}% de {predictionLabel}
-              </Text>
-              {laudoError && <Text mt='1rem' justifySelf='center' color='red'>Informe a confimação do laudo</Text>}
-              <Text justifySelf='center'>
-                O Laudo do modelo está correto?
-              </Text>
-              
-              <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo}>
-                <Stack direction='row'>
-                  <Radio value='1'>Sim</Radio>
-                  <Radio value='2'>Não</Radio>
-                </Stack>
-              </RadioGroup>
-
-              {resultLaudo == 2 && <Box><Text>Qual o diagnóstico correto?</Text>
-              <SelectChakra onChange={(e)=>setResultReal(e.target.value)}>
-                <option value={"PNEUMONIA"}>PNEUMONIA</option>
-                <option value={"TURBECULOSE"}>TURBECULOSE</option>
-                <option value={"COVID"}>COVID</option>
-                <option value={"NORMAL"}>NORMAL</option>
-                </SelectChakra></Box>}
-            </Box>
-
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='center' mt='1.5rem'>
-              <Text>
-                Escreva seu laudo
-              </Text>
-              <Textarea onChange={(e) => setObservacoes(e.target.value)} />
-
-            </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /> <Text as='span' >Declaro que li e os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
-
-            </Box>
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e)} /><Text as='span'>Baixar o  laudo com a previsão do modelo</Text>
-
-            </Box>
-            <Box display='flex' mt='2rem' justifyContent='space-around'>
-              <Button colorScheme='red' borderRadius='1rem' onClick={()=>setPrediction(null)}>Revogar Laudo</Button>
-              <Button colorScheme='green' onClick={() => { submitLaudo() }} borderRadius='1rem'>Confirmar Laudo</Button>
-            </Box>
+      <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
+        <Box margin='4rem 0' w='50%'>
+          <Box padding='0.5rem' background='#323639'>
+            <div>
+              <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
+            </div>
           </Box>
 
+
+          <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
+            justifyContent='left' alignItems='left' mt='1.5rem'>
+            
+            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo} style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
+              <Text justifySelf='center'>
+                Classificação do modelo: <b>{(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}</b>
+              </Text>
+              <Text mb='-0.2rem'>
+                A classificação do modelo está correta?
+              </Text>
+              <Stack direction='row' gap='30px' mb='1.0rem' mt='0.5rem'>
+                <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
+                <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
+              </Stack>
+              {laudoError == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor responda</Text>}
+
+              {resultLaudo == 2 && 
+                <Box>
+                  <Text mb='0.2rem'>Qual o diagnóstico?</Text>
+                  <Flex>
+                    <Center w={'60%'}>
+                      <SelectChakra bg={'white'} onChange={(e) => setResultReal(e.target.value)}>
+                        <option value={"PNEUMONIA"}>Pneumonia</option>
+                        <option value={"TURBECULOSE"}>Tuberculose</option>
+                        <option value={"COVID"}>COVID-19</option>
+                        <option value={"NORMAL"}>Normal</option>
+                        <option value={"OUTRO"}>Outro</option>
+                      </SelectChakra>
+                    </Center>
+
+                    {resultReal == "OUTRO" &&
+                    <Center w={'35%'} ml={'0.5rem'}> 
+                      <Input bg={'white'} placeholder='Digite aqui o dignóstico' onChange={(e) => setOutroLaudo(e.target.value)} />
+                    </Center>
+                    }
+                  </Flex>
+                  {outroLaudoErro == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor digite o diagnóstico</Text>}
+                  
+                </Box>
+              }
+            </RadioGroup>
+
+
+            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
+              <Text mb='-0.05rem'>Descrição do laudo</Text>
+              <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
+            </Box>
+              {obsState == false && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
+            {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
+            <Box display='flex' alignItems='center' mt='1rem'>
+              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
+            </Box>
+
+          <Box display='flex' alignItems='center' mt='1rem'>
+            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a classificação do modelo</Text>
+          </Box>
+
+          <Box display='flex' mt='2rem' justifyContent='space-around'>
+            <Button colorScheme='blue' width={'10rem'} borderRadius='1rem' onClick={() => setPrediction(null)}>Voltar</Button>
+            <Button colorScheme='green' width={'10rem'} borderRadius='1rem' onClick={() => { submitLaudo() }}>Confirmar Laudo</Button>
+          </Box>
+          
         </Box>
-      }
+      </Box>
+      </Box>
+     }
+     
+
 
 
       <div>

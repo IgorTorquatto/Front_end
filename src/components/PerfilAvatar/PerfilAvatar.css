@@ -1,0 +1,13 @@
+.editAvatarOff{
+    transition: all 500ms;
+  }
+  
+  .editAvatarOn{
+    transition: all 1s;
+    width: 12rem !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    vertical-align: center !important;
+    right: 10px !important;
+  }

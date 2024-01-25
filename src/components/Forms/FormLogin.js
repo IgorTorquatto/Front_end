@@ -2,10 +2,10 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./FormLogin.css";
 
-//import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
- // AiOutlineEye,
- // AiOutlineEyeInvisible,
+  // AiOutlineEye,
+  // AiOutlineEyeInvisible,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
 import * as yup from "yup";
@@ -14,13 +14,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 //import { api } from "../../services/api.ts";
 import { useDispatch } from "react-redux";
+import { Button } from "@chakra-ui/react";
 
 const schema = yup
   .object({
-    email: yup
+    data: yup
       .string()
-      .email("Informe um email valido")
-      .required("Informe um email valido"),
+      .required("Informe um email ou cnpj valido"),
     senha: yup
       .string()
       .min(8, "a senha deve conter 8 caracteres")
@@ -37,36 +37,65 @@ export const FormLogin = () => {
     resolver: yupResolver(schema),
   });
 
+  const [onLoading, setOnLoading] = useState(false);
+
   const history = useNavigate();
   const dispactch = useDispatch();
 
   //const [showPassword, setShowPassword] = useState("password");
   //const [visible, setVisible] = useState(true);
+
+  function validarEmail(texto) {
+    // Padrão de expressão regular para verificar o formato de um e-mail
+    var padraoEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    // Testar se a string corresponde ao padrão de e-mail
+    return padraoEmail.test(texto);
+  }
+
   const onSubmit = async (user) => {
-    console.log(user);
+
+    // setOnLoading(true)
     try {
-      dispactch(loadSession(user))
-    } catch {}
+      if (validarEmail(user.data)) {
+        const login = {
+          email: user.data,
+          cnpj: null,
+          senha: user.senha
+        }
+        dispactch(loadSession(login))
+      } else {
+        const login = {
+          email: null,
+          cnpj: user.data,
+          senha: user.senha
+        }
+        dispactch(loadSession(login))
+      }
+    } catch { }
   };
+
+
+
   return (
     <>
       <form className="custom-formcomp" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-2 ">
-          <label htmlFor="exampleFormControl1">Endereço de email</label>
+          <label htmlFor="exampleFormControl1">Endereço de email ou CNPJ</label>
           <input
-            type="email"
+            type="text"
             className="form-control formcomp-input"
             id="exampleFormControl1"
-            placeholder="exemplo@email.com"
-            {...register("email")}
+            placeholder="Insira o e-mail ou CNPJ"
+            {...register("data")}
           />
           <div
             className={
-              errors.email ? "showerror errorDiv" : "hideerror errorDiv"
+              errors.data ? "showerror errorDiv" : "hideerror errorDiv"
             }
           >
             <AiOutlineInfoCircle />
-            <p>{errors.email?.message}</p>
+            <p>{errors.data?.message}</p>
           </div>
         </div>
 
@@ -81,22 +110,25 @@ export const FormLogin = () => {
           />
           <div
             className={
-              errors.email ? "showerror errorDiv" : "hideerror errorDiv"
+              errors.senha ? "showerror errorDiv" : "hideerror errorDiv"
             }
           >
             <AiOutlineInfoCircle />
-            <p>{errors.email?.message}</p>
+            <p>{errors.senha?.message}</p>
           </div>
         </div>
 
         <p className="login-forget-password mt-3">
           <Link to="/">Esqueceu sua senha?</Link>
         </p>
-        <input
+        <Button
           type="submit"
-          className="inputbtn btn btn-primary custom-btn"
-          value="Entrar"
-        />
+          colorScheme='blue'
+          w='80%'
+          alignSelf='center'
+          mb='1rem'
+          isLoading={onLoading}
+        >Entrar</Button>
       </form>
 
       <div className="form-login-text">

@@ -1,20 +1,12 @@
 import React from "react";
 import { Navbar, Nav, Container, Button } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/noto_lungs.png";
 import "./NavBarComp.css";
 
 import { AiOutlineProfile } from "react-icons/ai";
 import { MdOutlineExitToApp } from "react-icons/md";
-import { Avatar, Box, Text, IconButton } from "@chakra-ui/react";
-import {
-  TriangleDownIcon,
-  AddIcon,
-  ExternalLinkIcon,
-  RepeatIcon,
-  EditIcon,
-  HamburgerIcon,
-} from "@chakra-ui/icons";
+import { FaRegBuilding } from "react-icons/fa";
+import { Avatar, Box, Text, IconButton, MenuGroup, MenuDivider } from "@chakra-ui/react";
 import { loadLogout, loadSession } from "../../store/ducks/tokens/actions.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,16 +15,18 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuDivider,
 } from "@chakra-ui/react";
 import { DiagnosticaLogo } from "../Logo/DiagnosticaLogo";
+import { MedicoClinicas } from "./MedicoClinicas";
 
 export const NavbarComp = ({ customClass, showEntrarButton }) => {
   const location = useLocation();
   const { data: user } = useSelector((state) => state.tokens);
+  let dis = false
+  if (user.data.cnpj) {
+    dis = true  
+  }
+
   const navbarClassName = customClass
     ? `custom-navbar ${customClass}`
     : "custom-navbar";
@@ -48,6 +42,10 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
     history("/perfil");
   }
 
+  function ClinicaPage() {
+    history("/clinica")
+  }
+
   return (
     <>
       <Navbar className={navbarClassName} expand="lg" data-bs-theme="dark">
@@ -56,27 +54,15 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
             <DiagnosticaLogo />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
+          {user.logged && <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="center-nav-links">
-              <Nav.Link
-                as={Link}
-                to={"/sobre"}
-                className={location.pathname.includes("/sobre") ? "active" : ""}
-              >
-                <div
-                  className={
-                    location.pathname.includes("/sobre") ? "active" : ""
-                  }
-                >
-                  Sobre Nós
-                </div>
-              </Nav.Link>
               <Nav.Link
                 as={Link}
                 to={"/diagnostico"}
                 className={
                   location.pathname.includes("/diagnostico") ? "active" : ""
                 }
+                disabled={dis}
               >
                 <div
                   className={
@@ -116,8 +102,22 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   Pacientes
                 </div>
               </Nav.Link>
+
+              <Nav.Link
+                as={Link}
+                to={"/sobre"}
+                className={location.pathname.includes("/sobre") ? "active" : ""}
+              >
+                <div
+                  className={
+                    location.pathname.includes("/sobre") ? "active" : ""
+                  }
+                >
+                  Sobre Nós
+                </div>
+              </Nav.Link>
             </Nav>
-          </Navbar.Collapse>
+          </Navbar.Collapse>}
 
           {user.logged ? (
             <Box
@@ -126,18 +126,16 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
               alignItems={"center"}
               verticalAlign="center"
             >
-              <Avatar
-                name={user.data?.pessoa?.nome}
-                src="https://bit.ly/broken-link"
-              />
+              
               <Menu>
                 <MenuButton
-                  as={IconButton}
+                  as={Avatar}
                   aria-label="Options"
-                  icon={<HamburgerIcon />}
+                  icon={ <Avatar name={user?.data?.pessoa?.nome} src={user?.data?.foto_perfil}/> }
                   variant="outline"
                   border="none"
                   colorScheme="white"
+                  cursor={'pointer'}
                 />
                 <MenuList
                   colorScheme="white"
@@ -149,11 +147,29 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   <MenuItem
                     icon={<AiOutlineProfile />}
                     onClick={() => {
-                      PerfilPage();
+                      if (user.data.cnpj)
+                      {
+                        ClinicaPage();
+                      }
+                      else
+                      {
+                        PerfilPage();
+                      }
                     }}
                   >
                     Perfil
                   </MenuItem>
+                  
+                  
+                  {user.data.crm &&
+                  <>
+                  <MenuDivider />
+                  <MenuGroup title="Clínicas" fontSize={'1.1rem'}>
+                    <MedicoClinicas medico_id={user.data.id} clinica_id={user.data.clinica ? user.data.clinica.id : null} />
+                  </MenuGroup>
+                  <MenuDivider />
+                  </>
+                  }
 
                   <MenuItem
                     icon={<MdOutlineExitToApp />}

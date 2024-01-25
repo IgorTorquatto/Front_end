@@ -9,16 +9,21 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { loadSession } from '../../store/ducks/tokens/actions.ts';
 import { api, apiUnAuth } from  '../../services/api.ts'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
+import { Button } from '@chakra-ui/react';
+import { useHistorico } from '../../hooks/useHistorico';
+import $ from 'jquery';
+import 'jquery-mask-plugin'
+import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks'
 
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   email: yup.string().email('Informe um email valido').required('Informe um email valido'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().min(14, 'CPF incompleto').required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  crm: yup.string().required('Informe um crm valido'),
+  crm: yup.string().min(6, 'CRM deve conter 6 dígitos').required('Informe um crm valido'),
   especialidade: yup.string().required('Informe uma especialidade valida'),
   senha: yup.string().min(8, 'a senha deve conter 8 caracteres').required('Digite uma senha'),
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
@@ -33,40 +38,42 @@ export const FormCadastro = () => {
   const history = useNavigate()
   const dispactch = useDispatch();
 
+  const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
+  const { data: user } = useSelector((state) => state.tokens);
+  const { handleHistorico } = useHistorico()
+  
+  const onSubmit = async (novoMedico) => {
 
-  const onSubmit = async (user) => {
+    novoMedico.cpf = cpf_mask_remove(novoMedico.cpf)
+    novoMedico.telefone = telefone_mask_remove(novoMedico.telefone)
    
     const pessoa = {
-      cpf: user.cpf,
-      data_nascimento: user.data_nascimento,
-      nome: user.nome,
-      telefone: user.telefone,
+      cpf: novoMedico.cpf,
+      data_nascimento: novoMedico.data_nascimento,
+      nome: novoMedico.nome,
+      telefone: novoMedico.telefone,
       cargo: 'Médico',
     }
+
     await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
-        crm: user.crm,
-        especialidade: user.especialidade,
-        senha: user.senha,
-        email: user.email
+        crm: novoMedico.crm,
+        especialidade: novoMedico.especialidade,
+        senha: novoMedico.senha,
+        email: novoMedico.email
       }
 
-      apiUnAuth.post('/medico', medico).then(({ data }) => {
-        const login = {
-          email: user.email,
-          senha: user.senha
-        }
-        dispactch(loadSession(login))
-        history('/sobre')
+      apiUnAuth.post(`/clinica/${user.data.id}/medico`, medico).then(({ data }) => {
+        handleHistorico(null)
       }).catch(({})=>{
 
       })
 
     }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
+      alert("Error ao cadastrar")
     })
   };
 
@@ -91,16 +98,23 @@ export const FormCadastro = () => {
     }
   }
 
+  $(() => {
+    $('#FormControlInputCPF').mask('000.000.000-00')
+    $('#FormControlInputTel').mask('(00) 0 0000-0000')
+    $('#FormControlInputCRM').mask('000000')
+  });
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp mt-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
+
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputNome">Nome</label>
+          <label htmlFor="FormControlInputNome">Nome*</label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputNome"
-            placeholder="Digite seu nome completo"
+            placeholder="Digite o nome do médico"
             {...register("nome")}
           />
           <div className={errors.nome ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -110,13 +124,13 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputEmail"> Endereço de email</label>
+          <label htmlFor="FormControlInputEmail">Endereço de email*</label>
           <input
             type="email"
             className="form-control formcomp-input"
             id="FormControlInputEmail"
             {...register("email")}
-            placeholder="exemplo@email.com"
+            placeholder="Insira um endereço de email válido"
           />
           <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
@@ -124,26 +138,27 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCPF">CPF</label>
+          <label htmlFor="FormControlInputCPF">CPF*</label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCPF"
-            placeholder="Digite seu nome completo"
+            placeholder="Insira o CPF do médico (somente números)"
             {...register("cpf")}
           />
+
           <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.cpf?.message}</p>
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCRM">CRM</label>
+          <label htmlFor="FormControlInputCRM">CRM*</label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="FormControlInputCRM"
-            placeholder="Digite seu CRM"
+            placeholder="Insira o CRM do médico"
             {...register("crm")}
           />
           <div className={errors.crm ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -152,12 +167,12 @@ export const FormCadastro = () => {
           </div>
         </div>
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputData">Data de Nascimento</label>
+          <label htmlFor="FormControlInputData">Data de nascimento*</label>
           <input
             type="date"
             className="form-control formcomp-input"
             id="FormControlInputData"
-            placeholder="Digite seu nome completo"
+            placeholder="Insira a data de nascimento do médico"
             {...register("data_nascimento")}
           />
           <div className={errors.data_nascimento ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -168,13 +183,12 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputTel"> Telefone</label>
+          <label htmlFor="FormControlInputTel">Telefone*</label>
           <input
             type="tel"
             className="form-control formcomp-input"
             id="FormControlInputTel"
             placeholder="(99) 9 9999-9999"
-            pattern="[0-9]*"
             {...register("telefone")}
             title="Digite apenas números"
           />
@@ -185,7 +199,7 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputEsp">Especialização</label>
+          <label htmlFor="FormControlInputEsp">Especialização*</label>
           <select
             className="form-control formcomp-input"
             id="FormControlInputEsp"
@@ -207,12 +221,12 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputSenha">Senha</label>
+          <label htmlFor="FormControlInputSenha">Senha*</label>
           <input
             type="password"
             className="form-control formcomp-input"
             id="FormControlInputSenha"
-            placeholder="Informe sua senha"
+            placeholder="Insira uma senha para o login médico"
             {...register("senha")}
           />
           <div className={errors.senha ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -222,12 +236,12 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2">
-          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha</label>
+          <label htmlFor="FormControlInputConfirmarSenha">Confirmar senha*</label>
           <input
             type="password"
             className="form-control formcomp-input"
             id="FormControlInputConfirmarSenha"
-            placeholder="Informe sua senha novamente"
+            placeholder="Informe a senha novamente"
             {...register("confirmarSenha")}
           />
           <div className={errors.confirmarSenha ? 'showerror errorDiv' : 'hideerror errorDiv'}>
@@ -236,17 +250,15 @@ export const FormCadastro = () => {
           </div>
         </div>
 
-        <input type="submit" className="inputbtn btn btn-primary custom-btn" value="Cadastrar" />
+        <Button
+          type="submit"
+          colorScheme='blue'
+          w='80%'
+          className="inputbtn"
+          isLoading={onLoading}
+        >Cadastrar</Button>
       </form>
 
-      <div className="form-cadastro-text mt-5">
-        {/* <Link to="/home">
-          <button className="btn btn-primary custom-btn">Cadastrar</button>
-        </Link> */}
-        <p className="cadastro-login-link">
-          Já possui conta? <Link to="/login">Entrar agora</Link>
-        </p>
-      </div>
     </>
   );
 };

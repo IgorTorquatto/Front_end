@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import videoFile from '../../assets/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4'
-import './Video.css'
+import videoFile from '../../assets/SaveTube.io-4k background footage Ae plugin plexus-(1080p).mp4';
+import './Video.css';
 import { Link } from 'react-router-dom';
-import { Button} from '@chakra-ui/react'
+import { Button} from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const Video = () => {
   const [videoPlaying, setVideoPlaying] = useState(true);
@@ -17,6 +18,24 @@ export const Video = () => {
     }
   };
 
+  const Entrar = () => {
+    const { data: user } = useSelector((state) => state.tokens);
+
+    let visibility = 'visible'
+    let link = '/login'
+    if (user.token) {
+      visibility = 'hidden'
+      link = '/'
+    }
+
+    return (
+      <Link to={link}>
+        <Button visibility={visibility} className='videoButton' variant='outline' colorScheme='white'>Entrar</Button>
+      </Link>
+    )
+  }
+  
+
   return (
     <div className="videocomp-container">
       <div className="videocomp-video">
@@ -26,9 +45,7 @@ export const Video = () => {
         </video>
       </div>
       <div className="center-content">
-      <Link to="/login">
-        <Button className='videoButton' variant='outline' colorScheme='white'>Entrar</Button>
-      </Link>
+        <Entrar/>
       </div>
       <div className="videocomp-gradient"></div>
     </div>
