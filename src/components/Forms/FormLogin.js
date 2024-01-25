@@ -46,28 +46,42 @@ export const FormLogin = () => {
   //const [visible, setVisible] = useState(true);
 
   function validarEmail(texto) {
-    // Padrão de expressão regular para verificar o formato de um e-mail
     var padraoEmail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    // Testar se a string corresponde ao padrão de e-mail
     return padraoEmail.test(texto);
   }
+
+  function validarNumeros(str) {
+    return !isNaN(str) && !isNaN(parseFloat(str));
+  }
+  
 
   const onSubmit = async (user) => {
 
     // setOnLoading(true)
     try {
-      if (validarEmail(user.data)) {
+      if(validarNumeros(user.data)){
+        const login = {
+          email: null,
+          username: null,
+          cnpj: user.data,
+          senha: user.senha
+        }
+        dispactch(loadSession(login))
+      }
+      else if (validarEmail(user.data)) {
         const login = {
           email: user.data,
           cnpj: null,
+          username: null,
           senha: user.senha
         }
         dispactch(loadSession(login))
       } else {
         const login = {
           email: null,
-          cnpj: user.data,
+          cnpj: null,
+          username: user.data,
           senha: user.senha
         }
         dispactch(loadSession(login))
