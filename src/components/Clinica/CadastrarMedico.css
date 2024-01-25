@@ -14,3 +14,19 @@
     width: 60%;
     margin-bottom: 20px;
 }
+
+.cadastrarMedico-adicionar{
+  margin: 0 auto;
+  width: 60%;
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.escolher-cadastro-medico{
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2rem;
+}
