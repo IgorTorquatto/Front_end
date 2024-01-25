@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormCadastro } from '../Forms/FormCadastro'
 import './CadastrarMedico.css'
 import { Box, Button, Flex, Input, Text } from '@chakra-ui/react'
@@ -19,38 +19,10 @@ export const CadastrarMedico = () => {
 
   const { handleHistorico } = useHistorico()
 
-  const handleMedic = (e) => {
-    console.log(">>>>>>>> ", e)
-    setMedicId(e)
-    // setMedicCRM(medic)
-  }
-  const handleSearch = (e) => {
-    console.log(">>>>>>>> input ", e)
-    loadFuncionarios(e)
-  }
-
-  const loadFuncionarios = async (crm) => {
-    await api.get(`/medico?crm=${crm}`).then(({ data }) => {
-      console.log(data.data)
-      const MedicosOptions = []
-      data.data.map(item => {
-        const Medico = {
-          value: item.id,
-          label: `${item.cnpj}`
-        }
-        MedicosOptions.push(Medico)
-      })
-
-      setMedicos(MedicosOptions)
-    }).catch((data) => {
-      console.log(data)
-    })
-  }
-
   const SubmitMedico = () => {
     setLoading(true)
     const medic = {
-      id_medico: medicId
+      crm: medicCRM
     }
     api.put(`/clinica/${user.data.id}/medico`, medic).then(({ data }) => {
       handleHistorico(null)
@@ -62,6 +34,10 @@ export const CadastrarMedico = () => {
       setLoading(false)
     })
   }
+
+  useEffect(()=>{
+    setStep(1)
+  },[])
 
 
   return (
@@ -86,11 +62,11 @@ export const CadastrarMedico = () => {
           <div className="cadastrarMedico-formulario">
             <Text fontWeight='bold'>Digite o CRM e clique em adicionar</Text>
             <Flex  w='100%'>
-              <Input onChange={(e) => setMedicCRM(e.target.value)} />
+              <Input background='white' onChange={(e) => setMedicCRM(e.target.value)} />
               <Button colorScheme={errorAdd !== "" ? "red" : "blue"} isLoading={loading} padding='1rem' onClick={() => SubmitMedico()}>Adicionar</Button>
             </Flex>
-            {errorAdd !== "" && <Text>{errorAdd}</Text>}
-          </div>
+            {errorAdd !== "" && <Text color='red' ml='1rem'>{errorAdd}</Text>}
+          </div> 
         }
 
 
