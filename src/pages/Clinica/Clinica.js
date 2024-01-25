@@ -19,9 +19,6 @@ export const Clinica = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: user } = useSelector((state) => state.tokens);
   const {historico, handleHistorico } = useHistorico()
-  console.log(historico)
-
-  console.log(user)
 
   function goBack() {
     const confirmBack = window.confirm("Você realmente quer sair da página?");

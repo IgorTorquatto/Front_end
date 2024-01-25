@@ -1,22 +1,20 @@
 import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Pacientes.css'
-
 import { useEffect, useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
+import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { GiSettingsKnobs } from "react-icons/gi";
 import * as yup from 'yup'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from '../../services/api.ts'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Box, Textarea, Button, Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   useDisclosure,
@@ -29,16 +27,41 @@ import {
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
 import Select from 'react-select';
+import {cpf_mask, 
+  telefone_mask, 
+  cpf_mask_remove, 
+  telefone_mask_remove,
+  cep_mask_remove
+} from '../../components/Forms/form-masks'
 import $ from 'jquery'
 import 'jquery-mask-plugin'
+
+yup.setLocale({
+  string: {
+    length: 'deve ter exatamente ${length} caracteres',
+    min: 'deve ter pelo menos ${min} caracteres',
+    max: 'deve ter no máximo ${max} caracteres',
+    email: 'tem o formato de e-mail inválido',
+    url: 'deve ter um formato de URL válida',
+    trim: 'não deve conter espaços no início ou no fim.',
+    lowercase: 'deve estar em maiúsculo',
+    uppercase: 'deve estar em minúsculo',
+  },
+  mixed: {
+    default: 'Não é válido',
+  },
+  number: {
+    min: 'Deve ser maior que ${min}',
+  },
+});
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
@@ -51,10 +74,10 @@ const schema = yup.object({
 const schemaEdit = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().required('Informe um cpf valido'),
+  cpf: yup.string().length(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
-  tipo_sanguineo: yup.string().required('Informe um tipo sanguineo valido'),
+  tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
   detalhes_clinicos: yup.string(),
   cep: yup.string().required('Informe um CEP valido'),
   logradouro: yup.string().required('Informe um logradouro valido'),
@@ -63,6 +86,7 @@ const schemaEdit = yup.object({
   numero: yup.string().required('Informe um numero valido'),
   estado: yup.string().required('Informe um estado valido'),
 }).required();
+
 export const Pacientes = () => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
@@ -82,27 +106,24 @@ export const Pacientes = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
 
-  const [showPassword, setShowPassword] = useState('password')
-  const [visible, setVisible] = useState(true)
-  const [page, setPage] = useState(1)
   const [selectedState, setSelectedState] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientsArray, setPatientsArray] = useState([]);
   const [patients, setPatiens] = useState([]);
-  const [onCreate, setOnCreate] = useState(false);
   const [searchBy, setSearchBy] = useState('nome');
   const [loadingCadastro, setLoadingCadastro] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const [buttonEditColor, setButtonEditColor] = useState('white');
-  const [buttonInfoColor, setButtonInfoColor] = useState('white');
   const [pageLoading, setPageLoading] = useState(true);
   const [clinica, setClinica] = useState(null);
   const [clinicas, setClinicas] = useState([]);
   const [clinicasArray, setClinicasArray] = useState([]);
 
+  const local = useLocation()
+
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
+    let id = user.data.cnpj ? user.data.id : user.data.clinica.id
+    await api.get(`/paciente?id_clinica=${id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
 
@@ -112,6 +133,8 @@ export const Pacientes = () => {
   }
 
   const loadClinicas = async ()=>{
+    if (user.data.cnpj) { return }
+    if (user.data.clinica) { return }
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       console.log(data)
       setClinicas(data.data)
@@ -135,7 +158,6 @@ export const Pacientes = () => {
   }
 
   const searchPatient = (search) => {
-    console.log(search.target.value)
     if (searchBy === 'nome') {
       var patients = patientsArray.filter(item => item.pessoa.nome.toLowerCase().includes(search.target.value.toLowerCase()))
       setPatiens(patients)
@@ -150,16 +172,39 @@ export const Pacientes = () => {
     loadClinicas().then(()=>{
       setPageLoading(false)
     })
+
+    if (user.data.cnpj) {
+      setPageLoading(true)
+      loadPatients().then(() => {
+        setPageLoading(false)
+      })
+    }
   }, [])
 
   useEffect(()=>{
     if(clinica){
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
         setPageLoading(false)
       })
     }
-  },[clinica])
+  }, [clinica])
+
+  let pacientes_load = false;
+  useEffect(()=>{
+    if(pacientes_load){ return }
+
+    if (user.data.clinica) {
+      setPageLoading(true)
+      loadPatients().then(()=>{
+        setPageLoading(false)
+      })
+    }
+  }, [user.data.clinica])
 
   useEffect(() => {
     if (patient) {
@@ -205,15 +250,9 @@ export const Pacientes = () => {
 
   const onSubmit = async (novopaciente) => {
 
-    novopaciente.cpf = novopaciente.cpf.replaceAll('-', '')
-    novopaciente.cpf = novopaciente.cpf.replaceAll('.', '')
-
-    novopaciente.telefone = novopaciente.telefone.replaceAll('(', '')
-    novopaciente.telefone = novopaciente.telefone.replaceAll(')', '')
-    novopaciente.telefone = novopaciente.telefone.replaceAll('-', '')
-    novopaciente.telefone = novopaciente.telefone.replaceAll(' ', '')
-
-    novopaciente.cep = novopaciente.cep.replaceAll('-', '')
+    novopaciente.cpf = cpf_mask_remove(novopaciente.cpf)
+    novopaciente.telefone = telefone_mask_remove(novopaciente.telefone)
+    novopaciente.cep = cep_mask_remove(novopaciente.cep)
 
     novopaciente.tipo_sanguineo = novopaciente.tipo_sanguineo.toUpperCase()
 
@@ -240,7 +279,6 @@ export const Pacientes = () => {
         numero: novopaciente.numero,
         estado: novopaciente.estado,
       }
-      console.log(paciente)
 
       api.post('/paciente', paciente).then(({ data }) => {
         setLoadingCadastro(false)
@@ -257,19 +295,11 @@ export const Pacientes = () => {
   };
   const onSubmitEdit = async (editpaciente) => {
 
-    editpaciente.cpf = editpaciente.cpf.replaceAll('-', '')
-    editpaciente.cpf = editpaciente.cpf.replaceAll('.', '')
-
-    editpaciente.telefone = editpaciente.telefone.replaceAll('(', '')
-    editpaciente.telefone = editpaciente.telefone.replaceAll(')', '')
-    editpaciente.telefone = editpaciente.telefone.replaceAll('-', '')
-    editpaciente.telefone = editpaciente.telefone.replaceAll(' ', '')
-
-    editpaciente.cep = editpaciente.cep.replaceAll('-', '')
+    editpaciente.cpf = cpf_mask_remove(editpaciente.cpf)
+    editpaciente.telefone = telefone_mask_remove(editpaciente.telefone)
+    editpaciente.cep = cep_mask_remove(editpaciente.cep)
 
     editpaciente.tipo_sanguineo = editpaciente.tipo_sanguineo.toUpperCase()
-
-    console.log(editpaciente.cpf)
 
     const pessoa = {
       cpf: editpaciente.cpf,
@@ -291,7 +321,6 @@ export const Pacientes = () => {
         numero: editpaciente.numero,
         estado: editpaciente.estado,
       }
-      console.log(paciente)
 
       api.put(`/paciente/${patient.id}`, paciente).then(({ data }) => {
         history('/pacientes')
@@ -364,7 +393,7 @@ export const Pacientes = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex>
         :
-        !clinica ? 
+        user.data.crm && !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
           <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
@@ -860,8 +889,8 @@ export const Pacientes = () => {
             <ModalCloseButton />
             <ModalBody>
               <Text>Name: {selectedPatient?.pessoa.nome}</Text>
-              <Text>CPF: {selectedPatient?.pessoa.cpf}</Text>
-              <Text>Telefone: {selectedPatient?.telefone}</Text>
+              <Text>CPF: {cpf_mask(selectedPatient?.pessoa.cpf)}</Text>
+              <Text>Telefone: {telefone_mask(selectedPatient?.pessoa.telefone)}</Text>
               <Text>Rua: {selectedPatient?.logradouro}</Text>
               <Text>Bairro: {selectedPatient?.bairro}</Text>
               <Text>Número: {selectedPatient?.numero}</Text>

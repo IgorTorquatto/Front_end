@@ -41,8 +41,7 @@ export const Perfil = () => {
 
   const { data: user } = useSelector((state) => state.tokens);
   const [navigationSection, setNavigationSection] = useState("info");
-  const [editAvatarClassname, setEditAvatarClassname] =
-    useState("editAvatarOff");
+  const [editAvatarClassname, setEditAvatarClassname] = useState("editAvatarOff");
   const history = useNavigate();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();

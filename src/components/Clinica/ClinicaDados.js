@@ -11,20 +11,24 @@ import {
   FaCog,
 } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
-import { Box, Divider, Button, Spinner, Flex } from "@chakra-ui/react";
+import { Box, Divider, Button, Spinner, Flex, Text } from "@chakra-ui/react";
 
 import { api } from "../../services/api";
 import { useDispatch, useSelector } from "react-redux";
 import { ClinicaAlterarDados } from "./ClinicaAlterarDados";
 import { ClinicaGerenciarFuncionarios } from "./ClinicaGerenciarFuncionarios";
+import { cep_mask, telefone_mask, cnpj_mask } from "../Forms/form-masks";
+
 export const ClinicaDados = () => {
   const { data: user } = useSelector((state) => state.tokens);
   const [funcionarios, setFuncionarios]  = useState([])
+  const [loading, setLoading]  = useState(true)
 
    const loadFuncionarios = async ()=>{
     await api.get(`/clinica/${user.data.id}/medico`).then(({data})=>{
       console.log(data)
       setFuncionarios(data.data)
+      setLoading(false)
     }).catch((data)=>{
       console.log(data)
     })
@@ -82,19 +86,19 @@ export const ClinicaDados = () => {
             <div>
               <FaPhone />
               <strong>Telefone:</strong>
-              <span>{user.data.telefone}</span>
+              <span>{telefone_mask(user.data.telefone)}</span>
             </div>
           </div>
           <div className="column">
             <div>
               <FaIdCard />
               <strong>CNPJ:</strong>
-              <span>{user.data.cnpj}</span>
+              <span>{cnpj_mask(user.data.cnpj)}</span>
             </div>
             <div>
               <FaMapMarked />
               <strong>CEP:</strong>
-              <span>{user.data.cep}</span>
+              <span>{cep_mask(user.data.cep)}</span>
             </div>
             <div>
               <FaMap />
@@ -117,15 +121,17 @@ export const ClinicaDados = () => {
         </Box>
 
         <Box w={'91%'} height={'42vh'} className="table-wrapper" maxHeight={'42vh'} px='0.5%'>
-        {funcionarios.length < 1 ? <Flex w='100%' justifyContent='center' alignItems='center' height='100%'>
+        {loading ? <Flex w='100%' justifyContent='center' alignItems='center' height='100%'>
                 <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
               </Flex>  :
+              funcionarios.length < 1 ? <Text textAlign='center'>Nenhum médico cadastrado</Text> :
           <table className="table table-striped table-hover custom-table">
             <thead>
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Especialidade</th>
+                <th scope="col">Email</th>
                 <th scope="col">CRM</th>
               </tr>
             </thead>
@@ -136,6 +142,7 @@ export const ClinicaDados = () => {
                   <th scope="row">{index+1}</th>
                   <td>{funcionario.pessoa.nome}</td>
                   <td>{funcionario.especialidade}</td>
+                  <td>{funcionario.email}</td>
                   <td>{funcionario.crm}</td>
                 </tr>
               ))}
