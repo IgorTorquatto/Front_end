@@ -262,7 +262,7 @@ export const Diagnostico = () => {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
       id_medico: user.data.id,
-      id_clinica: clinica.id,
+      id_clinica: user.data.clinica.id,
       id_paciente: patient.id,
       laudo_medico: pdfDataUri,
       data_hora: new Date(),
