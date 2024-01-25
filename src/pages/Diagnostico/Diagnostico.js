@@ -4,12 +4,12 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 import './Diagnostico.css';
 import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
-import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner , Flex } from '@chakra-ui/react'
+import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner, Flex, Input, Center } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import jsPDF from 'jspdf';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import * as dayjs from 'dayjs'
 import { Link, useNavigate } from 'react-router-dom';
 import { MyFooter } from '../../components/Footer/Footer'
@@ -31,6 +31,8 @@ export const Diagnostico = () => {
   const [pdfDataUri, setPdfDataUri] = useState(null);
   const [termo, setTermo] = useState(null);
   const [downloadLaudo, setDownloadLaudo] = useState(false);
+  const [outroLaudo, setOutroLaudo] = useState(null)
+  const [outroLaudoErro, setOutroLaudoErro] = useState(false)
   const [observacoes, setObservacoes] = useState('Seu laudo vem aqui...');
   const [loadingLaudo, setLoadingLaudo] = useState(false)
   const [resultLaudo, setResultLaudo] = useState(null)
@@ -54,6 +56,7 @@ export const Diagnostico = () => {
   ]
 
   const loadClinicas = async () => {
+    if (user.data.clinica) { return }
     await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
       setClinicas(data.data)
       const clinicasOptions= []
@@ -70,12 +73,12 @@ export const Diagnostico = () => {
   }
 
   const handleClinica = (clinicaSelecionada) =>{
-    const clinicaFind = clinicas.find(clinica=> clinica.id === clinicaSelecionada.value)
+    const clinicaFind = clinicas.find(clinica => clinica.id === clinicaSelecionada.value)
     setClinica(clinicaFind)
   }
 
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
+    await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
@@ -103,15 +106,18 @@ export const Diagnostico = () => {
     })()
   }, [])
 
-  useEffect(()=>{
-    if(clinica){
+  useEffect(() => {
+    if (clinica) {
+      user.data.clinica = clinica
+    }
+
+    if (user.data.clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
-      setPageLoading(false)
-
+        setPageLoading(false)
       })
     }
-  },[clinica])
+  }, [clinica])
   
   useEffect(() => {
     if (prediction != null) {
@@ -229,20 +235,29 @@ export const Diagnostico = () => {
     if (!resultLaudo) {
       setLaudoError(true)
       return
-    } else {
-      setLaudoError(false)
+    } 
+    setLaudoError(false)
+
+    if (resultReal === 'OUTRO') {
+      if (outroLaudo === '' || !outroLaudo) {
+        setOutroLaudoErro(true)
+        return
+      }
     }
-    if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0)
-    {
+    setOutroLaudoErro(false)
+    
+    if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0) {
       setobsState(false)
       return
-    } else{
-      setobsState(true)
-    }
-    if(termo == null || termo == false)
-    {
+    } 
+    setobsState(true)
+
+    if(termo == null || termo == false) {
+      setTermo(false)
       return
     }
+
+    
     const diagnostico = {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
@@ -253,7 +268,7 @@ export const Diagnostico = () => {
       data_hora: new Date(),
       mapa_calor: "data:image/jpeg;base64," + imageCam,
       resultado_modelo: predictionLabel,
-      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal
+      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal === "OUTRO" ? outroLaudo : resultReal
     }
 
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
@@ -333,7 +348,7 @@ export const Diagnostico = () => {
 
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
-    doc.text(`Tipo de exame: Raio X do tórax`, 20, 80);
+    doc.text(`Exame: Raio X do tórax`, 20, 80);
 
     doc.rect(15, 90, 180, 150);
     doc.setFontSize(16);
@@ -392,7 +407,7 @@ export const Diagnostico = () => {
       {pageLoading ?  <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
       <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
         </Flex> : 
-        !clinica ? 
+        !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
           <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
@@ -524,26 +539,40 @@ export const Diagnostico = () => {
                 <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
                 <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
               </Stack>
+              {laudoError == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor responda</Text>}
 
-              {resultLaudo == 2 && <Box><Text>Qual o diagnóstico?</Text>
-              <SelectChakra onChange={(e) => setResultReal(e.target.value)}>
-                <option value={"PNEUMONIA"}>Pneumonia</option>
-                <option value={"TURBECULOSE"}>Tuberculose</option>
-                <option value={"COVID"}>COVID-19</option>
-                <option value={"NORMAL"}>Normal</option>
-                <option value={"OUTRO"}>Outro</option>
-              </SelectChakra></Box>}
+              {resultLaudo == 2 && 
+                <Box>
+                  <Text mb='0.2rem'>Qual o diagnóstico?</Text>
+                  <Flex>
+                    <Center w={'60%'}>
+                      <SelectChakra bg={'white'} onChange={(e) => setResultReal(e.target.value)}>
+                        <option value={"PNEUMONIA"}>Pneumonia</option>
+                        <option value={"TURBECULOSE"}>Tuberculose</option>
+                        <option value={"COVID"}>COVID-19</option>
+                        <option value={"NORMAL"}>Normal</option>
+                        <option value={"OUTRO"}>Outro</option>
+                      </SelectChakra>
+                    </Center>
+
+                    {resultReal == "OUTRO" &&
+                    <Center w={'35%'} ml={'0.5rem'}> 
+                      <Input bg={'white'} placeholder='Digite aqui o dignóstico' onChange={(e) => setOutroLaudo(e.target.value)} />
+                    </Center>
+                    }
+                  </Flex>
+                  {outroLaudoErro == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor digite o diagnóstico</Text>}
+                  
+                </Box>
+              }
             </RadioGroup>
 
 
-              <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
-                <Text mb='-0.05rem'>
-                  Descrição do laudo
-                </Text>
-                <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
-
+            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
+              <Text mb='-0.05rem'>Descrição do laudo</Text>
+              <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
             </Box>
-              {!obsState && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
+              {obsState == false && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
             {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
             <Box display='flex' alignItems='center' mt='1rem'>
               <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
