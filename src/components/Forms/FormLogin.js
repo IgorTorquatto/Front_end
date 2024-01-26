@@ -20,7 +20,7 @@ const schema = yup
   .object({
     data: yup
       .string()
-      .required("Informe um email ou cnpj valido"),
+      .required("Informe um e-mail ou cnpj valido"),
     senha: yup
       .string()
       .min(8, "a senha deve conter 8 caracteres")
@@ -95,7 +95,7 @@ export const FormLogin = () => {
     <>
       <form className="custom-formcomp" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-2 ">
-          <label htmlFor="exampleFormControl1">Endereço de email ou CNPJ</label>
+          <label htmlFor="exampleFormControl1">Endereço de e-mail ou CNPJ</label>
           <input
             type="text"
             className="form-control formcomp-input"

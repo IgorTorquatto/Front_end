@@ -127,70 +127,114 @@ export const Historico = () => {
 
             <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
               <ModalOverlay />
-              <ModalContent w='100%'>
-                <ModalHeader>Informações do Paciente</ModalHeader>
+
+              <ModalContent  w='100%' color={"#FFFFFF"} bgColor={"#0b2a45"}>
+
+                <ModalHeader textAlign={"center"}>Informações do Paciente</ModalHeader>
                 <ModalCloseButton />
 
                 <ModalBody w='100%'>
-                  <Box position='relative' padding='0.5rem 0'>
+
+                  <Box position='relative' padding='0.5rem 0' marginBottom='1rem'>
                     <Divider />
-                    <AbsoluteCenter fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
+                    <AbsoluteCenter borderRadius='1rem'  fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
                       Paciente
                     </AbsoluteCenter>
                   </Box>
-                  <Flex borderRadius='1rem' padding='0 1rem' background='#3b83c3' height='5rem' justify='flex-start' alignItems='center' color='white' w='100%'>
 
-                    <Text fontWeight='bold' as='span'>Name: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.nome}</Text>
-                    <Text fontWeight='bold' as='span'>CPF: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.cpf}</Text>
-                    <Text fontWeight='bold' as='span'>Telefone: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.telefone}</Text>
-                    <Text fontWeight='bold' as='span'>Rua: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.logradouro}</Text>
-                    <Text fontWeight='bold' as='span'>Bairro: </Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.bairro}</Text>
-                    <Text fontWeight='bold' as='span'>Número:</Text> <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.numero}</Text>
-                    <Text fontWeight='bold' as='span'>Cidade: </Text><Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.cidade}</Text>
+                  <Flex borderRadius='1rem' padding='1.25rem' background='#3b83c3' height='auto' justify='flex-start' alignItems='flex-start' color='white' w='100%' flexDirection='row' flexWrap='wrap'>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>Name: </Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.nome}</Text>
+                  </div>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>CPF: </Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.cpf}</Text>
+                  </div>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>Telefone: </Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.telefone}</Text>
+                  </div>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>Rua: </Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.logradouro}</Text>
+                  </div>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>Bairro: </Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.bairro}</Text>
+                  </div>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>Número:</Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.numero}</Text>
+                  </div>
+
+                  <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                  <Text fontWeight='bold' as='span'>Cidade: </Text>
+                  <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.cidade}</Text>
+                  </div>
 
                   </Flex>
-                  <Box display='flex' flexDirection='column' w='100%' justifyContent='space-between'>
 
-                    <Box position='relative' padding='10'>
-                      <Divider />
-                      <AbsoluteCenter fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
-                        Modelo
-                      </AbsoluteCenter>
-                    </Box>
-                    <Flex borderRadius='1rem' padding='0 1rem' background='#3b83c3' height='100%' justify='flex-start' alignItems='center' color='white' w='100%'>
-                      <Box>
-                        <Text fontWeight='bold' >Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.modelo}</Text>
-                        <Text fontWeight='bold' >Classificação do Modelo: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
-                        <Text fontWeight='bold' >Diagnóstico: </Text> <Text fontWeight='regular'>{diagnostico?.resultado_real}</Text>
-                      </Box>
+                  <Box position='relative' padding='0.5rem 0' marginBottom='1rem' marginTop='2rem'>
+                  <Divider />
+                  <AbsoluteCenter borderRadius='1rem' fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
+                    Modelo
+                  </AbsoluteCenter>
+                </Box>
 
-                      <Flex w='100%' justify='center'>
-                        <Flex direction='column' alignItems='center' justifyContent='flex-start' padding='2rem 0' >
-                          <Text fontWeight='bold'>Raio X: </Text>
-                          {diagnostico?.raio_x && (
-                            <img
-                              src={diagnostico?.raio_x}
-                              alt="Uploaded"
-                              style={{ maxWidth: '60%', maxHeight: '300px' }}
-                            />
-                          )}
-                        </Flex>
-                        <Flex direction='column' alignItems='center' justifyContent='flex-start' >
-                          <Text fontWeight='bold'>Mapa de calor: </Text>
-                          {diagnostico?.mapa_calor && (
-                            <img
-                              src={diagnostico?.mapa_calor}
-                              alt="Uploaded"
-                              style={{ maxWidth: '100%', maxHeight: '300px' }}
-                            />
-                          )}
-                        </Flex>
+                <Flex borderRadius='1rem' padding='1.25rem' background='#3b83c3' height='auto' color='white' w='100%' flexDirection='row' flexWrap='wrap'>
 
+                  {/* Linha de Informações de Texto */}
+                  <Flex style={{ flex: '0 0 100%',  marginTop: '0.5rem',  textAlign:'center'}}>
+                    <div style={{ flex: '0 0 40%' }}>
+                      <Text fontWeight='bold' as='span'>Modelo: </Text>
+                      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.modelo}</Text>
+                    </div>
+                    <div style={{ flex: '0 0 30%' }}>
+                      <Text fontWeight='bold' as='span'>Classificação do Modelo: </Text>
+                      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
+                    </div>
+                    <div style={{ flex: '0 0 20%' }}>
+                      <Text fontWeight='bold' as='span'>Diagnóstico: </Text>
+                      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_real}</Text>
+                    </div>
+                  </Flex>
 
+                  {/* Linha de Imagem de Raio X e Mapa de Calor */}
+                  <Flex  style={{ flex: '0 0 100%',  marginTop: '1rem', justifyContent: 'center'}}>
+                    {/* Seção de Imagem de Raio X */}
+                    <div >
+                      <Text fontWeight='bold'>Raio X: </Text>
+                      {diagnostico?.raio_x && (
+                        <img
+                          src={diagnostico?.raio_x}
+                          alt="Uploaded"
+                          style={{  maxWidth: '70%', height: '25rem' }}
+                        />
+                      )}
+                    </div>
 
-                      </Flex>
-                    </Flex>
-                  </Box>
+                    {/* Seção de Imagem do Mapa de Calor */}
+                    <div >
+                      <Text fontWeight='bold'>Mapa de calor: </Text>
+                      {diagnostico?.mapa_calor && (
+                        <img
+                          src={diagnostico?.mapa_calor}
+                          alt="Uploaded"
+                          style={{ width: '20rem', height: '25rem' }}
+                        />
+                      )}
+                    </div>
+                  </Flex>
+
+                </Flex>
+                 
                 </ModalBody>
               </ModalContent>
             </Modal>

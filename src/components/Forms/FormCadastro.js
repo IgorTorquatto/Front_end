@@ -19,7 +19,7 @@ import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
-  email: yup.string().email('Informe um email valido').required('Informe um email valido'),
+  email: yup.string().email('Informe um e-mail valido').required('Informe um e-mail valido'),
   telefone: yup.string().required('Informe um telefone valido'),
   cpf: yup.string().min(14, 'CPF incompleto').required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
@@ -124,13 +124,13 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputEmail">Endereço de email*</label>
+          <label htmlFor="FormControlInputEmail">Endereço de e-mail*</label>
           <input
             type="email"
             className="form-control formcomp-input"
             id="FormControlInputEmail"
             {...register("email")}
-            placeholder="Insira um endereço de email válido"
+            placeholder="Insira um endereço de e-mail válido"
           />
           <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
