@@ -182,58 +182,58 @@ export const Historico = () => {
                   </Flex>
 
                   <Box position='relative' padding='0.5rem 0' marginBottom='1rem' marginTop='2rem'>
-  <Divider />
-  <AbsoluteCenter borderRadius='1rem' fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
-    Modelo
-  </AbsoluteCenter>
-</Box>
+                  <Divider />
+                  <AbsoluteCenter borderRadius='1rem' fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
+                    Modelo
+                  </AbsoluteCenter>
+                </Box>
 
-<Flex borderRadius='1rem' padding='1.25rem' background='#3b83c3' height='auto' color='white' w='100%' flexDirection='column' flexWrap='wrap'>
+                <Flex borderRadius='1rem' padding='1.25rem' background='#3b83c3' height='auto' color='white' w='100%' flexDirection='row' flexWrap='wrap'>
 
-  {/* Linha de Informações de Texto */}
-  <Flex style={{ flex: '0 0 100%',  marginTop: '0.5rem',  textAlign:'center'}}>
-    <div style={{ flex: '0 0 40%' }}>
-      <Text fontWeight='bold' as='span'>Modelo: </Text>
-      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.modelo}</Text>
-    </div>
-    <div style={{ flex: '0 0 30%' }}>
-      <Text fontWeight='bold' as='span'>Classificação do Modelo: </Text>
-      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
-    </div>
-    <div style={{ flex: '0 0 20%' }}>
-      <Text fontWeight='bold' as='span'>Diagnóstico: </Text>
-      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_real}</Text>
-    </div>
-  </Flex>
+                  {/* Linha de Informações de Texto */}
+                  <Flex style={{ flex: '0 0 100%',  marginTop: '0.5rem',  textAlign:'center'}}>
+                    <div style={{ flex: '0 0 40%' }}>
+                      <Text fontWeight='bold' as='span'>Modelo: </Text>
+                      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.modelo}</Text>
+                    </div>
+                    <div style={{ flex: '0 0 30%' }}>
+                      <Text fontWeight='bold' as='span'>Classificação do Modelo: </Text>
+                      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
+                    </div>
+                    <div style={{ flex: '0 0 20%' }}>
+                      <Text fontWeight='bold' as='span'>Diagnóstico: </Text>
+                      <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_real}</Text>
+                    </div>
+                  </Flex>
 
-  {/* Linha de Imagem de Raio X e Mapa de Calor */}
-  <Flex>
-    {/* Seção de Imagem de Raio X */}
-    <div >
-      <Text fontWeight='bold'>Raio X: </Text>
-      {diagnostico?.raio_x && (
-        <img
-          src={diagnostico?.raio_x}
-          alt="Uploaded"
-          style={{  maxWidth: '50%', height: '50%' }}
-        />
-      )}
-    </div>
+                  {/* Linha de Imagem de Raio X e Mapa de Calor */}
+                  <Flex  style={{ flex: '0 0 100%',  marginTop: '1rem', justifyContent: 'center'}}>
+                    {/* Seção de Imagem de Raio X */}
+                    <div >
+                      <Text fontWeight='bold'>Raio X: </Text>
+                      {diagnostico?.raio_x && (
+                        <img
+                          src={diagnostico?.raio_x}
+                          alt="Uploaded"
+                          style={{  maxWidth: '70%', height: '25rem' }}
+                        />
+                      )}
+                    </div>
 
-    {/* Seção de Imagem do Mapa de Calor */}
-    <div >
-      <Text fontWeight='bold'>Mapa de calor: </Text>
-      {diagnostico?.mapa_calor && (
-        <img
-          src={diagnostico?.mapa_calor}
-          alt="Uploaded"
-          style={{ maxWidth: '50%', height: '50%' }}
-        />
-      )}
-    </div>
-  </Flex>
+                    {/* Seção de Imagem do Mapa de Calor */}
+                    <div >
+                      <Text fontWeight='bold'>Mapa de calor: </Text>
+                      {diagnostico?.mapa_calor && (
+                        <img
+                          src={diagnostico?.mapa_calor}
+                          alt="Uploaded"
+                          style={{ width: '20rem', height: '25rem' }}
+                        />
+                      )}
+                    </div>
+                  </Flex>
 
-</Flex>
+                </Flex>
                  
                 </ModalBody>
               </ModalContent>
