@@ -6,7 +6,6 @@ import { FaKey, FaUserMd, FaChartBar, FaRobot } from "react-icons/fa";
 import { Avatar } from "@chakra-ui/react";
 import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 import { useNavigate } from "react-router-dom";
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistorico } from "../../hooks/useHistorico";
 import { loadLogout } from "../../store/ducks/tokens/actions";
