@@ -5,7 +5,7 @@
     gap: 15px;
 }
 
-.form-group {
+.FormDetalhesIA-form-group {
     display: flex;
     column-gap: 10px;
     align-items: center;
@@ -14,7 +14,7 @@
     position: relative;
 }
 
-.form-group input{
+.FormDetalhesIA-form-group input{
     border: 1px solid #3d3d3d;
     border-radius: 4px;
     padding: 3px 6px;
@@ -22,7 +22,7 @@
     width: 200px;
 }
 
-.form-group input[type="checkbox"]{
+.FormDetalhesIA-form-group input[type="checkbox"]{
     width: 20px;
     position: absolute;
     right: 180px;

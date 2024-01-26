@@ -1,6 +1,5 @@
 import React from 'react';
 import './FormDetalhesIA.css';
-
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -56,12 +55,12 @@ export const FormDetalhesIA = () => {
         <>
             <form onSubmit={handleSubmit(onSubmit)} className='form-fichaTecnica'>
                 {detalhesFicha.map((element, key) =>
-                    <div key={key} className='form-group'>
-                        <label htmlFor='formGroupNome'>{element.label}</label>
+                    <div key={key} className='FormDetalhesIA-form-group'>
+                        <label htmlFor='FormDetalhesIA-formGroupNome'>{element.label}</label>
                         <input
                             type={element.type}
-                            className='form-group-inputs'
-                            id='formGroupNome'
+                            className='FormDetalhesIA-form-group-inputs'
+                            id='FormDetalhesIA-formGroupNome'
                             placeholder={element.placeholder}
                             {...register(element.name)}
                         />
