@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { loadSession } from '../../store/ducks/tokens/actions';
 import { api, apiUnAuth } from '../../services/api'
 import { useDispatch } from 'react-redux';
-import { Button } from '@chakra-ui/react';
+import { Button, useToast} from '@chakra-ui/react';
 
 
 const schema = yup.object({
@@ -28,6 +28,7 @@ export const FormCadastroClinica = () => {
 
   const history = useNavigate()
   const dispactch = useDispatch();
+  const toast = useToast();
 
   const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
@@ -40,7 +41,8 @@ export const FormCadastroClinica = () => {
       nome: user.nome,
       senha: user.senha,
     }
-    await apiUnAuth.post('/clinica', clinica).then(({ data }) => {
+    await toast.promise(
+      apiUnAuth.post('/clinica', clinica).then(({ data }) => {
       const login = {
         email: null,
         cnpj: user.cnpj,
@@ -49,8 +51,14 @@ export const FormCadastroClinica = () => {
       dispactch(loadSession(login))
       history('/clinica')
     }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
-    })
+      throw error;
+    }),
+    {
+      loading: { title: 'Cadastro em andamento.', description: 'Por favor, aguarde.' },
+      success: { title: 'Cadastro realizado com sucesso!', description: 'Seja bem-vindo!', duration: 500},
+      error: { title: 'Erro ao cadastrar usuário.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true},
+    }
+    );
   };
 
   function visibleIcon() {

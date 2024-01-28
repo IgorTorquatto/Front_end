@@ -22,7 +22,8 @@ import {
   Input,
   Select as ChakraSelect,
   Spinner,
-  Flex
+  Flex,
+  useToast
 } from '@chakra-ui/react'
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
@@ -99,6 +100,7 @@ export const Pacientes = () => {
   });
   const { data: user } = useSelector((state) => state.tokens);
 
+  const toast = useToast();
   const history = useNavigate()
   const { isOpen, onOpen, onClose } = useDisclosure()
   // const { isOpen: isOpenEdit, onOpen:onOpenEdit, onClose: onCloseEdit } = useDisclosure()
@@ -112,6 +114,7 @@ export const Pacientes = () => {
   const [patients, setPatiens] = useState([]);
   const [searchBy, setSearchBy] = useState('nome');
   const [loadingCadastro, setLoadingCadastro] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
   const [pageLoading, setPageLoading] = useState(true);
@@ -248,6 +251,7 @@ export const Pacientes = () => {
     setIsInfoOpen(false);
   };
 
+  
   const onSubmit = async (novopaciente) => {
 
     novopaciente.cpf = cpf_mask_remove(novopaciente.cpf)
@@ -265,34 +269,46 @@ export const Pacientes = () => {
     }
 
     setLoadingCadastro(true)
-    await api.post('/pessoa', pessoa).then(({ data }) => {
-      const paciente = {
-        id_pessoa: data.data.id,
-        id_clinica: clinica.id,
-        sexo: novopaciente.sexo,
-        tipo_sanguineo: novopaciente.tipo_sanguineo,
-        detalhes_clinicos: novopaciente.detalhes_clinicos,
-        cep: novopaciente.cep,
-        logradouro: novopaciente.logradouro,
-        bairro: novopaciente.bairro,
-        cidade: novopaciente.cidade,
-        numero: novopaciente.numero,
-        estado: novopaciente.estado,
-      }
+    await toast.promise(
+      api.post('/pessoa', pessoa).then(({ data }) => {
+        const paciente = {
+          id_pessoa: data.data.id,
+          id_clinica: clinica.id,
+          sexo: novopaciente.sexo,
+          tipo_sanguineo: novopaciente.tipo_sanguineo,
+          detalhes_clinicos: novopaciente.detalhes_clinicos,
+          cep: novopaciente.cep,
+          logradouro: novopaciente.logradouro,
+          bairro: novopaciente.bairro,
+          cidade: novopaciente.cidade,
+          numero: novopaciente.numero,
+          estado: novopaciente.estado,
+        }
 
-      api.post('/paciente', paciente).then(({ data }) => {
+        api.post('/paciente', paciente).then(({ data }) => {
+          setLoadingCadastro(false)
+          onClose()
+          loadPatients()
+        }).catch(({ erro }) => {
+          console.log(erro)
+          throw erro;
+        })
+
+      }).catch(({ error }) => {
+        // alert("Error ao cadastrar")
         setLoadingCadastro(false)
-        onClose()
-        loadPatients()
-      }).catch(({ }) => {
-
+        console.log(error)
+        throw error;
       })
-
-    }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
+      // history('/diagnostico')
+    ,
+    {
+      loading: { title: 'Cadastro em andamento.', description: 'Por favor, aguarde.' },
+      success: { title: 'Cadastro realizado com sucesso!', duration: 6000, isClosable: true},
+      error: { title: 'Erro ao cadastrar usuário.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true},
     })
-    // history('/diagnostico')
   };
+ 
   const onSubmitEdit = async (editpaciente) => {
 
     editpaciente.cpf = cpf_mask_remove(editpaciente.cpf)
@@ -308,31 +324,41 @@ export const Pacientes = () => {
       telefone: editpaciente.telefone,
       cargo: 'Paciente',
     }
+    setLoadingEdit(true)
+    await toast.promise(
+      api.put(`/pessoa/${patient.pessoa.id}`, pessoa).then(({ data }) => {
+        const paciente = {
+          sexo: editpaciente.sexo,
+          tipo_sanguineo: editpaciente.tipo_sanguineo,
+          detalhes_clinicos: editpaciente.detalhes_clinicos,
+          logradouro: editpaciente.logradouro,
+          bairro: editpaciente.bairro,
+          cidade: editpaciente.cidade,
+          numero: editpaciente.numero,
+          estado: editpaciente.estado,
+        }
 
+        api.put(`/paciente/${patient.id}`, paciente).then(({ data }) => {
+          history('/pacientes')
+          loadPatients()
+          onCloseEdit()
+          setLoadingEdit(false)
+        }).catch(({ erro }) => {
+          throw erro;
+        })
 
-    await api.put(`/pessoa/${patient.pessoa.id}`, pessoa).then(({ data }) => {
-      const paciente = {
-        sexo: editpaciente.sexo,
-        tipo_sanguineo: editpaciente.tipo_sanguineo,
-        detalhes_clinicos: editpaciente.detalhes_clinicos,
-        logradouro: editpaciente.logradouro,
-        bairro: editpaciente.bairro,
-        cidade: editpaciente.cidade,
-        numero: editpaciente.numero,
-        estado: editpaciente.estado,
-      }
-
-      api.put(`/paciente/${patient.id}`, paciente).then(({ data }) => {
-        history('/pacientes')
-        loadPatients()
-        onCloseEdit()
-      }).catch(({ }) => {
-
+      }).catch(({ error }) => {
+        // alert("Error ao cadastrar")
+        setLoadingEdit(false)
+        throw error;
+      }),
+      {
+        loading: { title: 'Atualização em andamento.', description: 'Por favor, aguarde.' },
+        success: { title: 'Atualização cadastral realizada!', description: 'Informações do paciente alteradas!', duration: 6000, isClosable: true},
+        error: { title: 'Erro ao atualizar informações.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true},
+  
       })
 
-    }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
-    })
     // history('/diagnostico')
   };
 
@@ -875,7 +901,7 @@ export const Pacientes = () => {
                   </div>
                 </div>
 
-                <Button type="submit" colorScheme='blue' isLoading={loadingCadastro} mt='0.8rem' >Editar</Button>
+                <Button type="submit" colorScheme='blue' isLoading={loadingEdit} mt='0.8rem' >Editar</Button>
 
               </form>
             </ModalBody>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, MenuItem } from "@chakra-ui/react";
+import { Menu, MenuItem, useToast, Button} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
@@ -27,6 +27,9 @@ export const AtualizarDados = ({ onCancel }) => {
   const { data: user } = useSelector((state) => state.tokens);
   const history = useNavigate();
   const dispatch = useDispatch();
+  const toast = useToast();
+  const [loadingEdit, setLoadingEdit] = useState(false);
+
   const schema = yup
     .object({
       nome: yup.string().required("Informe seu nome"),
@@ -63,8 +66,9 @@ export const AtualizarDados = ({ onCancel }) => {
     pessoa.cpf = cpf_mask_remove(pessoa.cpf)
     pessoa.telefone = telefone_mask_remove(pessoa.telefone)
 
-    await api
-      .put(`/pessoa/${user.data.id_pessoa}`, pessoa)
+    setLoadingEdit(true)
+    await toast.promise(
+      api.put(`/pessoa/${user.data.id_pessoa}`, pessoa)
       .then(({ data }) => {
         const medico = {
           id_pessoa: data.data.id,
@@ -77,12 +81,23 @@ export const AtualizarDados = ({ onCancel }) => {
           .put(`/medico/${user.data.id}`, medico)
           .then(({ data }) => {
             dispatch(editProfile(data.data));
+            setLoadingEdit(false)
             window.location.reload()
+
           })
-          .catch(({}) => {});
+          .catch(({ err}) => {
+            throw err;
+          });
       })
       .catch(({ error }) => {
         // alert("Error ao cadastrar")
+        setLoadingEdit(false)
+        throw error;
+      }),
+      {
+        loading: { title: 'Atualização em andamento.', description: 'Por favor, aguarde.' },
+        success: { title: 'Atualização cadastral realizada!', description: 'Seus dados foram editados.', duration: 6000, isClosable: true},
+        error: { title: 'Erro ao atualizar informações.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true}, 
       });
   };
 
@@ -207,16 +222,22 @@ export const AtualizarDados = ({ onCancel }) => {
             </div>
           </div>
           <div className="atualizarDados-buttons">
-            <button type="submit" className="btn-salvar">
+            <Button 
+              type="submit" 
+              className="btn-salvar" 
+              isLoading={loadingEdit} 
+              colorScheme="blue"
+              >
               Atualizar dados
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               className="btn-cancelar"
               onClick={handleCancel}
+              colorScheme="blackAlpha"
             >
               Cancelar
-            </button>
+            </Button>
           </div>
         </form>
       </div>

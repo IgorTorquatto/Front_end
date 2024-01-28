@@ -15,6 +15,7 @@ import {
   Text,
   Box,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +45,7 @@ export const Perfil = () => {
   const [editAvatarClassname, setEditAvatarClassname] = useState("editAvatarOff");
   const history = useNavigate();
   const dispatch = useDispatch();
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showAtualizarDados, setShowAtualizarDados] = useState(false);
   const [showAlterarSenha, setShowAlterarSenha] = useState(false);
@@ -168,15 +170,21 @@ export const Perfil = () => {
       foto_perfil: uploadedImage,
     };
     setIsLoading(true);
-    await api
-      .put(`/medico/${user.data.id}`, medico)
-      .then(({ data }) => {
-        onClose();
-        dispatch(editProfile(data.data));
-        setIsLoading(false);
-      })
-      .catch(({ err }) => {
-        console.log(err);
+    await toast.promise(
+      api.put(`/medico/${user.data.id}`, medico)
+        .then(({ data }) => {
+          onClose();
+          dispatch(editProfile(data.data));
+          setIsLoading(false);
+        })
+        .catch(({ err }) => {
+          console.log(err);
+          throw err;
+        }),
+      {
+        loading: { title: 'Atualização em andamento.', description: 'Por favor, aguarde.' },
+        success: { title: 'A Foto do seu perfil foi atualizada!', duration: 6000, isClosable: true},
+        error: { title: 'Erro ao atualizar sua foto do perfil.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true},  
       });
   }
 
