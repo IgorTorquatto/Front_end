@@ -15,6 +15,7 @@ import {
   Text,
   Box,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,6 +36,7 @@ export const PerfilAvatar = (userType) => {
   const [editAvatarClassname, setEditAvatarClassname] =
     useState("editAvatarOff");
   const dispatch = useDispatch();
+  const toast = useToast();
   const { data: user } = useSelector((state) => state.tokens);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -48,7 +50,9 @@ export const PerfilAvatar = (userType) => {
     };
     setIsLoading(true);
     const url = userType === 'medico' ? 'medico': 'clinica'
-    await api
+
+    await toast.promise(
+      api
       .put(`/${url}/${user.data.id}`, userAvatar)
       .then(({ data }) => {
         onClose();
@@ -57,7 +61,14 @@ export const PerfilAvatar = (userType) => {
       })
       .catch(({ err }) => {
         console.log(err);
-      });
+        setIsLoading(false);
+        throw err;
+      }),
+    {
+      loading: { title: 'Atualização em andamento.', description: 'Por favor, aguarde.' },
+        success: { title: 'Foto do perfil atualizada!', duration: 6000, isClosable: true},
+        error: { title: 'Erro ao atualizar foto do perfil.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true}, 
+    });
   }
 
   const handleContainerClick = () => {
@@ -175,7 +186,7 @@ export const PerfilAvatar = (userType) => {
               )}
             </Box>
 
-            <Button onClick={() => submitLaudo()} colorScheme="blue" mb="1rem">
+            <Button onClick={() => submitLaudo()} colorScheme="blue" mb="1rem" isLoading={isLoading}>
               Editar Imagem de perfil
             </Button>
           </ModalBody>

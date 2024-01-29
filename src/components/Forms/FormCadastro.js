@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './FormCadastro.css';
-
+import { useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
 import * as yup from 'yup'
@@ -37,7 +37,7 @@ export const FormCadastro = () => {
 
   const history = useNavigate()
   const dispactch = useDispatch();
-
+  const toast = useToast();
   const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
@@ -57,7 +57,10 @@ export const FormCadastro = () => {
       cargo: 'Médico',
     }
 
-    await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
+    setOnLoading(true);
+
+    await toast.promise(
+      apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
         crm: novoMedico.crm,
@@ -65,16 +68,23 @@ export const FormCadastro = () => {
         senha: novoMedico.senha,
         email: novoMedico.email
       }
+      setOnLoading(false);
 
       apiUnAuth.post(`/clinica/${user.data.id}/medico`, medico).then(({ data }) => {
         handleHistorico(null)
-      }).catch(({})=>{
-
+      }).catch(({ err })=>{
+        throw err;
       })
 
     }).catch(({ error }) => {
-      alert("Error ao cadastrar")
-    })
+      setOnLoading(false);
+      throw error;
+    }),
+    {
+      loading: { title: 'Cadastro em andamento.', description: 'Por favor, aguarde.' },
+      success: { title: 'Médico cadastrado com sucesso!', description: 'O médico foi associado à clínica.', duration: 6000, isClosable: true},
+      error: { title: 'Erro ao cadastrar médico.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true}, 
+    });
   };
 
   function visibleIcon() {
