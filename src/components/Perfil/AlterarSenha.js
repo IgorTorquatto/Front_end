@@ -155,7 +155,7 @@ export const AlterarSenha = ({ onCancel }) => {
           </div>
 
           <div className="alterarSenha-buttons">
-            <Button type="submit" className="btn-salvar" isLoading={loading} colorScheme="blue">
+            <Button type="submit" className="btn-salvar" isLoading={loading} colorScheme="blue" bgColor={"#007bff"}>
               Atualizar dados
             </Button>
             <Button

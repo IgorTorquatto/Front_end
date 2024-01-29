@@ -55,7 +55,7 @@ export const Clinica = () => {
                 icon={<FaUserMd />}
                 onClick={() => handleHistorico("Cadastrar médico")}
               >
-                Cadastrar médico
+                Cadastrar Médico
               </MenuItem>
               <hr />
               <MenuItem

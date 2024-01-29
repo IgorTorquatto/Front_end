@@ -136,7 +136,7 @@ export const AtualizarDados = ({ onCancel }) => {
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputEmail">
                   {" "}
-                  Endereço de email{" "}
+                  Endereço de e-mail{" "}
                 </label>
                 <input
                   type="email"
@@ -227,6 +227,7 @@ export const AtualizarDados = ({ onCancel }) => {
               className="btn-salvar" 
               isLoading={loadingEdit} 
               colorScheme="blue"
+              bgColor={"#007bff"}
               >
               Atualizar dados
             </Button>
