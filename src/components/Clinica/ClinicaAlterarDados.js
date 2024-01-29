@@ -100,7 +100,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputEmail">
                   {" "}
-                  Endereço de email:{" "}
+                  Endereço de e-mail:{" "}
                 </label>
                 <input
                   type="email"

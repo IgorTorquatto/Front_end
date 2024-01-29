@@ -422,7 +422,7 @@ export const Pacientes = () => {
         user.data.crm && !user.data.clinica ? 
         <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
           <Box w='80%'>
-          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
+          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLÍNICA</Text>
             <Select
             
               value={clinica}
