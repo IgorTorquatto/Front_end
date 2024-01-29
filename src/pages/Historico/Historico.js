@@ -186,12 +186,12 @@ export const Historico = () => {
                   <AbsoluteCenter borderRadius='1rem' fontWeight='bold' fontSize='1.5rem' color={'#3b83c3'} bg='white' px='4'>
                     Modelo
                   </AbsoluteCenter>
-                </Box>
+                  </Box>
 
                 <Flex borderRadius='1rem' padding='1.25rem' background='#3b83c3' height='auto' color='white' w='100%' flexDirection='row' flexWrap='wrap'>
 
                   {/* Linha de Informações de Texto */}
-                  <Flex style={{ flex: '0 0 100%',  marginTop: '0.5rem',  textAlign:'center'}}>
+                  <Flex style={{ flex: '0 0 100%',  marginTop: '0.5rem',  textAlign:'center',justifyContent: 'flex-start'}}>
                     <div style={{ flex: '0 0 40%' }}>
                       <Text fontWeight='bold' as='span'>Modelo: </Text>
                       <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.modelo}</Text>
@@ -207,7 +207,7 @@ export const Historico = () => {
                   </Flex>
 
                   {/* Linha de Imagem de Raio X e Mapa de Calor */}
-                  <Flex  style={{ flex: '0 0 100%',  marginTop: '1rem', justifyContent: 'center'}}>
+                  <Flex  style={{ flex: '0 0 100%',  marginTop: '1rem',marginLeft:'0.25rem', justifyContent:'center'}}>
                     {/* Seção de Imagem de Raio X */}
                     <div >
                       <Text fontWeight='bold'>Raio X: </Text>
