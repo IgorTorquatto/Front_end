@@ -15,8 +15,8 @@ import { Button, useToast} from '@chakra-ui/react';
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
-  cnpj: yup.string().required('Informe um crm valido'),
-  senha: yup.string().min(8, 'a senha deve conter 8 caracteres').required('Digite uma senha'),
+  cnpj: yup.string().required('Informe um CRM válido'),
+  senha: yup.string().min(8, 'A senha deve conter 8 caracteres').required('Digite uma senha'),
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
 }).required();
 

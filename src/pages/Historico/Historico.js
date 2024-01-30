@@ -190,7 +190,7 @@ export const Historico = () => {
                   <AbsoluteCenter fontWeight='bold' fontSize='1.5rem' bg='white' px='4'>
                     Modelo
                   </AbsoluteCenter>
-                </Box>
+                  </Box>
 
                 <Flex borderRadius='10px' padding='1.25rem' bgColor={"#0b2a45"} height='auto' color='white' w='100%' flexDirection='row' flexWrap='wrap'>
 

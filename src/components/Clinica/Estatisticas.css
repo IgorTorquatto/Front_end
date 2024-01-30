@@ -1,41 +1,52 @@
-.container {  
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: .2fr 1fr 1fr;
-    gap: 0px 0px;
-    grid-auto-flow: row;
-    grid-template-areas:
-        "tituloPagina tituloPagina tituloPagina"
-        "barAtendimentos barAtendimentos pieClassificacao"
-        "lineDoencas lineDoencas info1";
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.2fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "tituloPagina tituloPagina tituloPagina"
+    "barAtendimentos barAtendimentos pieClassificacao"
+    "lineDoencas lineDoencas info1";
 }
 
 .container > div {
-    margin: 10px;
+  margin: 10px;
 }
 
 .dashboard {
-    background-color: white;
-    box-shadow: 0px 0px 5px gray;
-    border-radius: 5px;
-    padding: 5px;
+  background-color: white;
+  box-shadow: 0px 0px 5px gray;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .tituloPagina {
-    grid-area: tituloPagina;
-    color: #0b2a45;
-    font-family: 'Source Sans Pro', sans-serif;
+  grid-area: tituloPagina;
+  color: #0b2a45;
+  /*font-family: 'Source Sans Pro', sans-serif;*/
 }
 
 .tituloPagina h2 {
-    font-weight: bolder;
+  font-weight: bolder;
+  text-align: start;
+}
+.tituloPagina h3 {
+  font-weight: lighter;
+  text-align: start;
+}
+.barAtendimentos {
+  grid-area: barAtendimentos;
 }
 
-.barAtendimentos { grid-area: barAtendimentos; }
+.pieClassificacao {
+  grid-area: pieClassificacao;
+}
 
-.pieClassificacao { grid-area: pieClassificacao; }
+.lineDoencas {
+  grid-area: lineDoencas;
+}
 
-.lineDoencas { grid-area: lineDoencas; }
-
-.info1 { grid-area: info1; }
-  
+.info1 {
+  grid-area: info1;
+}

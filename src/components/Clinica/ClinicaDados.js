@@ -85,7 +85,7 @@ export const ClinicaDados = () => {
             </div>
             <div>
               <FaEnvelope />
-              <strong>Email:</strong>
+              <strong>E-mail:</strong>
               <span>{user.data.email}</span>
             </div>
             <div>
@@ -136,7 +136,7 @@ export const ClinicaDados = () => {
                 <th scope="col">#</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Especialidade</th>
-                <th scope="col">Email</th>
+                <th scope="col">E-mail</th>
                 <th scope="col">CRM</th>
                 {gerenciando ? <th scope="col">Remover</th> : null}
               </tr>
