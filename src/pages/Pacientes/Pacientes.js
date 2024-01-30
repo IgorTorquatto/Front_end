@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Pacientes.css'
 import { useEffect, useState } from 'react';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -27,7 +27,6 @@ import {
 } from '@chakra-ui/react'
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
-import Select from 'react-select';
 import {cpf_mask, 
   telefone_mask, 
   cpf_mask_remove, 
@@ -36,6 +35,7 @@ import {cpf_mask,
 } from '../../components/Forms/form-masks'
 import $ from 'jquery'
 import 'jquery-mask-plugin'
+import { ClinicaRequired } from '../../components/Blockers/clinicaRequired';
 
 yup.setLocale({
   string: {
@@ -117,12 +117,7 @@ export const Pacientes = () => {
   const [loadingEdit, setLoadingEdit] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const [pageLoading, setPageLoading] = useState(true);
-  const [clinica, setClinica] = useState(null);
-  const [clinicas, setClinicas] = useState([]);
-  const [clinicasArray, setClinicasArray] = useState([]);
-
-  const local = useLocation()
+  const [pageLoading, setPageLoading] = useState(false);
 
   async function loadPatients() {
     let id = user.data.cnpj ? user.data.id : user.data.clinica.id
@@ -133,31 +128,6 @@ export const Pacientes = () => {
     }).catch(({ err }) => {
       console.log(err)
     })
-  }
-
-  const loadClinicas = async ()=>{
-    if (user.data.cnpj) { return }
-    if (user.data.clinica) { return }
-    await api.get(`/medico/${user.data.id}/clinica`).then(({data})=>{
-      console.log(data)
-      setClinicas(data.data)
-      const clinicasOptions= []
-      data.data.map(item=>{
-        const clinica = {
-          value: item.id,
-          label: `Nome: ${item.nome} CNPJ: ${item.cnpj}`
-        }
-        clinicasOptions.push(clinica)
-      })
-
-      setClinicasArray(clinicasOptions)
-      
-    })
-  }
-
-  const handleClinica = (clinicaSelecionada) =>{
-    const clinicaFind = clinicas.find(clinica=> clinica.id === clinicaSelecionada.value)
-    setClinica(clinicaFind)
   }
 
   const searchPatient = (search) => {
@@ -172,10 +142,6 @@ export const Pacientes = () => {
   }
 
   useEffect(() => {
-    loadClinicas().then(()=>{
-      setPageLoading(false)
-    })
-
     if (user.data.cnpj) {
       setPageLoading(true)
       loadPatients().then(() => {
@@ -185,17 +151,13 @@ export const Pacientes = () => {
   }, [])
 
   useEffect(()=>{
-    if(clinica){
-      user.data.clinica = clinica
-    }
-
     if (user.data.clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
         setPageLoading(false)
       })
     }
-  }, [clinica])
+  }, [user.data.clinica])
 
   let pacientes_load = false;
   useEffect(()=>{
@@ -273,7 +235,7 @@ export const Pacientes = () => {
       api.post('/pessoa', pessoa).then(({ data }) => {
         const paciente = {
           id_pessoa: data.data.id,
-          id_clinica: clinica.id,
+          id_clinica: user.data.clinica.id,
           sexo: novopaciente.sexo,
           tipo_sanguineo: novopaciente.tipo_sanguineo,
           detalhes_clinicos: novopaciente.detalhes_clinicos,
@@ -420,19 +382,8 @@ export const Pacientes = () => {
       </Flex>
         :
         user.data.crm && !user.data.clinica ? 
-        <Box  m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='flex-start' mt='4rem' height='80vh' >
-          <Box w='80%'>
-          <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE A CLINICA</Text>
-            <Select
-            
-              value={clinica}
-              onChange={handleClinica}
-              options={clinicasArray}
-              isSearchable
-              placeholder="Digite para buscar..."
-            />
-          </Box>
-        </Box> : 
+          <ClinicaRequired />
+        : 
         <Box m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>
           <Box display='flex' w='90%' >
             <ChakraSelect onChange={(e) => setSearchBy(e.target.value)} w='20%' ml='10%' icon={<GiSettingsKnobs />} mr='1rem' bg={'white'}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 import { Box} from '@chakra-ui/react'
 import { MyFooter } from '../../components/Footer/Footer'

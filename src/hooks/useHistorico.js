@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { ClinicaDados } from "../components/Clinica/ClinicaDados";
 import { ClinicaAlterarSenha } from "../components/Clinica/ClinicaAlterarSenha";
 import { CadastrarMedico } from "../components/Clinica/CadastrarMedico";
