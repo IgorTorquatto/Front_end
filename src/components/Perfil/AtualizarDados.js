@@ -1,20 +1,13 @@
 import React from "react";
-import { Menu, MenuItem, useToast, Button} from "@chakra-ui/react";
+import { useToast, Button} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
-import { MdOutlineExitToApp } from "react-icons/md";
-import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
-import { BiArrowBack } from "react-icons/bi";
-import { Avatar } from "@chakra-ui/react";
+import { editProfile } from "../../store/ducks/tokens/actions.ts";
 import { useState } from "react";
-import logo from "../../assets/noto_lungs.png";
-import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 import * as yup from "yup";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { api, apiUnAuth } from "../../services/api.ts";
-import { loadSession } from "../../store/ducks/tokens/actions.ts";
+import { api } from "../../services/api.ts";
 import { 
   cpf_mask_remove,
   telefone_mask_remove, 
