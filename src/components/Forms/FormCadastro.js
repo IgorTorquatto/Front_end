@@ -1,20 +1,29 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import './FormCadastro.css';
-import { useToast } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
-import * as yup from 'yup'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { 
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure, 
+  useToast,
+} from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { loadSession } from '../../store/ducks/tokens/actions.ts';
-import { api, apiUnAuth } from  '../../services/api.ts'
+import { api, apiUnAuth } from  '../../services/api.ts';
 import { useDispatch,useSelector } from 'react-redux';
-import { Button } from '@chakra-ui/react';
 import { useHistorico } from '../../hooks/useHistorico';
+import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks';
+import * as yup from 'yup';
 import $ from 'jquery';
 import 'jquery-mask-plugin'
-import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks'
+import './FormCadastro.css';
 
 
 const schema = yup.object({
@@ -35,12 +44,17 @@ export const FormCadastro = () => {
     resolver: yupResolver(schema)
   });
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const history = useNavigate()
   const dispactch = useDispatch();
   const toast = useToast();
   const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
+  const [nomePessoa, setNomePessoa] = useState(null)
+  const [crmFild, setCrmField] = useState(null)
+  const [cargoPessoa, setCargoPessoa] = useState(null)
   const { data: user } = useSelector((state) => state.tokens);
   const { handleHistorico } = useHistorico()
   
@@ -87,6 +101,39 @@ export const FormCadastro = () => {
     });
   };
 
+  useEffect( () => {
+    if (!crmFild) { return }
+    if (typeof crmFild != 'string') { return }
+    if (crmFild.length != 6) { return }
+
+    api.post(`/medico/${crmFild}`).then( ({ data }) => {
+      if (data.result == 0) { return }
+      setCargoPessoa(data.data.pessoa.cargo)
+      setNomePessoa(data.data.pessoa.nome)
+      onOpen()
+    })
+  }, [crmFild])
+  
+  function handleAssociarMedico() {
+    let data = {crm: crmFild}
+
+    toast.promise(
+      api.put(`clinica/${user.data.id}/medico`, data).then(({ data }) => {
+        handleHistorico(null)
+        onClose()
+      })
+    , {
+      success: { title: 'Sucesso', description: 'Um novo médico foi adicionado', duration: 2000 },
+      error: { title: 'Falha', description: 'Médico não associado', duration: 2000 },
+      loading: { title: `Adicionando ${nomePessoa}`, description: 'Por favor espere', duration: 2000 },
+    })
+  }
+
+  function handleVoltarCadastroMedico() {
+    document.getElementById('FormControlInputCRM').value = ''
+    onClose()
+  }
+
   function visibleIcon() {
     if (visible) {
       return (
@@ -116,7 +163,42 @@ export const FormCadastro = () => {
 
   return (
     <>
+
+      <Modal isOpen={isOpen} onClose={handleVoltarCadastroMedico}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{cargoPessoa}(a) já cadastrado</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            Associar <b>{nomePessoa}</b> a clínica?
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='green' mr={3} onClick={handleAssociarMedico}>
+              Associar {cargoPessoa}(a)
+            </Button>
+            <Button variant='blue' onClick={handleVoltarCadastroMedico}>Voltar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
       <form onSubmit={handleSubmit(onSubmit)} className="custom-formcomp">
+
+      <div className="form-group mt-2 ">
+          <label htmlFor="FormControlInputCRM">CRM*</label>
+          <input
+            type="text"
+            className="form-control formcomp-input"
+            id="FormControlInputCRM"
+            placeholder="Insira o CRM do médico"
+            onKeyUp={e => setCrmField(e.target.value)}
+            {...register("crm")}
+          />
+          <div className={errors.crm ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+            <AiOutlineInfoCircle />
+            <p>{errors.crm?.message}</p>
+          </div>
+        </div>
 
         <div className="form-group mt-2 ">
           <label htmlFor="FormControlInputNome">Nome*</label>
@@ -160,20 +242,6 @@ export const FormCadastro = () => {
           <div className={errors.cpf ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.cpf?.message}</p>
-          </div>
-        </div>
-        <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputCRM">CRM*</label>
-          <input
-            type="text"
-            className="form-control formcomp-input"
-            id="FormControlInputCRM"
-            placeholder="Insira o CRM do médico"
-            {...register("crm")}
-          />
-          <div className={errors.crm ? 'showerror errorDiv' : 'hideerror errorDiv'}>
-            <AiOutlineInfoCircle />
-            <p>{errors.crm?.message}</p>
           </div>
         </div>
         <div className="form-group mt-2 ">
