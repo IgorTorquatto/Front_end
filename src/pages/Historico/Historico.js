@@ -53,13 +53,13 @@ export const Historico = () => {
   }
 
   useEffect(() => {
-    if (user.data.clinica) {
+    if (user.data.clinica || user.data.cnpj) {
       setPageLoading(true)
       loadHistorico().then(() => {
         setPageLoading(false)
       })
     }
-  }, [user.data.clinica])
+  }, [])
 
   const handleModal = (diagnosticoSelecionado) => {
     setDiagnostico(diagnosticoSelecionado)
