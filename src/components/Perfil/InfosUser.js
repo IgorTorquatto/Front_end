@@ -23,9 +23,9 @@ export const InfosUser = () => {
             </div>
             <div>
               <FaEnvelope />
-              <strong>Email:</strong> {user.data.email}
+              <strong>E-mail:</strong> {user.data.email}
             </div>
-            <div>
+            <div className="teste">
               <FaCalendarAlt />
               <strong>Data de Nascimento: </strong> {data_mask(user.data.pessoa.data_nascimento)}
             </div>
@@ -47,7 +47,7 @@ export const InfosUser = () => {
                 <FaRegIdCard />
                 <strong>CPF:</strong> {cpf_mask(user.data.pessoa.cpf)}
               </div>
-              <div>
+              <div className="teste">
                 <FaCalendarAlt />
                 <strong>Especialidade:</strong> {user.data.especialidade}
               </div>

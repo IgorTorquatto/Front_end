@@ -9,6 +9,8 @@ import {
   FaMapMarked,
   FaIdCard,
   FaCog,
+  FaTrashAlt,
+  FaSave,
 } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { Box, Divider, Button, Spinner, Flex, Text } from "@chakra-ui/react";
@@ -23,6 +25,7 @@ export const ClinicaDados = () => {
   const { data: user } = useSelector((state) => state.tokens);
   const [funcionarios, setFuncionarios]  = useState([])
   const [loading, setLoading]  = useState(true)
+  const [gerenciando, setGerenciando] = useState(false)
 
    const loadFuncionarios = async ()=>{
     await api.get(`/clinica/${user.data.id}/medico`).then(({data})=>{
@@ -42,7 +45,9 @@ export const ClinicaDados = () => {
   const [isEditing, setIsEditing] = useState(false); 
   const [isManaging, setIsManaging] = useState(false);
 
-
+  const removeMedico = async (funcionario) => {
+    alert("Remoção de médico em implementação\nNome: " + funcionario.pessoa.nome + " - CRM: "+ funcionario.crm);
+  }
 
   const voltarParaClinicaDados = () => {
     setIsEditing(false); // Define o estado para false, voltando à renderização de ClinicaDados
@@ -80,7 +85,7 @@ export const ClinicaDados = () => {
             </div>
             <div>
               <FaEnvelope />
-              <strong>Email:</strong>
+              <strong>E-mail:</strong>
               <span>{user.data.email}</span>
             </div>
             <div>
@@ -131,19 +136,21 @@ export const ClinicaDados = () => {
                 <th scope="col">#</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Especialidade</th>
-                <th scope="col">Email</th>
+                <th scope="col">E-mail</th>
                 <th scope="col">CRM</th>
+                {gerenciando ? <th scope="col">Remover</th> : null}
               </tr>
             </thead>
             <tbody id="clinica-medicos-tbody">
               
               {funcionarios.map((funcionario, index) => (
                 <tr key={index}>
-                  <th scope="row">{index+1}</th>
-                  <td>{funcionario.pessoa.nome}</td>
-                  <td>{funcionario.especialidade}</td>
-                  <td>{funcionario.email}</td>
-                  <td>{funcionario.crm}</td>
+                  <th style={{verticalAlign: "middle"}} scope="row">{index+1}</th>
+                  <td style={{verticalAlign: "middle"}}>{funcionario.pessoa.nome}</td>
+                  <td style={{verticalAlign: "middle"}}>{funcionario.especialidade}</td>
+                  <td style={{verticalAlign: "middle"}}>{funcionario.email}</td>
+                  <td style={{verticalAlign: "middle"}}>{funcionario.crm}</td>
+                  {gerenciando ? <td><Button bgColor={"white"} onClick={() => removeMedico(funcionario)}><FaTrashAlt color="red" /></Button></td> : null}
                 </tr>
               ))}
               </tbody>
@@ -153,7 +160,13 @@ export const ClinicaDados = () => {
 
       </Box>
       <div className="btn-clinica-gerenciar">
-        <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#0d6efd'} onClick={handleGerenciarClick}> Gerenciar</Button>
+        {
+          gerenciando ? <Button leftIcon={<FaSave />} colorScheme="green" onClick={() => {
+            setGerenciando(false)
+          }}>Salvar</Button>
+            :
+            <Button leftIcon={<FaCog />} colorScheme="blue" bgColor={'#0d6efd'} onClick={() => setGerenciando(true)}> Gerenciar</Button>
+        }
       </div>
     </div>
     )}

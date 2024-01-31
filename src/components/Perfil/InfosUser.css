@@ -55,3 +55,7 @@
 .infosuser-details .column div strong {
   min-width: 100px;
 }
+
+.teste strong{
+  margin-right: 10px !important;
+}

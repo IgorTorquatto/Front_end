@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Box, Button, Spinner, Flex } from "@chakra-ui/react";
 import { api } from "../../services/api";
 import { useSelector } from "react-redux";
+import { FaTrash } from "react-icons/fa";
 import "./ClinicaGerenciarFuncionarios.css";
 
 export const ClinicaGerenciarFuncionarios = ({ voltarParaClinicaDados2 }) => {
@@ -77,6 +78,7 @@ export const ClinicaGerenciarFuncionarios = ({ voltarParaClinicaDados2 }) => {
                     <th scope="col">Nome</th>
                     <th scope="col">Especialidade</th>
                     <th scope="col">CRM</th>
+                    <th scope="col">Remover</th>
                   </tr>
                 </thead>
                 <tbody id="clinica-medicos-tbody">
@@ -86,6 +88,7 @@ export const ClinicaGerenciarFuncionarios = ({ voltarParaClinicaDados2 }) => {
                       <td>{funcionario.pessoa.nome}</td>
                       <td>{funcionario.especialidade}</td>
                       <td>{funcionario.crm}</td>
+                      <td style={{alignSelf: "center"}}><FaTrash cursor={"pointer"} color="red"/></td>
                     </tr>
                   ))}
                 </tbody>
@@ -93,9 +96,12 @@ export const ClinicaGerenciarFuncionarios = ({ voltarParaClinicaDados2 }) => {
             )}
           </Box>
         </Box>
-        <Button onClick={handleVoltarClick} className="voltar-btn">
-          Voltar
-        </Button>
+        <Box className="gerenciar-voltar-btn-context">
+          <Button onClick={handleVoltarClick} colorScheme="blue">
+            Voltar
+          </Button>
+        </Box>
+        
       </div>
     </>
   );

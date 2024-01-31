@@ -1,4 +1,4 @@
-.card {
+.card-home {
   background-color: #061218;
   color: #ffffff;
   text-align: center;
@@ -7,8 +7,7 @@
   transition: all 0.5s;
 }
 
-.card:hover {
-  color: #0b2a45;
+.card-home:hover {
   transform: scale(1.05);
 }
 
@@ -18,13 +17,13 @@
   object-fit: cover;
 }
 
-.card-title {
+.card-home-title {
   font-size: 30px;
   margin-bottom: 30px;
   text-transform: capitalize;
 }
 
-.card-text {
+.card-home-text {
   font-size: 1rem;
 }
 
@@ -33,7 +32,7 @@
 }
 
 @media (max-width: 991px) {
-  .card {
+  .card-home {
     margin-left: 20%;
     margin-bottom: 50px;
     width: 60%;
@@ -41,7 +40,7 @@
 }
 
 @media (max-width: 480px) {
-  .card {
+  .card-home {
     margin-left: 10%;
     margin-bottom: 50px;
     width: 80%;
