@@ -37,7 +37,7 @@ export const FormDetalhesIA = () => {
             augmentation: ficha.dataAugmentation,
             tipoImagem: ficha.tipoImagem,
         }
-        await apiUnAuth.post('/fichas', fichaModelo)
+        await apiUnAuth.post('/modelo', fichaModelo)
     }
 
     const detalhesFicha = [{ label: "Nome do modelo", name: "nome", placeholder: "Digite o nome do modelo", type: "text" },
@@ -65,6 +65,7 @@ export const FormDetalhesIA = () => {
                             {...register(element.name)}
                         />
                     </div>)}
+                <button type="submit" className='submitDetalhesIA'>Enviar</button>
             </form>
         </>
     )
