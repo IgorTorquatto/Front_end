@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Radar } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 import { api } from "../../services/api";
-import { Flex } from "@chakra-ui/react";
-import { Spinner } from "react-bootstrap";
+import { Flex, Spinner } from "@chakra-ui/react";
 
 export const RadarModeloMedico = (args) => {
 
@@ -64,7 +63,7 @@ export const RadarModeloMedico = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner size='md'/> :
+            { isLoading ? <Spinner thickness='4px' size='lg'/> :
                 <Radar options={optionsModelo} data={dataModelo}/>
             }
         </Flex>

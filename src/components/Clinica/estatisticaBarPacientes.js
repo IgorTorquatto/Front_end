@@ -2,8 +2,7 @@ import { Bar } from "react-chartjs-2";
 import { api } from "../../services/api";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Flex } from "@chakra-ui/react";
-import { Spinner } from "react-bootstrap";
+import { Flex, Spinner } from "@chakra-ui/react";
 
 export const BarAtendimentos = (args) => {
     
@@ -54,7 +53,7 @@ export const BarAtendimentos = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner size='md'/> :
+            { isLoading ? <Spinner thickness='4px' size='lg'/> :
                 <Bar options={optionsPacientes} data={dataPacientes} />
             }
         </Flex>

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Pie } from "react-chartjs-2";
 import { api } from "../../services/api";
 import { useSelector } from "react-redux";
-import { Flex } from "@chakra-ui/react";
-import { Spinner } from "react-bootstrap";
+import { Flex, Spinner } from "@chakra-ui/react";
 
 
 export const PieClassificacao = (args) => {
@@ -52,7 +51,7 @@ export const PieClassificacao = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner size='md'/> :
+            { isLoading ? <Spinner thickness='4px' size='lg'/> :
                 <Pie options={optionsClassificacao} data={dataClassificacao} />
             }
         </Flex>

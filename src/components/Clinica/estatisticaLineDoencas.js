@@ -77,7 +77,7 @@ export const LineDoencas = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner size='md'/> :
+            { isLoading ? <Spinner thickness='4px' size='lg'/> :
                 <Line options={optionsDoenca} data={dataDoenca}/>
             }
         </Flex>
