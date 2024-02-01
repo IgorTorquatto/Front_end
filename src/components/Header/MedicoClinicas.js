@@ -4,12 +4,10 @@ import { useState, useEffect } from "react"
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export var clinicaAtual
-
 export const MedicoClinicas = (medico_id) => {
 
     const [clinicas, setClinicas] = useState([]);
-    const [clinica, setClinica] = useState(null);
+    var [clinica, setClinica] = useState(null);
     const { data: user } = useSelector((state) => state.tokens);
     const history = useNavigate()
     const local = useLocation()
@@ -33,7 +31,6 @@ export const MedicoClinicas = (medico_id) => {
             let click = (clinica_id) => {
                 user.data.clinica = clinicas.find(clinica => clinica.id === clinica_id)
                 setClinica(user.data.clinica)
-                clinicaAtual = clinica
             }
             
             let disable = user.data.clinica ? user.data.clinica.id === clinica.id : false 

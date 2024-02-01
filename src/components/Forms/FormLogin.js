@@ -1,13 +1,13 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./FormLogin.css";
 import { useState } from "react";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import * as yup from "yup";
-import { useForm/*, SubmitHandler*/ } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, useToast } from "@chakra-ui/react";
 
 const schema = yup
@@ -79,15 +79,15 @@ export const FormLogin = () => {
         }
         throw dispactch(loadSession(login))
       }
-    } catch (e) {
-      toast({
-        title: 'Login não efetuado.',
-        description: "Senha ou e-mail/CNPJ podem estar incorretos.",
-        status: 'error',
-        duration: 4000,
-        isClosable: true,
-      })
-      setOnLoading(false)
+    } catch {
+        toast({
+          title: 'Login não efetuado.',
+          description: "Senha ou e-mail/CNPJ podem estar incorretos.",
+          status: 'error',
+          duration: 4000,
+          isClosable: true,
+        })
+        setOnLoading(false)
     }
   };
 

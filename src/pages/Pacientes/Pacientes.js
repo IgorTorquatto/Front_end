@@ -114,7 +114,6 @@ export const Pacientes = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
 
-  const [selectedState, setSelectedState] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientsArray, setPatientsArray] = useState([]);
   const [patients, setPatiens] = useState([]);
@@ -193,8 +192,6 @@ export const Pacientes = () => {
       setValue('telefone', patient.pessoa.telefone);
       setValue('data_nascimento', patient.pessoa.data_nascimento);
     }
-
-
   }, [patient]);
 
   const openEdit = (paciente) => {
@@ -329,14 +326,6 @@ export const Pacientes = () => {
 
     // history('/diagnostico')
   };
-
-  const handleChange = (selectedState) => {
-    setSelectedState(selectedState);
-  };
-
-  const changeButtonContent = (setFunction, mouseEvent) => {
-    mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3')
-  }
 
   const states = [
     { label: 'Acre', value: 'AC' },
