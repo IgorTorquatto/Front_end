@@ -1,20 +1,14 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./FormLogin.css";
-
 import { useState } from "react";
-import {
-  // AiOutlineEye,
-  // AiOutlineEyeInvisible,
-  AiOutlineInfoCircle,
-} from "react-icons/ai";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 import * as yup from "yup";
 import { useForm/*, SubmitHandler*/ } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
-//import { api } from "../../services/api.ts";
 import { useDispatch } from "react-redux";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 
 const schema = yup
   .object({
@@ -38,9 +32,8 @@ export const FormLogin = () => {
   });
 
   const [onLoading, setOnLoading] = useState(false);
-
-  const history = useNavigate();
   const dispactch = useDispatch();
+  const toast = useToast()
 
   //const [showPassword, setShowPassword] = useState("password");
   //const [visible, setVisible] = useState(true);
@@ -58,7 +51,7 @@ export const FormLogin = () => {
 
   const onSubmit = async (user) => {
 
-    // setOnLoading(true)
+    setOnLoading(true)
     try {
       if(validarNumeros(user.data)){
         const login = {
@@ -67,7 +60,7 @@ export const FormLogin = () => {
           cnpj: user.data,
           senha: user.senha
         }
-        dispactch(loadSession(login))
+        throw dispactch(loadSession(login))
       }
       else if (validarEmail(user.data)) {
         const login = {
@@ -76,7 +69,7 @@ export const FormLogin = () => {
           username: null,
           senha: user.senha
         }
-        dispactch(loadSession(login))
+        throw dispactch(loadSession(login))
       } else {
         const login = {
           email: null,
@@ -84,9 +77,18 @@ export const FormLogin = () => {
           username: user.data,
           senha: user.senha
         }
-        dispactch(loadSession(login))
+        throw dispactch(loadSession(login))
       }
-    } catch { }
+    } catch (e) {
+      toast({
+        title: 'Login não efetuado.',
+        description: "Senha ou e-mail/CNPJ podem estar incorretos.",
+        status: 'error',
+        duration: 4000,
+        isClosable: true,
+      })
+      setOnLoading(false)
+    }
   };
 
 
