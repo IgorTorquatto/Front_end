@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
 import { 
@@ -17,7 +16,7 @@ import {
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api, apiUnAuth } from  '../../services/api.ts';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistorico } from '../../hooks/useHistorico';
 import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks';
 import * as yup from 'yup';
@@ -46,8 +45,6 @@ export const FormCadastro = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const history = useNavigate()
-  const dispactch = useDispatch();
   const toast = useToast();
   const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')

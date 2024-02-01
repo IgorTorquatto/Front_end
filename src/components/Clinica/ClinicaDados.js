@@ -16,7 +16,7 @@ import { CiEdit } from "react-icons/ci";
 import { Box, Divider, Button, Spinner, Flex, Text } from "@chakra-ui/react";
 
 import { api } from "../../services/api";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { ClinicaAlterarDados } from "./ClinicaAlterarDados";
 import { ClinicaGerenciarFuncionarios } from "./ClinicaGerenciarFuncionarios";
 import { cep_mask, telefone_mask, cnpj_mask } from "../Forms/form-masks";
