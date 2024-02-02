@@ -50,9 +50,10 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
     window.location.reload()
     if(response.data.data.crm){
       window.location.pathname = '/diagnostico'
-    }else{
+    }else if(response.data.data.cnpj){
       window.location.pathname = '/clinica'
-
+    }else{
+      window.location.pathname = '/administracao'
     }
   } catch (err) {
     console.log(err)

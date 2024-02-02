@@ -15,7 +15,8 @@ export enum TokensTypes {
 export interface User {
   id: string,
   id_pessoa: string,
-  crm: string,
+  crm?: string,
+  cnpj?: string,
   email: string,
   senha: string,
   especialidade: string,
