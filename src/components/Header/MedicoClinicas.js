@@ -3,13 +3,15 @@ import { api } from "../../services/api"
 import { useState, useEffect } from "react"
 import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useClinica } from '../../hooks/useClinica';
 
 export const MedicoClinicas = (medico_id) => {
 
     const [clinicas, setClinicas] = useState([]);
-    var [clinica, setClinica] = useState(null);
+    // var [clinica, setClinica] = useState(null);
     const { data: user } = useSelector((state) => state.tokens);
-    const history = useNavigate()
+  const {clinica, handleClinica } = useClinica()
+  const history = useNavigate()
     const local = useLocation()
 
     async function loadClinicas() {
@@ -27,19 +29,18 @@ export const MedicoClinicas = (medico_id) => {
     }, [clinica])
 
     return (
-        clinicas.map(clinica => {
+        clinicas.map(clinicavalue => {
             let click = (clinica_id) => {
-                user.data.clinica = clinicas.find(clinica => clinica.id === clinica_id)
-                setClinica(user.data.clinica)
+                handleClinica(clinica_id)
             }
             
-            let disable = user.data.clinica ? user.data.clinica.id === clinica.id : false 
+            let disable = clinica ? clinica.id === clinicavalue.id : false 
             return (
                 <MenuItem isDisabled={disable} 
-                    value={clinica.id} 
+                    value={clinicavalue.id} 
                     onClick={(e) => {click(e.target.value)}} 
-                    icon={ <Avatar name={clinica.nome} 
-                    src={clinica.foto_perfil} /> }>{clinica.nome}</MenuItem>
+                    icon={ <Avatar name={clinicavalue.nome} 
+                    src={clinicavalue.foto_perfil} /> }>{clinicavalue.nome}</MenuItem>
             )
         })
     )

@@ -15,6 +15,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { MyFooter } from '../../components/Footer/Footer'
 import './Diagnostico.css'
 import { ClinicaRequired } from '../../components/Blockers/clinicaRequired';
+import { useClinica } from '../../hooks/useClinica';
 
 export const Diagnostico = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -46,6 +47,7 @@ export const Diagnostico = () => {
   const history = useNavigate()
 
   const { data: user } = useSelector((state) => state.tokens);
+  const { clinica } = useClinica()
 
   const models = [
     { value: '1', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
@@ -53,7 +55,7 @@ export const Diagnostico = () => {
   ]
 
   async function loadPatients() {
-    await api.get(`/paciente?id_clinica=${user.data.clinica.id}`).then(({ data }) => {
+    await api.get(`/paciente?id_clinica=${clinica.id}`).then(({ data }) => {
       const patientsValues = []
       setPatientsArray(data)
       data.map((item) => {
@@ -70,14 +72,14 @@ export const Diagnostico = () => {
   }
 
   useEffect(() => {
-    if (user.data.clinica) {
+    if (clinica) {
       setPageLoading(true)
-      loadPatients().then(()=>{
+      loadPatients().then(() => {
         setPageLoading(false)
       })
     }
-  }, [user.data.clinica])
-  
+  }, [clinica])
+
   useEffect(() => {
     if (prediction != null) {
       createPDF()
@@ -194,7 +196,7 @@ export const Diagnostico = () => {
     if (!resultLaudo) {
       setLaudoError(true)
       return
-    } 
+    }
     setLaudoError(false)
 
     if (resultReal === 'OUTRO') {
@@ -204,24 +206,24 @@ export const Diagnostico = () => {
       }
     }
     setOutroLaudoErro(false)
-    
-    if(observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0) {
+
+    if (observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0) {
       setobsState(false)
       return
-    } 
+    }
     setobsState(true)
 
-    if(termo == null || termo == false) {
+    if (termo == null || termo == false) {
       setTermo(false)
       return
     }
 
-    
+
     const diagnostico = {
       modelo: selectedModel.label,
       raio_x: uploadedImage,
       id_medico: user.data.id,
-      id_clinica: user.data.clinica.id,
+      id_clinica: clinica.id,
       id_paciente: patient.id,
       laudo_medico: pdfDataUri,
       data_hora: new Date(),
@@ -361,185 +363,185 @@ export const Diagnostico = () => {
   };
 
   return (
-    <body style={{backgroundColor: '#F8F8FF'}}>
+    <body style={{ backgroundColor: '#F8F8FF' }}>
       <header><NavbarComp showEntrarButton={true} /></header>
-      {pageLoading ?  <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
-      <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl'/>
-        </Flex> : 
-        !user.data.clinica ? 
-        <ClinicaRequired />
-        :
-        !prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
-        <Box w='30%' padding='4rem 0'>
-          <Box w='100%' >
-            <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O PACIENTE</Text>
-            <Select
-              value={selectedPatient}
-              onChange={handlePatient}
-              options={patients}
-              isSearchable
-              placeholder="Digite para buscar..."
-            />
+      {pageLoading ? <Flex justifyContent='center' alignItems='center' w='100vw' h='80vh'>
+        <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
+      </Flex> :
+        !clinica ?
+          <ClinicaRequired />
+          :
+          !prediction ? <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
+            <Box w='30%' padding='4rem 0'>
+              <Box w='100%' >
+                <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O PACIENTE</Text>
+                <Select
+                  value={selectedPatient}
+                  onChange={handlePatient}
+                  options={patients}
+                  isSearchable
+                  placeholder="Digite para buscar..."
+                />
 
 
-          </Box>
-
-          <Box w='100%' mt='2rem'>
-            <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O TIPO DE EXAME</Text>
-            <Select
-              value={selectedModel}
-              onChange={setSelectedModel}
-              options={models}
-              isSearchable
-              placeholder="Digite para buscar..."
-            />
-
-
-          </Box>
-
-          <Box
-            mt='2rem'
-            textAlign='center'
-            border={isDragging ? '2px solid #4CAF50' : '2px dashed #ccc'}
-            borderRadius='20px'
-            padding='20px'
-            cursor='pointer'
-            marginBottom='20px'
-            onClick={handleContainerClick}
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={handleDrop}
-            w='100%'
-            height='50vh'
-            display='flex'
-            alignItems='center'
-            justifyContent='center'
-            background='#F8F8F9'
-          >
-            {!uploadedImage &&
-              <Box lineHeight='0.5rem'>
-                <p id='titleDragInput'>Clique para fazer o upload </p>
-                <p id='titleDragInput'>ou arraste sua imagem</p>
               </Box>
 
-            }
-            <input
-              type="file"
-              id="file-input"
-              style={{ display: 'none' }}
-              onChange={handleFileChange}
-            />
+              <Box w='100%' mt='2rem'>
+                <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O TIPO DE EXAME</Text>
+                <Select
+                  value={selectedModel}
+                  onChange={setSelectedModel}
+                  options={models}
+                  isSearchable
+                  placeholder="Digite para buscar..."
+                />
 
 
-            {uploadedImage && (
-              <img
-                src={uploadedImage}
-                alt="Uploaded"
-                style={{ maxWidth: '100%', maxHeight: '300px' }}
-              />
-            )}
+              </Box>
+
+              <Box
+                mt='2rem'
+                textAlign='center'
+                border={isDragging ? '2px solid #4CAF50' : '2px dashed #ccc'}
+                borderRadius='20px'
+                padding='20px'
+                cursor='pointer'
+                marginBottom='20px'
+                onClick={handleContainerClick}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={handleDrop}
+                w='100%'
+                height='50vh'
+                display='flex'
+                alignItems='center'
+                justifyContent='center'
+                background='#F8F8F9'
+              >
+                {!uploadedImage &&
+                  <Box lineHeight='0.5rem'>
+                    <p id='titleDragInput'>Clique para fazer o upload </p>
+                    <p id='titleDragInput'>ou arraste sua imagem</p>
+                  </Box>
+
+                }
+                <input
+                  type="file"
+                  id="file-input"
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+
+
+                {uploadedImage && (
+                  <img
+                    src={uploadedImage}
+                    alt="Uploaded"
+                    style={{ maxWidth: '100%', maxHeight: '300px' }}
+                  />
+                )}
 
 
 
-          </Box>
+              </Box>
 
-          <Button w='100%' colorScheme={error ? 'red' : 'blue'} isLoading={loadingLaudo} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
-          <Box display='flex' justifyContent='space-between'>
-            <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
-              <AiOutlineInfoCircle />
-              <Text ml='0.2rem' mt='1rem'>Selecione um Paciente</Text>
-            </Box>
-            <Box display={error && selectedModel === null ? 'flex' : 'none'} color='red' alignItems='center' >
-              <AiOutlineInfoCircle />
-              <Text ml='0.2rem' mt='1rem'>Selecione um Modelo</Text>
-            </Box>
-
-            <Box display={error && uploadedImageData === null ? 'flex' : 'none'} color='red' alignItems='center' >
-              <AiOutlineInfoCircle />
-              <Text ml='0.2rem' mt='1rem'>Faça upload da imagem</Text>
-            </Box>
-          </Box>
-
-
-        </Box>
-      </Box> :
-      <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
-        <Box margin='4rem 0' w='50%'>
-          <Box padding='0.5rem' background='#323639'>
-            <div>
-              <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
-            </div>
-          </Box>
-
-
-          <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
-            justifyContent='left' alignItems='left' mt='1.5rem'>
-            
-            <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo} style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
-              <Text justifySelf='center'>
-                Classificação do modelo: <b>{(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}</b>
-              </Text>
-              <Text mb='-0.2rem'>
-                A classificação do modelo está correta?
-              </Text>
-              <Stack direction='row' gap='30px' mb='1.0rem' mt='0.5rem'>
-                <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
-                <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
-              </Stack>
-              {laudoError == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor responda</Text>}
-
-              {resultLaudo == 2 && 
-                <Box>
-                  <Text mb='0.2rem'>Qual o diagnóstico?</Text>
-                  <Flex>
-                    <Center w={'60%'}>
-                      <SelectChakra bg={'white'} onChange={(e) => setResultReal(e.target.value)}>
-                        <option value={"PNEUMONIA"}>Pneumonia</option>
-                        <option value={"TURBECULOSE"}>Tuberculose</option>
-                        <option value={"COVID"}>COVID-19</option>
-                        <option value={"NORMAL"}>Normal</option>
-                        <option value={"OUTRO"}>Outro</option>
-                      </SelectChakra>
-                    </Center>
-
-                    {resultReal == "OUTRO" &&
-                    <Center w={'35%'} ml={'0.5rem'}> 
-                      <Input bg={'white'} placeholder='Digite aqui o dignóstico' onChange={(e) => setOutroLaudo(e.target.value)} />
-                    </Center>
-                    }
-                  </Flex>
-                  {outroLaudoErro == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor digite o diagnóstico</Text>}
-                  
+              <Button w='100%' colorScheme={error ? 'red' : 'blue'} isLoading={loadingLaudo} onClick={() => onSubmitImage()}>Gerar Laudo</Button>
+              <Box display='flex' justifyContent='space-between'>
+                <Box display={error && patient === null ? 'flex' : 'none'} color='red' alignItems='center' >
+                  <AiOutlineInfoCircle />
+                  <Text ml='0.2rem' mt='1rem'>Selecione um Paciente</Text>
                 </Box>
-              }
-            </RadioGroup>
+                <Box display={error && selectedModel === null ? 'flex' : 'none'} color='red' alignItems='center' >
+                  <AiOutlineInfoCircle />
+                  <Text ml='0.2rem' mt='1rem'>Selecione um Modelo</Text>
+                </Box>
+
+                <Box display={error && uploadedImageData === null ? 'flex' : 'none'} color='red' alignItems='center' >
+                  <AiOutlineInfoCircle />
+                  <Text ml='0.2rem' mt='1rem'>Faça upload da imagem</Text>
+                </Box>
+              </Box>
 
 
-            <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
-              <Text mb='-0.05rem'>Descrição do laudo</Text>
-              <Textarea style={{border: '1px solid black'}} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
             </Box>
-              {obsState == false && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
-            {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
-            <Box display='flex' alignItems='center' mt='1rem'>
-              <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
+          </Box> :
+            <Box display='flex' w='100%' alignItems='center' justifyContent='center' flexDirection='column'>
+              <Box margin='4rem 0' w='50%'>
+                <Box padding='0.5rem' background='#323639'>
+                  <div>
+                    <embed src={pdfDataUri} width="100%" height="500px" type="application/pdf" />
+                  </div>
+                </Box>
+
+
+                <Box display='flex' flexDirection='column' fontWeight='bold' w='100%'
+                  justifyContent='left' alignItems='left' mt='1.5rem'>
+
+                  <RadioGroup fontWeight='normal' onChange={setResultLaudo} value={resultLaudo} style={{ border: '2px solid black', padding: '8px', borderRadius: '4px' }}>
+                    <Text justifySelf='center'>
+                      Classificação do modelo: <b>{(Math.floor(prediction * 100) / 100) * 100}% para {predictionLabel}</b>
+                    </Text>
+                    <Text mb='-0.2rem'>
+                      A classificação do modelo está correta?
+                    </Text>
+                    <Stack direction='row' gap='30px' mb='1.0rem' mt='0.5rem'>
+                      <Radio value='1' style={{ border: '1px solid #000', borderRadius: '50%' }}>Sim</Radio>
+                      <Radio value='2' style={{ border: '1px solid #000', borderRadius: '50%' }}>Não</Radio>
+                    </Stack>
+                    {laudoError == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor responda</Text>}
+
+                    {resultLaudo == 2 &&
+                      <Box>
+                        <Text mb='0.2rem'>Qual o diagnóstico?</Text>
+                        <Flex>
+                          <Center w={'60%'}>
+                            <SelectChakra bg={'white'} onChange={(e) => setResultReal(e.target.value)}>
+                              <option value={"PNEUMONIA"}>Pneumonia</option>
+                              <option value={"TURBECULOSE"}>Tuberculose</option>
+                              <option value={"COVID"}>COVID-19</option>
+                              <option value={"NORMAL"}>Normal</option>
+                              <option value={"OUTRO"}>Outro</option>
+                            </SelectChakra>
+                          </Center>
+
+                          {resultReal == "OUTRO" &&
+                            <Center w={'35%'} ml={'0.5rem'}>
+                              <Input bg={'white'} placeholder='Digite aqui o dignóstico' onChange={(e) => setOutroLaudo(e.target.value)} />
+                            </Center>
+                          }
+                        </Flex>
+                        {outroLaudoErro == true && <Text fontWeight={'bold'} mt='0.5rem' justifySelf='center' color='red'>Por favor digite o diagnóstico</Text>}
+
+                      </Box>
+                    }
+                  </RadioGroup>
+
+
+                  <Box display='flex' flexDirection='column' fontWeight='bold' w='100%' justifyContent='center' alignItems='left' mt='1rem'>
+                    <Text mb='-0.05rem'>Descrição do laudo</Text>
+                    <Textarea style={{ border: '1px solid black' }} backgroundColor='white' onChange={(e) => setObservacoes(e.target.value)} />
+                  </Box>
+                  {obsState == false && <Text mt='1rem' justifySelf='center' color='red'>A descrição médica é necessária.</Text>}
+                  {termo == false && <Text mt='1rem' justifySelf='center' color='red'>É obrigatório aceitar os Termos de Uso</Text>}
+                  <Box display='flex' alignItems='center' mt='1rem'>
+                    <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setTermo(e.target.checked)} /> <Text as='span' >Declaro que li e aceito os <Text as='span' color='blue'><Link to='/termos'>Termos de uso</Link></Text> </Text>
+                  </Box>
+
+                  <Box display='flex' alignItems='center' mt='1rem'>
+                    <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a classificação do modelo</Text>
+                  </Box>
+
+                  <Box display='flex' mt='2rem' justifyContent='space-around'>
+                    <Button colorScheme='blue' width={'10rem'} borderRadius='1rem' onClick={() => setPrediction(null)}>Voltar</Button>
+                    <Button colorScheme='green' width={'10rem'} borderRadius='1rem' onClick={() => { submitLaudo() }}>Confirmar Laudo</Button>
+                  </Box>
+
+                </Box>
+              </Box>
             </Box>
+      }
 
-          <Box display='flex' alignItems='center' mt='1rem'>
-            <Checkbox border='black' size='lg' borderRadius='2px' mr='0.5rem' borderWidth='3px' onChange={(e) => setDownloadLaudo(e)} /><Text as='span'>Baixar o  laudo com a classificação do modelo</Text>
-          </Box>
-
-          <Box display='flex' mt='2rem' justifyContent='space-around'>
-            <Button colorScheme='blue' width={'10rem'} borderRadius='1rem' onClick={() => setPrediction(null)}>Voltar</Button>
-            <Button colorScheme='green' width={'10rem'} borderRadius='1rem' onClick={() => { submitLaudo() }}>Confirmar Laudo</Button>
-          </Box>
-          
-        </Box>
-      </Box>
-      </Box>
-     }
-     
 
 
 

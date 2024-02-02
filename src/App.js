@@ -13,12 +13,13 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { HistoricoDetalhes } from './pages/Historico/HistoricoDetalhes'
 import { HistoricoProvider } from './hooks/useHistorico'
 import { Administracao } from './pages/Administrador/Administracao'
+import { ClinicaProvider } from './hooks/useClinica'
 
 function App() {
   return (
     <ChakraProvider>
+      <ClinicaProvider>
       <HistoricoProvider>
-
         <BrowserRouter>
           <Routes>
             <Route path="*" element={<Home />} />
@@ -35,6 +36,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </HistoricoProvider>
+      </ClinicaProvider>
     </ChakraProvider>
 
   );
