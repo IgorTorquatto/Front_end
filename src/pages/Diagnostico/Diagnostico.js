@@ -227,7 +227,7 @@ export const Diagnostico = () => {
       data_hora: new Date(),
       mapa_calor: "data:image/jpeg;base64," + imageCam,
       resultado_modelo: predictionLabel,
-      resultado_real: resultLaudo == "1" ? predictionLabel : resultReal === "OUTRO" ? outroLaudo : resultReal
+      resultado_real: resultLaudo == 1 ? predictionLabel : resultReal === "OUTRO" ? outroLaudo : resultReal
     }
 
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
