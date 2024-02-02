@@ -1,0 +1,58 @@
+.administracao-container {
+  background-color: #eef1f3;
+  height: 110vh;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.administracao-menu {
+  width: 18%;
+  background-color: #0b2a45;
+  color: #ffffff;
+  font-size: 17px;
+  padding: 10px;
+}
+
+.administracao-settings {
+  width: 82%;
+  height: 97.3vh;
+  background-color: #eef1f3;
+}
+
+.administracao-header {
+  background-color: #20496d;
+  height: 5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.administracao-header h2 {
+  color: #ffffff;
+  text-transform: uppercase;
+}
+.administracao-infos {
+  display: flex;
+  justify-content: center;
+  gap: 150px;
+  height: 100%;
+}
+
+.administracao-menu .administracao-logo-section {
+  margin: 2rem;
+}
+
+.administracao-menu .administracao-menu-items {
+  margin-top: 1rem;
+}
+.administracao-menu .chakra-menu__menuitem {
+  position: relative;
+  transition: all 0.5s ease;
+  background-color: transparent;
+}
+
+.administracao-menu .chakra-menu__menuitem:hover {
+  color: #50b7a1;
+}
