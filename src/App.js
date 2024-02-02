@@ -12,6 +12,7 @@ import './App.css'
 import { ChakraProvider } from '@chakra-ui/react'
 import { HistoricoDetalhes } from './pages/Historico/HistoricoDetalhes'
 import { HistoricoProvider } from './hooks/useHistorico'
+import { Administracao } from './pages/Administrador/Administracao'
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/perfil" element={<Perfil />} />
             <Route path="/clinica" element={<Clinica />} />
+            <Route path="/administracao" element={<Administracao />}/>
           </Routes>
         </BrowserRouter>
       </HistoricoProvider>

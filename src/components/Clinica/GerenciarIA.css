@@ -1,0 +1,24 @@
+.gerenciarIA-top {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.gerenciarIA-top h2 {
+    text-align: center;
+    font-size: xx-large;
+}
+
+.gerenciarIA-model-details {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.gerenciarIA-image-bank {
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}

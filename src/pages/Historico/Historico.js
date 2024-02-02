@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 import { MyFooter } from '../../components/Footer/Footer'
 import { HistoricoCard } from '../../components/Cards/HistoricoCard'
@@ -53,6 +53,15 @@ export const Historico = () => {
   }
 
   useEffect(() => {
+    if (user.data.cnpj) {
+      setPageLoading(true)
+      loadHistorico().then(() => {
+        setPageLoading(false)
+      })
+    }
+  }, [])
+
+  useEffect(() => {
     if (user.data.clinica) {
       setPageLoading(true)
       loadHistorico().then(() => {
@@ -68,7 +77,7 @@ export const Historico = () => {
 
   useEffect(() => {
     searchHistory()
-  }, [initDate, endDate,search])
+  }, [initDate, endDate, search])
 
   const searchHistory = () => {
     if(diagnosticosArray.length){
@@ -225,10 +234,10 @@ export const Historico = () => {
 
             <Box id='result-context'>
               {
-                diagnosticos.map((user, index) => {
+                diagnosticos.map((diagnostico, index) => {
                   return (
-                    <Box className='historico-line' onClick={() => handleModal(user)} key={index}>
-                      <HistoricoCard data={user} />
+                    <Box className='historico-line' onClick={() => handleModal(diagnostico)} key={index}>
+                      <HistoricoCard data={diagnostico} />
                     </Box>
                   );
                 })

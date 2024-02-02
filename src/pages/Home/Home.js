@@ -38,7 +38,7 @@ export const Home = () => {
           <section className="home-section2">
             <div className="section-title">
               <h1 className="text-white display-6 mb-5 mt-3">
-                Por que contar com a dIAgnóstica?
+                Por que contar com a d.IAgnóstica?
               </h1>
             </div>
             <div className="card-container">

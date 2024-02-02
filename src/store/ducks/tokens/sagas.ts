@@ -48,7 +48,7 @@ export function* load({ payload }: ReturnType<typeof loadSession>) {
     );
     yield put(loadSessionSucess(user));
     window.location.reload()
-    if(response.data.data.email){
+    if(response.data.data.crm){
       window.location.pathname = '/diagnostico'
     }else{
       window.location.pathname = '/clinica'

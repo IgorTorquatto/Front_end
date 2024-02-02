@@ -14,11 +14,10 @@ import {
   RadialLinearScale,
   Filler,
 } from 'chart.js';
-import { Bar, Pie, Line, Radar } from 'react-chartjs-2';
-import {dataPacientes, optionsPacientes} from './estatisticaBarPacientes'
-import {dataClassificacao, optionsClassificacao} from './estatisticaPieClassificacao'
-import {dataDoenca, optionsDoenca} from './estatisticaLineDoencas'
-import {dataModelo, optionsModelo} from './estatisticaRadarModelo'
+import { BarAtendimentos } from './estatisticaBarPacientes'
+import { PieClassificacao } from './estatisticaPieClassificacao'
+import {LineDoencas} from './estatisticaLineDoencas'
+import {RadarModeloMedico} from './estatisticaRadarModelo'
 
 ChartJS.register(
   CategoryScale,
@@ -43,18 +42,19 @@ export const Estatisticas = () => {
       </div>
 
       <div class="barAtendimentos dashboard">
-        <Bar options={optionsPacientes} data={dataPacientes} />
+        <BarAtendimentos anoRef={2024} />
       </div>
 
       <div class="pieClassificacao dashboard">
-        <Pie options={optionsClassificacao} data={dataClassificacao} />
+        <PieClassificacao />
       </div>
       
       <div class="lineDoencas dashboard">
-        <Line options={optionsDoenca} data={dataDoenca}/>
+        <LineDoencas anoRef={2024} />
       </div>
+      
       <div class="info1 dashboard">
-        <Radar options={optionsModelo} data={dataModelo}/>
+        <RadarModeloMedico />
       </div>
     </div>
   )

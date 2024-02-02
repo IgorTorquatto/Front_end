@@ -21,26 +21,26 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { editProfile, loadLogout } from "../../store/ducks/tokens/actions.ts";
 import { MdOutlineExitToApp } from "react-icons/md";
-import { FaUser, FaKey, FaSyncAlt } from "react-icons/fa";
+import { FaKey } from "react-icons/fa";
 import { BiArrowBack } from "react-icons/bi";
 import { Avatar } from "@chakra-ui/react";
 import { useState } from "react";
 import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 import * as yup from "yup";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { api, apiUnAuth } from "../../services/api.ts";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import { AtualizarDados } from "../../components/Perfil/AtualizarDados";
 import { AlterarSenha } from "../../components/Perfil/AlterarSenha";
 import { InfosUser } from "../../components/Perfil/InfosUser";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { MdEdit } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 
 export const Perfil = () => {
 
   const { data: user } = useSelector((state) => state.tokens);
+  const dispactch = useDispatch();
   const [navigationSection, setNavigationSection] = useState("info");
   const [editAvatarClassname, setEditAvatarClassname] = useState("editAvatarOff");
   const history = useNavigate();
@@ -124,6 +124,7 @@ export const Perfil = () => {
   function goBackHome() {
     const confirmBack = window.confirm("Você realmente quer sair da página?");
     if (confirmBack) {
+      dispactch(loadLogout());
       // Redirecionar para a página Home.js 
       history('/home'); 
     }

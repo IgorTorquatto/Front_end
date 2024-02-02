@@ -18,12 +18,18 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  Text,
   Input,
   Select as ChakraSelect,
   Spinner,
   Flex,
-  useToast
+  useToast,
+  TableContainer,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  Thead,
+  Th
 } from '@chakra-ui/react'
 import { MyFooter } from '../../components/Footer/Footer'
 import PatientCard from '../../components/Cards/PatientCard';
@@ -75,7 +81,7 @@ const schema = yup.object({
 const schemaEdit = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().length(14).required('Informe um cpf valido'),
+  cpf: yup.string().required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),
@@ -108,7 +114,6 @@ export const Pacientes = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
 
-  const [selectedState, setSelectedState] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientsArray, setPatientsArray] = useState([]);
   const [patients, setPatiens] = useState([]);
@@ -187,8 +192,6 @@ export const Pacientes = () => {
       setValue('telefone', patient.pessoa.telefone);
       setValue('data_nascimento', patient.pessoa.data_nascimento);
     }
-
-
   }, [patient]);
 
   const openEdit = (paciente) => {
@@ -323,14 +326,6 @@ export const Pacientes = () => {
 
     // history('/diagnostico')
   };
-
-  const handleChange = (selectedState) => {
-    setSelectedState(selectedState);
-  };
-
-  const changeButtonContent = (setFunction, mouseEvent) => {
-    mouseEvent === 'out' ? setFunction('white') : setFunction('#3B83C3')
-  }
 
   const states = [
     { label: 'Acre', value: 'AC' },
@@ -862,16 +857,49 @@ export const Pacientes = () => {
         <Modal isOpen={isInfoOpen} onClose={closeInfo}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Informações do Paciente</ModalHeader>
+            <ModalHeader>Informações</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text>Name: {selectedPatient?.pessoa.nome}</Text>
-              <Text>CPF: {cpf_mask(selectedPatient?.pessoa.cpf)}</Text>
-              <Text>Telefone: {telefone_mask(selectedPatient?.pessoa.telefone)}</Text>
-              <Text>Rua: {selectedPatient?.logradouro}</Text>
-              <Text>Bairro: {selectedPatient?.bairro}</Text>
-              <Text>Número: {selectedPatient?.numero}</Text>
-              <Text>Cidade: {selectedPatient?.cidade}</Text>
+              <TableContainer>
+                <Table variant='simple'>
+                  <Thead>
+                    <Tr>
+                      <Th>Campos</Th>
+                      <Th>Dados</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    <Tr>
+                      <Td>Nome</Td>
+                      <Td>{selectedPatient?.pessoa.nome}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>CPF</Td>
+                      <Td>{cpf_mask(selectedPatient?.pessoa.cpf)}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Telefone</Td>
+                      <Td>{telefone_mask(selectedPatient?.pessoa.telefone)}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Cidade</Td>
+                      <Td>{selectedPatient?.cidade}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Bairro</Td>
+                      <Td>{selectedPatient?.bairro}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Rua</Td>
+                      <Td>{selectedPatient?.logradouro}</Td>
+                    </Tr>
+                    <Tr>
+                      <Td>Número</Td>
+                      <Td>{selectedPatient?.numero}</Td>
+                    </Tr>
+                  </Tbody>
+                </Table>
+              </TableContainer>
             </ModalBody>
           </ModalContent>
         </Modal>
