@@ -26,7 +26,7 @@ export function ClinicaProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      if (!user.data.cnpj) {
+      if (user.data.crm) {
         await loadClinicas().then(() => {
         })
       }
