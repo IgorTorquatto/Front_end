@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './FormCadastro.css';
-
+import { useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineInfoCircle } from 'react-icons/ai';
 import * as yup from 'yup'
@@ -19,13 +19,13 @@ import {cpf_mask_remove, telefone_mask_remove} from '../Forms/form-masks'
 
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
-  email: yup.string().email('Informe um email valido').required('Informe um email valido'),
-  telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().min(14, 'CPF incompleto').required('Informe um cpf valido'),
-  data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
-  crm: yup.string().min(6, 'CRM deve conter 6 dígitos').required('Informe um crm valido'),
-  especialidade: yup.string().required('Informe uma especialidade valida'),
-  senha: yup.string().min(8, 'a senha deve conter 8 caracteres').required('Digite uma senha'),
+  email: yup.string().email('Informe um e-mail válido').required('Informe um e-mail válido'),
+  telefone: yup.string().required('Informe um telefone válido'),
+  cpf: yup.string().min(14, 'CPF incompleto').required('Informe um cpf válido'),
+  data_nascimento: yup.string().required('Informe uma data de nascimento válida'),
+  crm: yup.string().min(6, 'CRM deve conter 6 dígitos').required('Informe um crm válido'),
+  especialidade: yup.string().required('Informe uma especialidade válida'),
+  senha: yup.string().min(8, 'A senha deve conter 8 caracteres').required('Digite uma senha'),
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
 }).required();
 
@@ -37,7 +37,7 @@ export const FormCadastro = () => {
 
   const history = useNavigate()
   const dispactch = useDispatch();
-
+  const toast = useToast();
   const [onLoading, setOnLoading] = useState(false);
   const [showPassword, setShowPassword] = useState('password')
   const [visible, setVisible] = useState(true)
@@ -57,7 +57,10 @@ export const FormCadastro = () => {
       cargo: 'Médico',
     }
 
-    await apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
+    setOnLoading(true);
+
+    await toast.promise(
+      apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,
         crm: novoMedico.crm,
@@ -65,16 +68,23 @@ export const FormCadastro = () => {
         senha: novoMedico.senha,
         email: novoMedico.email
       }
+      setOnLoading(false);
 
       apiUnAuth.post(`/clinica/${user.data.id}/medico`, medico).then(({ data }) => {
         handleHistorico(null)
-      }).catch(({})=>{
-
+      }).catch(({ err })=>{
+        throw err;
       })
 
     }).catch(({ error }) => {
-      alert("Error ao cadastrar")
-    })
+      setOnLoading(false);
+      throw error;
+    }),
+    {
+      loading: { title: 'Cadastro em andamento.', description: 'Por favor, aguarde.' },
+      success: { title: 'Médico cadastrado com sucesso!', description: 'O médico foi associado à clínica.', duration: 6000, isClosable: true},
+      error: { title: 'Erro ao cadastrar médico.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true}, 
+    });
   };
 
   function visibleIcon() {
@@ -124,13 +134,13 @@ export const FormCadastro = () => {
         </div>
 
         <div className="form-group mt-2 ">
-          <label htmlFor="FormControlInputEmail">Endereço de email*</label>
+          <label htmlFor="FormControlInputEmail">Endereço de e-mail*</label>
           <input
             type="email"
             className="form-control formcomp-input"
             id="FormControlInputEmail"
             {...register("email")}
-            placeholder="Insira um endereço de email válido"
+            placeholder="Insira um endereço de e-mail válido"
           />
           <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />

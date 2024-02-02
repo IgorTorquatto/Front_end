@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
@@ -7,12 +7,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { apiUnAuth } from "../../services/api.ts";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { useToast, Button } from "@chakra-ui/react";
 import "./AlterarSenha.css";
 
 export const AlterarSenha = ({ onCancel }) => {
   const { data: user } = useSelector((state) => state.tokens);
+  const [loading, setLoading] = useState(false);
   const history = useNavigate();
   const dispatch = useDispatch();
+  const toast = useToast();
   const schema = yup
     .object({
       nome: yup.string().required("Informe seu nome"),
@@ -53,7 +56,10 @@ export const AlterarSenha = ({ onCancel }) => {
       telefone: user.telefone,
       cargo: "Médico",
     };
-    await apiUnAuth
+    setLoading(true);
+
+    await toast.promise(
+      apiUnAuth
       .post("/pessoa", pessoa)
       .then(({ data }) => {
         const medico = {
@@ -71,13 +77,23 @@ export const AlterarSenha = ({ onCancel }) => {
               email: user.email,
               senha: user.senha,
             };
+            setLoading(false);
             dispatch(loadSession(login));
             history("/sobre");
           })
-          .catch(({}) => {});
+          .catch(({err}) => {
+            throw err;
+          });
       })
       .catch(({ error }) => {
         // alert("Error ao cadastrar")
+        setLoading(false);
+        throw error;
+      }),
+      {
+        loading: { title: 'Atualização em andamento.', description: 'Por favor, aguarde.' },
+        success: { title: 'Senha atualizada com sucesso!', duration: 6000, isClosable: true},
+        error: { title: 'Erro ao atualizar senha.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true}, 
       });
   };
   const handleCancel = () => {
@@ -139,16 +155,17 @@ export const AlterarSenha = ({ onCancel }) => {
           </div>
 
           <div className="alterarSenha-buttons">
-            <button type="submit" className="btn-salvar">
+            <Button type="submit" className="btn-salvar" isLoading={loading} colorScheme="blue" bgColor={"#007bff"}>
               Atualizar dados
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               className="btn-cancelar"
               onClick={handleCancel}
+              colorScheme="blackAlpha"
             >
               Cancelar
-            </button>
+            </Button>
           </div>
         </form>
       </div>

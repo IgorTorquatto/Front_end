@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ClinicaAlterarDados.css";
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -12,6 +12,7 @@ import {
   cep_mask_remove,
   telefone_mask_remove,
 } from "../Forms/form-masks";
+import { useToast, Button, useStatStyles } from "@chakra-ui/react";
 import $ from 'jquery'
 import 'jquery-mask-plugin'
 
@@ -29,6 +30,8 @@ const schema = yup.object({
 }).required();
 
 export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
+  const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
   const { data: user } = useSelector((state) => state.tokens);
   const dispatch = useDispatch();
@@ -36,20 +39,31 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
     resolver: yupResolver(schema)
   });
   console.log(user.data)
+
   const onSubmit = async (editClinica) => {
 
     editClinica.cnpj = cnpj_mask_remove(editClinica.cnpj)
     editClinica.telefone = telefone_mask_remove(editClinica.telefone)
     editClinica.cep = cep_mask_remove(editClinica.cep)
 
-    await api.put(`/clinica/${user.data.id}`, editClinica).then(({ data }) => {
-      console.log(data)
-      dispatch(editProfile(data.data));
-      handleVoltarClick()
-    }).catch(({ error }) => {
-      // alert("Error ao cadastrar")
-    })
+    setLoading(true)
+    await toast.promise(
+      api.put(`/clinica/${user.data.id}`, editClinica).then(({ data }) => {
+        console.log(data)
+        dispatch(editProfile(data.data));
+        setLoading(true)
+        handleVoltarClick()
+      }).catch(({ error }) => {
+        setLoading(false)
+        throw error;
+      }),
+      {
+        loading: { title: 'Atualização em andamento.', description: 'Por favor, aguarde.' },
+        success: { title: 'Atualização cadastral realizada!', description: 'Os dados da clínica foram editados.', duration: 6000, isClosable: true},
+        error: { title: 'Erro ao atualizar informações.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true}, 
+      });
   };
+
   const handleVoltarClick = () => {
     voltarParaClinicaDados(); // Chama a função para voltar à renderização de ClinicaDados
   };
@@ -86,7 +100,7 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
               <div className="form-group mt-2 ">
                 <label htmlFor="FormControlInputEmail">
                   {" "}
-                  Endereço de email:{" "}
+                  Endereço de e-mail:{" "}
                 </label>
                 <input
                   type="email"
@@ -234,16 +248,17 @@ export const ClinicaAlterarDados = ({ voltarParaClinicaDados }) => {
             </div>
           </div>
           <div className="Clinica-atualizarDados-buttons">
-            <button type="submit" className="btn-salvar">
+            <Button type="submit" className="btn-salvar" isLoading={loading} colorScheme="blue">
               Atualizar dados
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
               className="btn-cancelar"
               onClick={handleVoltarClick}
+              colorScheme="blackAlpha"
             >
               Cancelar
-            </button>
+            </Button>
           </div>
         </form>
       </div>

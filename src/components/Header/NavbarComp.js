@@ -5,9 +5,8 @@ import "./NavBarComp.css";
 
 import { AiOutlineProfile } from "react-icons/ai";
 import { MdOutlineExitToApp } from "react-icons/md";
-import { FaRegBuilding } from "react-icons/fa";
-import { Avatar, Box, Text, IconButton, MenuGroup, MenuDivider } from "@chakra-ui/react";
-import { loadLogout, loadSession } from "../../store/ducks/tokens/actions.ts";
+import { Avatar, Box, MenuGroup, MenuDivider } from "@chakra-ui/react";
+import { loadLogout } from "../../store/ducks/tokens/actions.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -165,7 +164,7 @@ export const NavbarComp = ({ customClass, showEntrarButton }) => {
                   <>
                   <MenuDivider />
                   <MenuGroup title="Clínicas" fontSize={'1.1rem'}>
-                    <MedicoClinicas medico_id={user.data.id} clinica_id={user.data.clinica ? user.data.clinica.id : null} />
+                    <MedicoClinicas medico_id={user.data.id} />
                   </MenuGroup>
                   <MenuDivider />
                   </>
