@@ -42,6 +42,7 @@ import {cpf_mask,
 import $ from 'jquery'
 import 'jquery-mask-plugin'
 import { ClinicaRequired } from '../../components/Blockers/clinicaRequired';
+import { useClinica } from '../../hooks/useClinica';
 
 yup.setLocale({
   string: {
@@ -105,6 +106,7 @@ export const Pacientes = () => {
     resolver: yupResolver(schemaEdit)
   });
   const { data: user } = useSelector((state) => state.tokens);
+  const { clinica } = useClinica()
 
   const toast = useToast();
   const history = useNavigate()
@@ -125,7 +127,7 @@ export const Pacientes = () => {
   const [pageLoading, setPageLoading] = useState(false);
 
   async function loadPatients() {
-    let id = user.data.cnpj ? user.data.id : user.data.clinica.id
+    let id = user.data.cnpj ? user.data.id : clinica.id
     await api.get(`/paciente?id_clinica=${id}`).then(({ data }) => {
       setPatientsArray(data)
       setPatiens(data)
@@ -156,25 +158,25 @@ export const Pacientes = () => {
   }, [])
 
   useEffect(()=>{
-    if (user.data.clinica) {
+    if (clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
         setPageLoading(false)
       })
     }
-  }, [user.data.clinica])
+  }, [clinica])
 
   let pacientes_load = false;
   useEffect(()=>{
     if(pacientes_load){ return }
 
-    if (user.data.clinica) {
+    if (clinica) {
       setPageLoading(true)
       loadPatients().then(()=>{
         setPageLoading(false)
       })
     }
-  }, [user.data.clinica])
+  }, [clinica])
 
   useEffect(() => {
     if (patient) {
@@ -238,7 +240,7 @@ export const Pacientes = () => {
       api.post('/pessoa', pessoa).then(({ data }) => {
         const paciente = {
           id_pessoa: data.data.id,
-          id_clinica: user.data.clinica.id,
+          id_clinica: clinica.id,
           sexo: novopaciente.sexo,
           tipo_sanguineo: novopaciente.tipo_sanguineo,
           detalhes_clinicos: novopaciente.detalhes_clinicos,
@@ -376,7 +378,7 @@ export const Pacientes = () => {
         <Spinner emptyColor='gray.200' thickness='5px' color='#3b83c3' size='xl' />
       </Flex>
         :
-        user.data.crm && !user.data.clinica ? 
+        user.data.crm && !clinica ? 
           <ClinicaRequired />
         : 
         <Box m='2rem 0' mb='4rem' display='flex' flexDirection='column' alignItems='center' justifyContent='center'>

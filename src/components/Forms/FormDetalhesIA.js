@@ -3,7 +3,7 @@ import './FormDetalhesIA.css';
 import * as yup from 'yup'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { api, apiUnAuth } from '../../services/api.ts'
+import { api } from '../../services/api.ts'
 
 const schema = yup.object({
     nome: yup.string().required('Informe o nome do modelo'),
@@ -34,10 +34,13 @@ export const FormDetalhesIA = () => {
             recall: ficha.recall,
             kappa: ficha.kappa,
             filtros: ficha.filtros,
-            augmentation: ficha.dataAugmentation,
+            dataAugmentation: ficha.dataAugmentation,
             tipoImagem: ficha.tipoImagem,
         }
-        await apiUnAuth.post('/modelo', fichaModelo)
+        console.log(fichaModelo)
+        await api.post('/modelo', fichaModelo).catch((error)=>{
+            console.log(error)
+        })
     }
 
     const detalhesFicha = [{ label: "Nome do modelo", name: "nome", placeholder: "Digite o nome do modelo", type: "text" },
