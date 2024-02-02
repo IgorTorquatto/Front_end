@@ -1,15 +1,12 @@
-import { InfoIcon } from "@chakra-ui/icons"
-import { Button, Card, CardBody, CardHeader, Flex, Heading, Icon, Text, Tooltip } from "@chakra-ui/react"
+import { Button, Card, CardBody, CardHeader, Flex, Heading, Text, Tooltip } from "@chakra-ui/react"
 
 export const CardModelo = (args) => {
-
-
 
     return (
         <Card variant={'elevated'}>
             <CardHeader>
                 <Flex w={'100%'} flexDirection={'row'}>
-                    <Heading size='md' w={'60%'}>{args.modelo.nome} <Icon as={InfoIcon} >Detalhes</Icon></Heading>
+                    <Heading size='md' w={'60%'}> {args.modelo.nome} </Heading>
 
                     <Flex w={'40%'} flexDirection={'row'} justifyContent={'flex-end'} justifyItems={'right'}>
                         <Button isDisabled>Selecionado</Button>

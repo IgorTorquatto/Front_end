@@ -13,18 +13,23 @@ import {
   Tbody,
   Flex,
   Icon,
+  useToast,
 } from '@chakra-ui/react'
 import { CardModelo } from '../Cards/CardModelo';
 import { api } from '../../services/api';
 import { useSelector } from 'react-redux';
-import { RepeatIcon } from '@chakra-ui/icons';;
+import { RepeatIcon } from '@chakra-ui/icons';import { delay } from 'redux-saga/effects';
+;
 
 export const GerenciarIA = () => {
 
   const { data: user } = useSelector((state) => state.tokens);
+  const toast = useToast()
   const [classes, setClasses] = useState([])
   const [numCasos, setNumCasos] = useState([]) 
-  const [modelos, setModelos] = useState([]) 
+  const [modelos, setModelos] = useState([])
+  const [solicitado, setSolicitado] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [totalImagens, setTotalImagens] = useState(0)
 
 
@@ -40,16 +45,38 @@ export const GerenciarIA = () => {
 
   const loadModelosClinca = async () => {
     await api.get(`/modelo`, { cnpj: user.data.cnpj }).then( ({ data }) => {
-      console.log(data)
-      setModelos(data)
+      setModelos(data.data)
+    }).catch(() => {
+
     })
   }
 
 
   useEffect(() => {
-    loadImagensTreinamento().then(() => {})
-    loadModelosClinca().then(() => {})
+    loadImagensTreinamento().then(() => {}).catch()
+    loadModelosClinca().then(() => {}).catch()
   }, [])
+
+  const load = async () => {
+    delay(2000)
+  }
+
+  function handleSocitacaoTreinamento() {
+    setLoading(true)
+
+    setTimeout(() => {
+      setLoading(false)
+      setSolicitado(true)
+      toast({
+        title: 'Solitação enviada.',
+        description: "Atualizações no modelo serão realizadas nas próximas semanas.",
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+      })
+    }, 2000) 
+
+  }
 
   return (
     <div className='gerenciarIA-container'>
@@ -93,7 +120,7 @@ export const GerenciarIA = () => {
           </Flex>
           <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'} alignItems={'center'} flexWrap={'wrap'}>
               <h3>Solicitar novo treinamento</h3>
-              <Button colorScheme='blue' w={'md'}><Icon as={RepeatIcon} /></Button>
+              <Button colorScheme='blue' w={'md'} isLoading={loading} isDisabled={solicitado} onClick={handleSocitacaoTreinamento}><Icon as={RepeatIcon} /></Button>
           </Flex>
         </Flex>
       </div>
@@ -104,7 +131,11 @@ export const GerenciarIA = () => {
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          <CardModelo modelo={{acuracia: '97.3', f1score:'98.4', nome: 'Modelo 001 - Pneumonia, Tuberculose, COVID-19'}} />
+          {
+            modelos.map((modelo, index) => {
+              return <CardModelo modelo={modelo} />
+            })
+          }
         </Stack>
       </div>
     </div>
