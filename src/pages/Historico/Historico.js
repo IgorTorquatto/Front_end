@@ -210,7 +210,7 @@ export const Historico = () => {
                       <Flex style={{ flex: '0 0 100%', marginTop: '1rem', justifyContent: 'center' }}>
                         {/* Seção de Imagem do Mapa de Calor */}
                         <div style={{ flex: '0 0 50%' }}>
-                          <Text fontWeight='bold'>Imagem usada: </Text>
+                          <Text fontWeight='bold'>Exame: </Text>
                           {diagnostico?.mapa_calor && (
                             <img
                               src={diagnostico?.mapa_calor}

@@ -85,12 +85,11 @@ export const GerenciarIA = () => {
       </div>
 
       <div className='gerenciarIA-image-bank' >
-        <h4>Existem {totalImagens} imagens disponíveis para treinamento.</h4>
+        <h4>Existem {totalImagens} imagens disponíveis para treinamento</h4>
         <Flex bg={'white'} shadow={'sm'} gap={4} padding={'10px'} borderRadius={'10px'}  width={'100%'} flexDirection={'row'} alignContent={'center'} justifyContent={'center'}>
           <Flex w='50%'>
             <TableContainer padding={'10px'}>
               <Table variant='simple'>
-                <TableCaption>Imagens disponíveis para treinamento por diagnóstico.</TableCaption>
                 <Thead>
                   <Tr>
                     <Th>Diagnóstico</Th>
@@ -100,19 +99,19 @@ export const GerenciarIA = () => {
                 <Tbody>
                   <Tr>
                     <Td>{classes[0]}</Td>
-                    <Td fontWeight={'500'} color={'green.600'} >{numCasos[0]}</Td>
+                    <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[0]} </Td>
                   </Tr>
                   <Tr>
                     <Td>{classes[1]}</Td>
-                    <Td fontWeight={'500'} color={'green.600'} >{numCasos[1]}</Td>
+                    <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[1]} </Td>
                   </Tr>
                   <Tr>
                     <Td>{classes[2]}</Td>
-                    <Td fontWeight={'500'} color={'green.600'} >{numCasos[2]}</Td>
+                    <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[2]} </Td>
                   </Tr>
                   <Tr>
                     <Td>{classes[3]}</Td>
-                    <Td fontWeight={'500'} color={'green.600'} >{numCasos[3]}</Td>
+                    <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[3]} </Td>
                   </Tr>
                 </Tbody>
               </Table>

@@ -80,13 +80,7 @@ export const FormLogin = () => {
         throw dispactch(loadSession(login))
       }
     } catch {
-        toast({
-          title: 'Login não efetuado.',
-          description: "Senha ou e-mail/CNPJ podem estar incorretos.",
-          status: 'error',
-          duration: 4000,
-          isClosable: true,
-        })
+        
         setOnLoading(false)
     }
   };

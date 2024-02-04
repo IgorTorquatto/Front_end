@@ -20,7 +20,7 @@ export const CardModelo = (args) => {
                             <Text cursor={'pointer'} padding={'10px'} borderRadius={'5px'} fontWeight={'500'} color={'white'} bg={'#0b2a45'}>Acurácia: {args.modelo.acuracia}% </Text>
                         </Tooltip>
 
-                        <Tooltip hasArrow placement="right" label={'Um F1-score alto indica que o modelo classifica corretamente as múltiplas classes de seu escopo. Essa medida complementa a acúracia na decisão de um modelo ótimo.'}>
+                        <Tooltip hasArrow placement="right" label={'Um F1-score alto indica que o modelo classifica corretamente as múltiplas classes de seu escopo. Essa medida complementa a acurácia na decisão de um modelo ótimo.'}>
                             <Text padding={'10px'} borderRadius={'5px'} fontWeight={'500'} color={'white'} bg={'#0b2a45'}>F1-Score: {args.modelo.f1score}% </Text>
                         </Tooltip>
                     </div>
