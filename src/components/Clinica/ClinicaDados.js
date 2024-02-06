@@ -29,8 +29,9 @@ export const ClinicaDados = () => {
 
    const loadFuncionarios = async ()=>{
     await api.get(`/clinica/${user.data.id}/medico`).then(({data})=>{
-      console.log(data)
-      setFuncionarios(data.data)
+      setFuncionarios(data.data.sort((a, b) => {
+        return a.pessoa.nome.localeCompare(b.pessoa.nome);
+      }))
       setLoading(false)
     }).catch((data)=>{
       console.log(data)
