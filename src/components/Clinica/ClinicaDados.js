@@ -13,7 +13,12 @@ import {
   FaSave,
 } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
-import { Box, Divider, Button, Spinner, Flex, Text } from "@chakra-ui/react";
+import { Box, Divider, Button, Spinner, Flex, Text, useDisclosure, Modal, ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Input, } from "@chakra-ui/react";
 
 import { api } from "../../services/api";
 import { useSelector } from "react-redux";
@@ -26,6 +31,10 @@ export const ClinicaDados = () => {
   const [funcionarios, setFuncionarios]  = useState([])
   const [loading, setLoading]  = useState(true)
   const [gerenciando, setGerenciando] = useState(false)
+  const [Confirmacao, setConfirmacao] = useState('')
+  const [funcionarParaRemover, setFuncionarioParaRemover] = useState(null)
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
    const loadFuncionarios = async ()=>{
     await api.get(`/clinica/${user.data.id}/medico`).then(({data})=>{
@@ -46,8 +55,9 @@ export const ClinicaDados = () => {
   const [isEditing, setIsEditing] = useState(false); 
   const [isManaging, setIsManaging] = useState(false);
 
-  const removeMedico = async (funcionario) => {
-    alert("Remoção de médico em implementação\nNome: " + funcionario.pessoa.nome + " - CRM: "+ funcionario.crm);
+  const removeMedico = async () => {
+    alert("Not working yet");
+    onClose();
   }
 
   const voltarParaClinicaDados = () => {
@@ -66,6 +76,11 @@ export const ClinicaDados = () => {
     setIsManaging(true); // Quando o botão de gerenciar for clicado, definir o estado para true
   }
 
+
+  const handleModal = (funcionarioSelecionado) => {
+    setFuncionarioParaRemover(funcionarioSelecionado)
+    onOpen()
+  }
 
   return (
     <>
@@ -151,7 +166,7 @@ export const ClinicaDados = () => {
                   <td style={{verticalAlign: "middle"}}>{funcionario.especialidade}</td>
                   <td style={{verticalAlign: "middle"}}>{funcionario.email}</td>
                   <td style={{verticalAlign: "middle"}}>{funcionario.crm}</td>
-                  {gerenciando ? <td><Button bgColor={"white"} onClick={() => removeMedico(funcionario)}><FaTrashAlt color="red" /></Button></td> : null}
+                  {gerenciando ? <td><Button bgColor={"white"} onClick={() => handleModal(funcionario)}><FaTrashAlt color="red" /></Button></td> : null}
                 </tr>
               ))}
               </tbody>
@@ -171,6 +186,35 @@ export const ClinicaDados = () => {
       </div>
     </div>
     )}
+
+  <Modal isOpen={isOpen} 
+    onClose={() => {setConfirmacao("")
+    onClose() }} size='6xl'>
+  <ModalOverlay />
+
+    <ModalContent w='50%' bgColor={'#eef1f3'} p={15} alignSelf={'center'}>
+
+      <ModalHeader textAlign={"center"}>Confirmação</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody w='100%'>
+        <Box>
+          <Text>Para confirmar a desassociação do médico, digite o crm "<b>{funcionarParaRemover?.crm}</b>" e clique em "<b>Remover</b>"</Text>
+          <Input 
+            bgColor={'white'} 
+            onChange={(e) => { setConfirmacao(e.target.value) }}
+          />
+        </Box>
+        <Box display={'flex'} justifyContent={"flex-end"} w={'100%'} mt={10}>
+          <Button colorScheme='blackAlpha' mx={5} onClick={() => {onClose(); setConfirmacao("")}}>Cancelar</Button>
+          <Button 
+            colorScheme="red" 
+            onClick={removeMedico}
+            isDisabled={Confirmacao !== funcionarParaRemover?.crm}
+            >Remover</Button>  
+        </Box>
+      </ModalBody>
+    </ModalContent>
+  </Modal>
   </>
   );
 };
