@@ -133,8 +133,8 @@ export const Historico = () => {
                   <option value='cpf'>CPF</option>
                 </Select>
                 <Input w='70%' placeholder='Procurar paciente' mr='0.5rem' onChange={(e) => setSearch(e.target.value)} bgColor={'white'} />
-                <Input w='15%' type='date' onChange={(e) => setInitDate(e.target.value)} />
-                <Input w='15%' type='date' onChange={(e) => setEndDate(e.target.value)} />
+                <Input w='15%' type='date' onChange={(e) => setInitDate(e.target.value)} bg={"white"} />
+                <Input w='15%' type='date' onChange={(e) => setEndDate(e.target.value)} bg={"white"} />
               </Box>
 
               <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
