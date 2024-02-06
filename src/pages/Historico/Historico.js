@@ -46,7 +46,8 @@ export const Historico = () => {
 
   async function loadHistorico() {
     let id = user.data.cnpj ? user.data.id : clinica.id
-    await api.get(`/diagnostico?id_clinica=${id}`).then(({ data }) => {
+    let id_medico = user.data.crm ? user.data.id : '\x00'
+    await api.get(`/diagnostico?id_clinica=${id}&id_medico=${id_medico}`).then(({ data }) => {
       setDiagnosticos(data)
       setDiagnosticosArray(data)
     }).catch(({ err }) => {
@@ -64,8 +65,6 @@ export const Historico = () => {
   }, [])
 
   useEffect(() => {
-    console.log("Entrou aqui !!!")
-    console.log(clinica)
     if (clinica) {
       setPageLoading(true)
       loadHistorico().then(() => {
