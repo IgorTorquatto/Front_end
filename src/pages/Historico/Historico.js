@@ -50,6 +50,7 @@ export const Historico = () => {
     await api.get(`/diagnostico?id_clinica=${id}&id_medico=${id_medico}`).then(({ data }) => {
       setDiagnosticos(data)
       setDiagnosticosArray(data)
+      console.log(data)
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -141,10 +142,42 @@ export const Historico = () => {
 
                 <ModalContent w='100%' color={'gray.700'}>
 
-                  <ModalHeader textAlign={"center"}>Informações do diagnóstico</ModalHeader>
+                  <ModalHeader textAlign={"center"}>Diagnóstico</ModalHeader>
                   <ModalCloseButton />
 
                   <ModalBody w='100%'>
+
+                    <Box position='relative' padding='0.5rem 0' marginBottom='1rem'>
+                      <Divider />
+                      <AbsoluteCenter fontWeight='bold' fontSize='1.4rem' bg='white' px='5'>
+                        Informações
+                      </AbsoluteCenter>
+                    </Box>
+
+                    <Flex padding='1.25rem' borderRadius={'10px'} height='auto' justify='flex-start' alignItems='flex-start' bgColor={"#0b2a45"} color='white' w='100%' flexDirection='row' flexWrap='wrap'>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>Realizado em: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{dayjs(new Date(diagnostico?.data_hora)).format('DD/MM/YYYY')}</Text>
+                      </div>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>Médico responsável: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.medico.nome}</Text>
+                      </div>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>CRM: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.medico.crm}</Text>
+                      </div>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>Email: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.medico.email}</Text>
+                      </div>
+                      
+                      
+                    </Flex>
 
                     <Box position='relative' padding='0.5rem 0' marginBottom='1rem'>
                       <Divider />
@@ -156,7 +189,7 @@ export const Historico = () => {
                     <Flex padding='1.25rem' borderRadius={'10px'} height='auto' justify='flex-start' alignItems='flex-start' bgColor={"#0b2a45"} color='white' w='100%' flexDirection='row' flexWrap='wrap'>
 
                       <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
-                        <Text fontWeight='bold' as='span'>Name: </Text>
+                        <Text fontWeight='bold' as='span'>Nome: </Text>
                         <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.nome}</Text>
                       </div>
 
