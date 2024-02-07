@@ -66,16 +66,18 @@ export const GerenciarIA = () => {
   }
 
   const loadExisteSolicitacao = async () => {
-    await api.get('/requisicao', {id_clinica: user.data.id}).then(({ data }) => {
-      console.log(data.data)
+    await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
+      if (data.data.length == 0) {
+        setSolicitado(false)
+      }
     })
   }
 
 
   useEffect(() => {
-    loadImagensTreinamento().then(() => {}).catch()
-    loadModelosClinca().then(() => {}).catch()
-    loadExisteSolicitacao().then(() => {}).catch()
+    loadImagensTreinamento().then(() => {})
+    loadModelosClinca().then(() => {})
+    loadExisteSolicitacao().then(() => {})
   }, [])
 
   const loadCriarSolicitacao = async () => {
@@ -91,8 +93,8 @@ export const GerenciarIA = () => {
       doenaca: classes
     }
     
-    await api.post('/requisicao', data_requisicao)
-    await api.post('/email/requisicao', data_email)
+    await api.post('/requisicao', data_requisicao).catch( (e) => { console.log(e)} )
+    await api.post('/email/requisicao', data_email).catch( (e) => { console.log(e)} )
   }
 
   function handleSocitacaoTreinamento() {
