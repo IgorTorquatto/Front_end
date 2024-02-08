@@ -70,7 +70,7 @@ export const HistoricoCard = ({ data }) => {
         <Box id='historico-card-container' cursor={'pointer'} >
             <Box className='card-title-context'>
                 <Box id='paciente-nome'>
-                    <span className='hcard-text'>Nome: <b>{data.paciente.pessoa.nome}</b></span>
+                    <span className='hcard-text'>Paciente: <b>{data.paciente.pessoa.nome}</b></span>
                 </Box>
 
                 <Box id='paciente-cpf'>
@@ -81,9 +81,13 @@ export const HistoricoCard = ({ data }) => {
                     <span className='hcard-text'>Diagnóstico: <b>{data.resultado_real}</b></span>
                 </Box>
                 
+                <Box id='medico-nome'>
+                    <span className='hcard-text left'>Médico responsável: <b>{data.paciente.medico.nome}</b></span>
+                </Box>
+
                 <Box id='data-info'>
                     <span className='hcard-text right'>{dayjs(new Date(data.data_hora)).format('DD/MM/YYYY')}</span>
-                </Box>
+                </Box>    
 
                 <Box id='hist-download-button-context'>
                     <button type="button" className="btn btn-outline-light" onClick={(event) => {
