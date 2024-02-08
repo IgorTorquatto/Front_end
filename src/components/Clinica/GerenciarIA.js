@@ -149,10 +149,14 @@ export const GerenciarIA = () => {
       nome: user.data.nome,
       cnpj: user.data.cnpj,
       total_imagens: totalImagens,
-      doenaca: classes
+      doenca: classes
     }
     
-    await api.post('/requisicao', data_requisicao).catch( (e) => { console.log(e)} )
+    await api.post('/requisicao', data_requisicao).then(()=>{
+      loadImagensTreinamento().then(() => { })
+      updateDiagnosticos()
+      loadRequisicoes()
+    }).catch( (e) => { console.log(e)} )
     await api.post('/email/requisicao', data_email).catch( (e) => { console.log(e)} )
   }
 
@@ -171,6 +175,13 @@ export const GerenciarIA = () => {
         loading: { title: `Solicitando treinamento`, description: 'Por favor espere' },
     })
   }
+
+  const disableRequisicao = () => {
+    if(requisicoes.length>0){
+      return diferencaMenorQueUmaSemana(requisicoes[0].data_hora,new Date()) || diagnosticos.length < 1
+    }
+    return true
+}
 
   return (
     <div className='gerenciarIA-container'>
@@ -218,7 +229,7 @@ export const GerenciarIA = () => {
             </Flex>
             <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'}  flexWrap={'wrap'}>
                 <h3>Solicitar novo treinamento</h3>
-                <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={solicitado} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
+                <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={disableRequisicao()} onClick={onOpen}>Solicitar</Button>
             </Flex>
           </Flex>
         </Flex>
@@ -246,7 +257,7 @@ export const GerenciarIA = () => {
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          {
+          {modelos.length > 0 &&
             modelos.map((modelo, index) => {
               return <CardModelo modelo={modelo} />
             })
