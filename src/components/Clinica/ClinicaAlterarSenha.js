@@ -1,10 +1,12 @@
 import React from 'react'
 import './ClinicaAlterarSenha.css'
+import { useHistorico } from '../../hooks/useHistorico';
 
 export const ClinicaAlterarSenha = () => {
+  const { handleHistorico } = useHistorico()
 
   const handleCancelarClick = () => {
-    window.location.reload();
+    handleHistorico(null)
   };
  
   return (

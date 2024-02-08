@@ -21,6 +21,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Text,
   
 } from '@chakra-ui/react'
 import { CardModelo } from '../Cards/CardModelo';
@@ -40,6 +41,7 @@ export const GerenciarIA = () => {
   const [numCasos, setNumCasos] = useState([]) 
   const [modelos, setModelos] = useState([])
   const [solicitado, setSolicitado] = useState(true)
+  const [solicitacao, setSolicitacao] = useState(null)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoadingTable, setIsLoadingTable] = useState(false)
   const [totalImagens, setTotalImagens] = useState(0)
@@ -69,7 +71,10 @@ export const GerenciarIA = () => {
     await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
       if (data.data.length == 0) {
         setSolicitado(false)
+        return
       }
+      setSolicitacao(data.data.at(0))
+      console.log(solicitacao)
     })
   }
 
@@ -90,7 +95,7 @@ export const GerenciarIA = () => {
       nome: user.data.nome,
       cnpj: user.data.cnpj,
       total_imagens: totalImagens,
-      doenaca: classes
+      doenca: classes
     }
     
     await api.post('/requisicao', data_requisicao).catch( (e) => { console.log(e)} )
@@ -160,6 +165,9 @@ export const GerenciarIA = () => {
             <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'}  flexWrap={'wrap'}>
                 <h3>Solicitar novo treinamento</h3>
                 <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={solicitado} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
+                { solicitacao &&
+                <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação ainda não atendida</Text>
+                }
             </Flex>
           </Flex>
         </Flex>
