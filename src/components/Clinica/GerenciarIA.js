@@ -27,7 +27,7 @@ import {
 import { CardModelo } from '../Cards/CardModelo';
 import { api } from '../../services/api';
 import { useSelector } from 'react-redux';
-import { RepeatIcon } from '@chakra-ui/icons';
+import { RepeatIcon } from '@chakra-ui/icons'; import { CardRequisicao } from '../Cards/CardRequisicao';
 import { Spinner } from 'react-bootstrap';
 ;
 
@@ -38,16 +38,20 @@ export const GerenciarIA = () => {
   const toast = useToast()
 
   const [classes, setClasses] = useState([])
-  const [numCasos, setNumCasos] = useState([]) 
+  const [numCasos, setNumCasos] = useState([])
   const [modelos, setModelos] = useState([])
+  const [requisicoes, setRequisicoes] = useState([])
   const [solicitado, setSolicitado] = useState(true)
   const [solicitacao, setSolicitacao] = useState(null)
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoadingTable, setIsLoadingTable] = useState(false)
   const [totalImagens, setTotalImagens] = useState(0)
+  const [diagnosticos, setDiagnosticos] = useState([])
+  const [error, setError] = useState("")
 
 
   const loadImagensTreinamento = async () => {
+
     setIsLoadingTable(true)
     await api.post(`/diagnostico/imagens/treinamento`, {'clinica_id': user.data.id}).then(({ data }) => {
       setClasses(data.classes)
@@ -55,18 +59,58 @@ export const GerenciarIA = () => {
       setTotalImagens(data.data.at(-1))
       setIsLoadingTable(false)
     }).catch( () => {
-      
     })
   }
 
-  const loadModelosClinca = async () => {
-    await api.get(`/modelo`, { cnpj: user.data.cnpj }).then( ({ data }) => {
-      setModelos(data.data)
+  const loadDiagnosticos = async () => {
+    await api.get(`/diagnostico?usada=false&clinica_id=${user.data.id}`).then(({ data }) => {
+      console.log("diagnosticos >>>>>>", data)
+      setDiagnosticos(data)
     }).catch(() => {
 
     })
   }
+  const updateDiagnosticos = async () => {
+    let ids = diagnosticos.map(item => item.id)
+    await api.put(`/diagnostico/update_usada`, ids).then(({ data }) => {
+      console.log("update", data)
+    }).catch(() => {
+    })
+  }
+    
 
+  const loadModelosClinca = async () => {
+    await api.get(`/modelo`, { cnpj: user.data.cnpj }).then(({ data }) => {
+      setModelos(data)
+    }).catch(()=>{
+      
+    })
+  }
+
+  const loadRequisicoes = async () => {
+    await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
+      console.log("requisicoes", data.data)
+      setRequisicoes(data.data)
+    }).catch(()=>{
+      
+    })
+  }
+
+  const sendRequisition = async () => {
+    let data = {
+      data_hora: new Date(),
+      quantidade_imagens: diagnosticos.length,
+      id_clinica: user.data.id,
+    }
+
+    await api.post(`/requisicao`, data).then(() => {
+      loadImagensTreinamento().then(() => { })
+      updateDiagnosticos()
+      loadRequisicoes()
+    }).catch(()=>{
+
+    })
+  }
   const loadExisteSolicitacao = async () => {
     await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
       if (data.data.length == 0) {
@@ -80,10 +124,25 @@ export const GerenciarIA = () => {
 
 
   useEffect(() => {
-    loadImagensTreinamento().then(() => {})
-    loadModelosClinca().then(() => {})
+    loadImagensTreinamento().then(() => { })
+    loadModelosClinca().then(() => { })
+    loadRequisicoes()
+    loadDiagnosticos()
     loadExisteSolicitacao().then(() => {})
   }, [])
+
+  // Função para verificar se a diferença entre duas datas é menor que 1 semana
+  function diferencaMenorQueUmaSemana(data1, data2) {
+    const primeiraData = new Date(data1);
+    const segundaData = new Date(data2);
+
+    const diferencaEmMilissegundos = Math.abs(segundaData - primeiraData);
+
+    const diferencaEmDias = diferencaEmMilissegundos / (1000 * 60 * 60 * 24);
+
+    return diferencaEmDias < 7;
+  }
+
 
   const loadCriarSolicitacao = async () => {
     const data_requisicao = {
@@ -98,7 +157,11 @@ export const GerenciarIA = () => {
       doenca: classes
     }
     
-    await api.post('/requisicao', data_requisicao).catch( (e) => { console.log(e)} )
+    await api.post('/requisicao', data_requisicao).then(()=>{
+      loadImagensTreinamento().then(() => { })
+      updateDiagnosticos()
+      loadRequisicoes()
+    }).catch( (e) => { console.log(e)} )
     await api.post('/email/requisicao', data_email).catch( (e) => { console.log(e)} )
   }
 
@@ -117,6 +180,13 @@ export const GerenciarIA = () => {
         loading: { title: `Solicitando treinamento`, description: 'Por favor espere' },
     })
   }
+
+  const disableRequisicao = () => {
+    if(requisicoes.length>0){
+      return diferencaMenorQueUmaSemana(requisicoes[0].data_hora,new Date()) || diagnosticos.length < 1
+    }
+    return true
+}
 
   return (
     <div className='gerenciarIA-container'>
@@ -172,6 +242,22 @@ export const GerenciarIA = () => {
           </Flex>
         </Flex>
       </div>
+{requisicoes.length > 0 &&
+<>
+<div className='gerenciarIA-top'>
+        <h2>Requisições</h2>
+      </div>
+
+      <div className='gerenciarIA-model-details'>
+        <Stack spacing={4} w={'90%'}>
+          
+          {requisicoes.map(item => (
+            <CardRequisicao requisicao={item} />
+          ))}
+        </Stack>
+      </div>
+</>
+     }
 
       <div className='gerenciarIA-top'>
         <h2>Modelos</h2>
@@ -179,7 +265,7 @@ export const GerenciarIA = () => {
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          {
+          {modelos.length > 0 &&
             modelos.map((modelo, index) => {
               return <CardModelo modelo={modelo} />
             })
