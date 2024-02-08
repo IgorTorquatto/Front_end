@@ -172,6 +172,13 @@ export const GerenciarIA = () => {
     })
   }
 
+  const disableRequisicao = () => {
+    if(requisicoes.length>0){
+      return diferencaMenorQueUmaSemana(requisicoes[0].data_hora,new Date()) || diagnosticos.length < 1
+    }
+    return true
+}
+
   return (
     <div className='gerenciarIA-container'>
       <div className='gerenciarIA-top'>
@@ -218,7 +225,7 @@ export const GerenciarIA = () => {
             </Flex>
             <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'}  flexWrap={'wrap'}>
                 <h3>Solicitar novo treinamento</h3>
-                <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={solicitado} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
+                <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={disableRequisicao()} onClick={onOpen}>Solicitar</Button>
             </Flex>
           </Flex>
         </Flex>
@@ -246,7 +253,7 @@ export const GerenciarIA = () => {
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          {
+          {modelos.length > 0 &&
             modelos.map((modelo, index) => {
               return <CardModelo modelo={modelo} />
             })
