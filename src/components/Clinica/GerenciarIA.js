@@ -149,10 +149,14 @@ export const GerenciarIA = () => {
       nome: user.data.nome,
       cnpj: user.data.cnpj,
       total_imagens: totalImagens,
-      doenaca: classes
+      doenca: classes
     }
     
-    await api.post('/requisicao', data_requisicao).catch( (e) => { console.log(e)} )
+    await api.post('/requisicao', data_requisicao).then(()=>{
+      loadImagensTreinamento().then(() => { })
+      updateDiagnosticos()
+      loadRequisicoes()
+    }).catch( (e) => { console.log(e)} )
     await api.post('/email/requisicao', data_email).catch( (e) => { console.log(e)} )
   }
 
