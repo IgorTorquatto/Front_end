@@ -129,8 +129,11 @@ export const Pacientes = () => {
   async function loadPatients() {
     let id = user.data.cnpj ? user.data.id : clinica.id
     await api.get(`/paciente?id_clinica=${id}`).then(({ data }) => {
+      console.log(data)
       setPatientsArray(data)
-      setPatiens(data)
+      setPatiens(data.sort((a, b) => {
+        return a.pessoa.nome.localeCompare(b.pessoa.nome);
+      }))
 
     }).catch(({ err }) => {
       console.log(err)

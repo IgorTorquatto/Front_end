@@ -20,8 +20,9 @@ const PatientCard = ({ paciente, openInfo, openEdit }) => {
       w='100%'
       py='0.5rem'
       px='1.5rem'
-      borderRadius='1rem'
+      borderRadius='10px'
       margin='1.5rem 0'
+      padding={'1rem'}
       display='flex'
       justifyContent='center'
       alignItems='center'
@@ -31,11 +32,11 @@ const PatientCard = ({ paciente, openInfo, openEdit }) => {
         <div id='patientInformations'>
           <div>
             <p>Paciente: </p>
-            <span style={{ fontSize: 'medium' }}>{paciente.pessoa.nome}</span>
+            <span style={{ fontWeight: 'bold' }}>{paciente.pessoa.nome}</span>
           </div>
           <div>
             <p>CPF:</p>
-            <span style={{ fontSize: 'medium' }}>{cpf_mask(paciente.pessoa.cpf)}</span>
+            <span style={{ fontWeight: 'bold' }}>{cpf_mask(paciente.pessoa.cpf)}</span>
           </div>
         </div>
       </Box>

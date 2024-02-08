@@ -46,9 +46,11 @@ export const Historico = () => {
 
   async function loadHistorico() {
     let id = user.data.cnpj ? user.data.id : clinica.id
-    await api.get(`/diagnostico?id_clinica=${id}`).then(({ data }) => {
+    let id_medico = user.data.crm ? user.data.id : '\x00'
+    await api.get(`/diagnostico?id_clinica=${id}&id_medico=${id_medico}`).then(({ data }) => {
       setDiagnosticos(data)
       setDiagnosticosArray(data)
+      console.log(data)
     }).catch(({ err }) => {
       console.log(err)
     })
@@ -64,8 +66,6 @@ export const Historico = () => {
   }, [])
 
   useEffect(() => {
-    console.log("Entrou aqui !!!")
-    console.log(clinica)
     if (clinica) {
       setPageLoading(true)
       loadHistorico().then(() => {
@@ -133,8 +133,8 @@ export const Historico = () => {
                   <option value='cpf'>CPF</option>
                 </Select>
                 <Input w='70%' placeholder='Procurar paciente' mr='0.5rem' onChange={(e) => setSearch(e.target.value)} bgColor={'white'} />
-                <Input w='15%' type='date' onChange={(e) => setInitDate(e.target.value)} />
-                <Input w='15%' type='date' onChange={(e) => setEndDate(e.target.value)} />
+                <Input w='15%' type='date' onChange={(e) => setInitDate(e.target.value)} bg={"white"} />
+                <Input w='15%' type='date' onChange={(e) => setEndDate(e.target.value)} bg={"white"} />
               </Box>
 
               <Modal isOpen={isOpen} onClose={onClose} size='6xl'>
@@ -142,10 +142,42 @@ export const Historico = () => {
 
                 <ModalContent w='100%' color={'gray.700'}>
 
-                  <ModalHeader textAlign={"center"}>Informações do diagnóstico</ModalHeader>
+                  <ModalHeader textAlign={"center"}>Diagnóstico</ModalHeader>
                   <ModalCloseButton />
 
                   <ModalBody w='100%'>
+
+                    <Box position='relative' padding='0.5rem 0' marginBottom='1rem'>
+                      <Divider />
+                      <AbsoluteCenter fontWeight='bold' fontSize='1.4rem' bg='white' px='5'>
+                        Informações
+                      </AbsoluteCenter>
+                    </Box>
+
+                    <Flex padding='1.25rem' borderRadius={'10px'} height='auto' justify='flex-start' alignItems='flex-start' bgColor={"#0b2a45"} color='white' w='100%' flexDirection='row' flexWrap='wrap'>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>Realizado em: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{dayjs(new Date(diagnostico?.data_hora)).format('DD/MM/YYYY')}</Text>
+                      </div>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>Médico responsável: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.medico.nome}</Text>
+                      </div>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>CRM: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.medico.crm}</Text>
+                      </div>
+
+                      <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
+                        <Text fontWeight='bold' as='span'>Email: </Text>
+                        <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.medico.email}</Text>
+                      </div>
+                      
+                      
+                    </Flex>
 
                     <Box position='relative' padding='0.5rem 0' marginBottom='1rem'>
                       <Divider />
@@ -157,7 +189,7 @@ export const Historico = () => {
                     <Flex padding='1.25rem' borderRadius={'10px'} height='auto' justify='flex-start' alignItems='flex-start' bgColor={"#0b2a45"} color='white' w='100%' flexDirection='row' flexWrap='wrap'>
 
                       <div style={{ flex: '0 0 50%', boxSizing: 'border-box', marginTop: '0.5rem' }}>
-                        <Text fontWeight='bold' as='span'>Name: </Text>
+                        <Text fontWeight='bold' as='span'>Nome: </Text>
                         <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.paciente.pessoa.nome}</Text>
                       </div>
 
@@ -210,7 +242,7 @@ export const Historico = () => {
                       <Flex style={{ flex: '0 0 100%', marginTop: '1rem', justifyContent: 'center' }}>
                         {/* Seção de Imagem do Mapa de Calor */}
                         <div style={{ flex: '0 0 50%' }}>
-                          <Text fontWeight='bold'>Imagem usada: </Text>
+                          <Text fontWeight='bold'>Exame: </Text>
                           {diagnostico?.mapa_calor && (
                             <img
                               src={diagnostico?.mapa_calor}

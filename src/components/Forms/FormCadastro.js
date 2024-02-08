@@ -70,7 +70,7 @@ export const FormCadastro = () => {
 
     setOnLoading(true);
 
-    await toast.promise(
+    toast.promise(
       apiUnAuth.post('/pessoa', pessoa).then(({ data }) => {
       const medico = {
         id_pessoa: data.data.id,

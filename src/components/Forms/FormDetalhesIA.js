@@ -34,8 +34,7 @@ export const FormDetalhesIA = () => {
             recall: ficha.recall,
             kappa: ficha.kappa,
             filtros: ficha.filtros,
-            dataAugmentation: ficha.dataAugmentation,
-            tipoImagem: ficha.tipoImagem,
+            data_augmentation: ficha.dataAugmentation,
         }
         console.log(fichaModelo)
         await api.post('/modelo', fichaModelo).catch((error)=>{

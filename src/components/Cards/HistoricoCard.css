@@ -26,7 +26,8 @@
     grid-template-areas: 
         "paciente-nome data-info"
         "paciente-cpf  hist-download-button-context"
-        "resultado-exame hist-download-button-context";    
+        "resultado-exame hist-download-button-context"
+        "medico-nome hist-download-button-context";    
     padding: 0px 10px;
     width: 100%;
 }
@@ -40,6 +41,11 @@
 #hist-download-button-context{
     grid-area: hist-download-button-context;
     text-align: right;
+    align-self: center;
+}   
+
+#medico-nome {
+    grid-area: medico-nome;
 }
 
 #paciente-nome {
