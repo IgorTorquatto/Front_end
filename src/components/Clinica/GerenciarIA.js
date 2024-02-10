@@ -79,6 +79,7 @@ export const GerenciarIA = () => {
   const loadModelosClinca = async () => {
     await api.get(`/modelo`).then(({ data }) => {
       setModelos(data.data)
+      console.log(data.data)
     }).catch(()=>{
       
     })
@@ -86,7 +87,6 @@ export const GerenciarIA = () => {
 
   const loadExisteSolicitacao = async () => {
     await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
-      console.log(data.data)
       if (data.data.length == 0) {
         setSolicitado(false)
         return
@@ -94,7 +94,7 @@ export const GerenciarIA = () => {
 
       setSolicitacao(data.data.at(0))
       setSolicitacaoStatus(data.data.at(0).status)
-      if (solicitacao.status === STATUS_CONCLUIDO) {
+      if (data.data.at(0).status === STATUS_CONCLUIDO) {
         encerrarSolicitacao().then(() => {
           setSolicitado(false)
         }).catch(() => {
@@ -240,10 +240,6 @@ export const GerenciarIA = () => {
           }
         </Stack>
       </div>
-  </>
-}
-      
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
