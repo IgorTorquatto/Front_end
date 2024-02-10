@@ -22,14 +22,14 @@ import {
   ModalBody,
   ModalCloseButton,
   Text,
+  Spinner,
 
 } from '@chakra-ui/react'
-import { CardModelo } from '../Cards/CardModelo';
 import { api } from '../../services/api';
 import { useSelector } from 'react-redux';
-import { RepeatIcon } from '@chakra-ui/icons'; import { CardRequisicao } from '../Cards/CardRequisicao';
-import { Spinner } from 'react-bootstrap';
-;
+import { CardModelo } from '../Cards/CardModelo';
+import { RepeatIcon } from '@chakra-ui/icons';
+
 
 export const GerenciarIA = () => {
 
@@ -39,44 +39,42 @@ export const GerenciarIA = () => {
 
   const [classes, setClasses] = useState([])
   const [numCasos, setNumCasos] = useState([])
+  const [idsDiagnosticos, setIdsDiagnosticos] = useState([])  
   const [modelos, setModelos] = useState([])
-  const [requisicoes, setRequisicoes] = useState([])
   const [solicitado, setSolicitado] = useState(true)
   const [solicitacao, setSolicitacao] = useState(null)
+  const [solicitacaoStatus, setSolicitacaoStatus] = useState(null)
+
   const [loadingButton, setLoadingButton] = useState(false)
   const [isLoadingTable, setIsLoadingTable] = useState(false)
   const [totalImagens, setTotalImagens] = useState(0)
-  const [diagnosticos, setDiagnosticos] = useState([])
-  const [error, setError] = useState("")
+
+  const STATUS_REQUISITADO = 'Requisitado'
+  const STATUS_EXECUCAO = 'Em_Execucao'
+  const STATUS_CONCLUIDO = 'Concluído'
+  const STATUS_ACEITO = 'Aceito'
+  const STATUS_FINALIZADO = 'Finalizado'
+  const LIMITE_IMAGENS = 100
 
 
   const loadImagensTreinamento = async () => {
-
     setIsLoadingTable(true)
     await api.post(`/diagnostico/imagens/treinamento`, { 'clinica_id': user.data.id }).then(({ data }) => {
       setClasses(data.classes)
       setNumCasos(data.data)
       setTotalImagens(data.data.at(-1))
+      setIdsDiagnosticos(data.ids)
       setIsLoadingTable(false)
     }).catch(() => {
     })
   }
 
-  const loadDiagnosticos = async () => {
-    await api.get(`/diagnostico?usada=false&clinica_id=${user.data.id}`).then(({ data }) => {
-      console.log("diagnosticos >>>>>>", data)
-      setDiagnosticos(data)
-    }).catch(() => {
-
-    })
-  }
   const updateDiagnosticos = async () => {
-    let ids = diagnosticos.map(item => item.id)
-    await api.put(`/diagnostico/update_usada`, ids).then(({ data }) => {
+    await api.put(`/diagnostico/update_usada`, idsDiagnosticos).then(({ data }) => {
+      console.log("update", data)
     }).catch(() => {
     })
   }
-
 
   const loadModelosClinca = async () => {
     await api.get(`/modelo`).then(({ data }) => {
@@ -109,17 +107,41 @@ export const GerenciarIA = () => {
 
     })
   }
+
+    
+  const loadModelosClinca = async () => {
+    await api.get(`/modelo`).then(({ data }) => {
+      setModelos(data.data)
+      console.log(data.data)
+    }).catch(()=>{
+      
+    })
+  }
+
+
   const loadExisteSolicitacao = async () => {
     await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
       if (data.data.length == 0) {
         setSolicitado(false)
         return
       }
+
       setSolicitacao(data.data.at(0))
-      console.log(solicitacao)
+      setSolicitacaoStatus(data.data.at(0).status)
+      if (data.data.at(0).status === STATUS_CONCLUIDO) {
+        encerrarSolicitacao().then(() => {
+          setSolicitado(false)
+        }).catch(() => {
+
+        })
+      }
     })
   }
 
+  const encerrarSolicitacao = async () => {
+    solicitacao.status = STATUS_FINALIZADO
+    await api.put(`/requisicao/${solicitacao.id}`, solicitacao)
+  }
 
   useEffect(() => {
     loadImagensTreinamento().then(() => { })
@@ -127,20 +149,8 @@ export const GerenciarIA = () => {
     loadRequisicoes()
     loadDiagnosticos()
     loadExisteSolicitacao().then(() => { })
+
   }, [])
-
-  // Função para verificar se a diferença entre duas datas é menor que 1 semana
-  function diferencaMenorQueUmaSemana(data1, data2) {
-    const primeiraData = new Date(data1);
-    const segundaData = new Date(data2);
-
-    const diferencaEmMilissegundos = Math.abs(segundaData - primeiraData);
-
-    const diferencaEmDias = diferencaEmMilissegundos / (1000 * 60 * 60 * 24);
-
-    return diferencaEmDias < 7;
-  }
-
 
   const loadCriarSolicitacao = async () => {
     const data_requisicao = {
@@ -161,12 +171,25 @@ export const GerenciarIA = () => {
       loadRequisicoes()
     }).catch((e) => { console.log(e) })
     await api.post('/email/requisicao', data_email).catch((e) => { console.log(e) })
+      loadExisteSolicitacao().then(() => {})
+    }).catch( (e) => { console.log(e)} )
   }
 
   function handleSocitacaoTreinamento() {
     onClose()
-    setLoadingButton(true)
+    
+    if (totalImagens < LIMITE_IMAGENS) {
+      toast({
+        title: 'Solicitação não enviada',
+        description: `Essa opção está disponível apenas para bancos de imagens com pelo menos ${LIMITE_IMAGENS} imagens`,
+        status: 'info',
+        isClosable: true,
+        duration: 6000
+      })
+      return
+    }
 
+    setLoadingButton(true)
     toast.promise(
       loadCriarSolicitacao().then(() => {
         setLoadingButton(false)
@@ -230,50 +253,39 @@ export const GerenciarIA = () => {
                 </TableContainer>
               }
             </Flex>
-            <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'} flexWrap={'wrap'}>
-              <h3>Solicitar novo treinamento</h3>
-              <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={disableRequisicao()} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
-              {disableRequisicao() &&
-                <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação ainda não atendida</Text>
-              }
+            <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'}  flexWrap={'wrap'}>
+                <h3>Solicitar novo treinamento</h3>
+                <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={solicitado} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
+                { solicitacaoStatus === STATUS_REQUISITADO &&
+                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> ainda <span color='blue'>não atendida</span></Text> 
+                }
+                { solicitacaoStatus === STATUS_ACEITO &&
+                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> <span color='blue'>foi aceita</span> e logo entrará em execução</Text> 
+                }
+                { solicitacaoStatus === STATUS_EXECUCAO &&
+                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> está <span color='blue'>em execução</span></Text> 
+                }
+                { solicitacaoStatus === STATUS_CONCLUIDO &&
+                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> <span color='green'>foi concluída</span>. Um novo modelo deve estar disponível</Text>
+                }
             </Flex>
           </Flex>
         </Flex>
       </div>
-      {requisicoes.length > 0 &&
-        <>
-          <div className='gerenciarIA-top'>
-            <h2>Requisições</h2>
-          </div>
 
-          <div className='gerenciarIA-model-details'>
-            <Stack spacing={4} w={'90%'}>
+      <div className='gerenciarIA-top'>
+        <h2>Modelos</h2>
+      </div>
 
-              {requisicoes.map(item => (
-                <CardRequisicao requisicao={item} />
-              ))}
-            </Stack>
-          </div>
-        </>
-      }
-      {
-        modelos.length > 0 && <>
-          <div className='gerenciarIA-top'>
-            <h2>Modelos</h2>
-          </div>
-
-          <div className='gerenciarIA-model-details'>
-            <Stack spacing={4} w={'90%'}>
-              {
-                modelos.map((modelo, index) => {
-                  return <CardModelo modelo={modelo} />
-                })
-              }
-            </Stack>
-          </div>
-        </>
-      }
-
+      <div className='gerenciarIA-model-details'>
+        <Stack spacing={4} w={'90%'}>
+          {
+            modelos.map((modelo, index) => {
+              return <CardModelo modelo={modelo} />
+            })
+          }
+        </Stack>
+      </div>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
