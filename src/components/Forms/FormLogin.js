@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loadSession } from "../../store/ducks/tokens/actions.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, useToast } from "@chakra-ui/react";
+import { apiUnAuth } from "../../services/api";
 
 const schema = yup
   .object({
@@ -47,41 +48,49 @@ export const FormLogin = () => {
   function validarNumeros(str) {
     return !isNaN(str) && !isNaN(parseFloat(str));
   }
-  
+
 
   const onSubmit = async (user) => {
 
     setOnLoading(true)
     try {
-      if(validarNumeros(user.data)){
+
+
+      if (validarEmail(user.data)) {
         const login = {
-          email: null,
           username: null,
-          cnpj: user.data,
-          senha: user.senha
-        }
-        throw dispactch(loadSession(login))
-      }
-      else if (validarEmail(user.data)) {
-        const login = {
           email: user.data,
-          cnpj: null,
-          username: null,
           senha: user.senha
         }
-        throw dispactch(loadSession(login))
+
+        toast.promise(
+          apiUnAuth.post('/login', login).then(({ data }) => {
+            dispactch(loadSession(data))
+          }).catch((error) => {
+            setOnLoading(false);
+            throw error;
+          }),
+          {
+            loading: { title: 'Login em andamento.', description: 'Por favor, aguarde.' },
+            success: { title: 'Login realizado com sucesso!', description: '', duration: 6000, isClosable: true },
+            error: { title: 'Email ou senha incorretos.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true },
+          });
       } else {
         const login = {
           email: null,
-          cnpj: null,
           username: user.data,
           senha: user.senha
         }
-        throw dispactch(loadSession(login))
+        apiUnAuth.post('/login', login).then(({ data }) => {
+          throw dispactch(loadSession(data))
+        }).catch((error) => {
+          setOnLoading(false);
+          console.log(error)
+        })
       }
     } catch {
-        
-        setOnLoading(false)
+
+      setOnLoading(false)
     }
   };
 
