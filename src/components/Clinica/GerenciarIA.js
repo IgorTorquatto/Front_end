@@ -77,8 +77,8 @@ export const GerenciarIA = () => {
   }
     
   const loadModelosClinca = async () => {
-    await api.get(`/modelo`, { cnpj: user.data.cnpj }).then(({ data }) => {
-      setModelos(data)
+    await api.get(`/modelo`).then(({ data }) => {
+      setModelos(data.data)
     }).catch(()=>{
       
     })
@@ -233,13 +233,16 @@ export const GerenciarIA = () => {
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          {modelos.length > 0 &&
+          {
             modelos.map((modelo, index) => {
               return <CardModelo modelo={modelo} />
             })
           }
         </Stack>
       </div>
+  </>
+}
+      
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
