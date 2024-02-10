@@ -73,15 +73,14 @@ export const GerenciarIA = () => {
   const updateDiagnosticos = async () => {
     let ids = diagnosticos.map(item => item.id)
     await api.put(`/diagnostico/update_usada`, ids).then(({ data }) => {
-      console.log("update", data)
     }).catch(() => {
     })
   }
     
 
   const loadModelosClinca = async () => {
-    await api.get(`/modelo`, { cnpj: user.data.cnpj }).then(({ data }) => {
-      setModelos(data)
+    await api.get(`/modelo`).then(({ data }) => {
+      setModelos(data.data)
     }).catch(()=>{
       
     })
@@ -89,7 +88,6 @@ export const GerenciarIA = () => {
 
   const loadRequisicoes = async () => {
     await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
-      console.log("requisicoes", data.data)
       setRequisicoes(data.data)
     }).catch(()=>{
       
@@ -258,20 +256,24 @@ export const GerenciarIA = () => {
       </div>
 </>
      }
-
-      <div className='gerenciarIA-top'>
+{
+  modelos.length > 0 && <>
+  <div className='gerenciarIA-top'>
         <h2>Modelos</h2>
       </div>
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          {modelos.length > 0 &&
+          {
             modelos.map((modelo, index) => {
               return <CardModelo modelo={modelo} />
             })
           }
         </Stack>
       </div>
+  </>
+}
+      
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
