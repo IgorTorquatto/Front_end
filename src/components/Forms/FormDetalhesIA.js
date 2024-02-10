@@ -7,6 +7,7 @@ import { api } from '../../services/api.ts'
 
 const schema = yup.object({
     nome: yup.string().required('Informe o nome do modelo'),
+    arquivo: yup.string().required("Nome do arquivo gerado, ex: model-123.h5"),
     cnpj: yup.string().required("CNPJ da clínica responsável"),
     precisao: yup.number().required("Valor de precisão do modelo"),
     acuracia: yup.number().required("Valor de acurácia do modelo"),
@@ -14,8 +15,7 @@ const schema = yup.object({
     recall: yup.number().required("Valor recall do modelo"),
     kappa: yup.number().required("Valor Cohen's Kappa do modelo"),
     filtros: yup.string().required("Filtro(s) utilizado(s) no treinamento"),
-    dataAugmentation: yup.bool().required("Foi utilizado augmentation?"),
-    tipoImagem: yup.string().required("Tipo de imagem utilizada, ex: raio x"),
+    dataAugmentation: yup.string(),
 })
 
 export const FormDetalhesIA = () => {
@@ -34,7 +34,8 @@ export const FormDetalhesIA = () => {
             recall: ficha.recall,
             kappa: ficha.kappa,
             filtros: ficha.filtros,
-            data_augmentation: ficha.dataAugmentation,
+            data_augmentation: ficha.dataAugmentation === "true",
+            arquivo: ficha.arquivo,
         }
         console.log(fichaModelo)
         await api.post('/modelo', fichaModelo).catch((error)=>{
@@ -43,6 +44,7 @@ export const FormDetalhesIA = () => {
     }
 
     const detalhesFicha = [{ label: "Nome do modelo", name: "nome", placeholder: "Digite o nome do modelo", type: "text" },
+    { label: "Nome de arquivo", name: "arquivo", placeholder: "Qual o nome do arquivo?", type: "text" },
     { label: "CPNJ da Clínica", name: "cnpj", placeholder: "Digite o CNPJ da clínica", type: "text" },
     { label: "Precisao", name: "precisao", placeholder: "Valor de precisao", type: "number" },
     { label: "Acuracia", name: "acuracia", placeholder: "Valor de acurácia", type: "number" },
@@ -50,8 +52,8 @@ export const FormDetalhesIA = () => {
     { label: "Recall", name: "recall", placeholder: "Valor de recall", type: "number" },
     { label: "Kappa", name: "kappa", placeholder: "Valor Cohen's Kappa", type: "number" },
     { label: "Filtros", name: "filtros", placeholder: "Filtros usados no treinamento", type: "text" },
-    { label: "Augmentation", name: "dataAugmentation", placeholder: "Foi utilizado data augmentation?", type: "checkbox" },
-    { label: "Tipo de Imagem", name: "tipoImagem", placeholder: "Qual tipo de imagens foram utilizadas", type: "text" },]
+    { label: "Augmentation", name: "dataAugmentation", placeholder: "Foi utilizado data augmentation?", type: "checkbox" }
+]
 
     return (
         <>
