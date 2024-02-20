@@ -1,6 +1,37 @@
-import { Button, Card, CardBody, CardHeader, Flex, Heading, Text, Tooltip } from "@chakra-ui/react"
+import { Button, Card, CardBody, CardHeader, Flex, Heading, Text, Tooltip, useToast } from "@chakra-ui/react"
+import { useSelector } from "react-redux";
+import { api } from "../../services/api";
+import { useState } from "react";
 
 export const CardModelo = (args) => {
+    const { data: user } = useSelector((state) => state.tokens);
+    const [loadingButton, setLoadingButton] = useState(false)
+    const toast = useToast()
+
+    const updateModeloClinica = async (modelo_id) => {
+        let clinica = user.data
+        clinica.modelo_id = modelo_id
+        await api.put(`/clinica/${user.data.id}`, clinica)
+    }
+
+    const handleSelecionarModeloPadrao = (modelo_id) => {
+        setLoadingButton(true)
+        updateModeloClinica(modelo_id).then(() => {
+            setLoadingButton(false)
+            toast({
+                title: "Modelo selecionado com sucesso",
+                description: "Todos os dignósticos serão relalizados usando este modelo",
+                status: "success",
+            })
+        }).catch(() => {
+            setLoadingButton(false)
+            toast({
+                title: "Modelo não selecionado",
+                description: "Um erros ocorreu",
+                status: "error",
+            })
+        })
+    }
 
     return (
         <Card variant={'elevated'}>
@@ -9,7 +40,7 @@ export const CardModelo = (args) => {
                     <Heading size='md' w={'60%'}> {args.modelo.nome} </Heading>
 
                     <Flex w={'40%'} flexDirection={'row'} justifyContent={'flex-end'} justifyItems={'right'}>
-                        <Button isDisabled>Selecionado</Button>
+                        <Button isLoading={loadingButton} value={args.modelo.id} onClick={(event) => handleSelecionarModeloPadrao(event.target.value)} isDisabled={user.data.modelo_id === args.modelo.id}>Selecionar</Button>
                     </Flex>
                 </Flex>
             </CardHeader>

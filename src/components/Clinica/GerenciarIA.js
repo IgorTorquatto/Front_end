@@ -56,7 +56,6 @@ export const GerenciarIA = () => {
   const STATUS_FINALIZADO = 'Finalizado'
   const LIMITE_IMAGENS = 100
 
-
   const loadImagensTreinamento = async () => {
     setIsLoadingTable(true)
     await api.post(`/diagnostico/imagens/treinamento`, {'clinica_id': user.data.id}).then(({ data }) => {

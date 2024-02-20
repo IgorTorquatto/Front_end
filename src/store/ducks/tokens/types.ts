@@ -30,6 +30,7 @@ export interface User {
     cargo: string
   },
   clinica: object,
+  modelo_id?: string,
 }
 
 export interface TokenData {
