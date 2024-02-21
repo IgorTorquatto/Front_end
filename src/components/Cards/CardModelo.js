@@ -35,9 +35,12 @@ export const CardModelo = ({modelos}) => {
         })
     }
 
+    console.log(modelos)
+
     return (
         <>
         {
+        modelos.length > 0 ?
         modelos.map((modelo, index) => {
             return (
                 <Card variant={'elevated'}>
@@ -67,6 +70,7 @@ export const CardModelo = ({modelos}) => {
                 </Card>
             )
         })
+        : <Text>Não exitem modelos</Text>
         }
         </>
 

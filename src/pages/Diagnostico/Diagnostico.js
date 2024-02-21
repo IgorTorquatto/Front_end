@@ -145,30 +145,6 @@ export const Diagnostico = () => {
     }
   };
 
-  function base64ToBlob(base64) {
-    var parts = base64.split(';base64,');
-    var contentType = parts[0].split(':')[1];
-    var raw = window.atob(parts[1]);
-    var rawLength = raw.length;
-    var uInt8Array = new Uint8Array(rawLength);
-
-    for (var i = 0; i < rawLength; ++i) {
-      uInt8Array[i] = raw.charCodeAt(i);
-    }
-
-    return new Blob([uInt8Array], { type: contentType });
-  }
-
-  function arrayToBase64(subarray) {
-    // Converte o subarray para um ArrayBuffer
-    var buffer = new Float32Array(subarray).buffer;
-
-    // Converte o ArrayBuffer para uma string base64
-    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(buffer)));
-
-    return base64String;
-  }
-
   function downloadPDF(pdfDataUri) {
 
     var link = document.createElement('a');
@@ -190,13 +166,15 @@ export const Diagnostico = () => {
     }
     setLaudoError(false)
 
-    if (resultReal === 'OUTRO') {
-      if (outroLaudo === '' || !outroLaudo) {
-        setOutroLaudoErro(true)
-        return
+    if (resultLaudo == 2){
+      if (resultReal === 'OUTRO') {
+        if (outroLaudo === '' || !outroLaudo) {
+          setOutroLaudoErro(true)
+          return
+        }
       }
+      setOutroLaudoErro(false)
     }
-    setOutroLaudoErro(false)
 
     if (observacoes === 'Seu laudo vem aqui...' || observacoes.trim().length == 0) {
       setobsState(false)

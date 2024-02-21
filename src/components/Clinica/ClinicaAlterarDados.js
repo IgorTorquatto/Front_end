@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ClinicaAlterarDados.css";
 import * as yup from 'yup'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { api } from "../../services/api";
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ import {
   cep_mask_remove,
   telefone_mask_remove,
 } from "../Forms/form-masks";
-import { useToast, Button, useStatStyles } from "@chakra-ui/react";
+import { useToast, Button } from "@chakra-ui/react";
 import $ from 'jquery'
 import 'jquery-mask-plugin'
 

@@ -59,12 +59,15 @@ export const GerenciarIA = () => {
   const loadImagensTreinamento = async () => {
     setIsLoadingTable(true)
     await api.post(`/diagnostico/imagens/treinamento`, { 'clinica_id': user.data.id }).then(({ data }) => {
-      setClasses(data.classes)
-      setNumCasos(data.data)
-      setTotalImagens(data.data.at(-1))
-      setIdsDiagnosticos(data.ids)
+      if (data.result == 1) {
+        setClasses(data.classes)
+        setNumCasos(data.data)
+        setTotalImagens(data.data.at(-1))
+        setIdsDiagnosticos(data.ids)
+      }
       setIsLoadingTable(false)
     }).catch((error) => {
+      setIsLoadingTable(false)
       console.log(error)
     })
   }
@@ -76,7 +79,8 @@ export const GerenciarIA = () => {
   }
 
   const loadModelosClinca = async () => {
-    await api.get(`/modelo`).then(({ data }) => {
+
+    await api.get(`/modelo?cnpj=${user.data.cnpj}`).then(({ data }) => {
       setModelos(data.data)
     }).catch((error) => {
       console.log(error)
@@ -186,6 +190,8 @@ export const GerenciarIA = () => {
           <Flex w={'100%'} alignContent={'center'} justifyContent={'space-around'}>
             <Flex w='50%' justifyContent={'center'}>
               {isLoadingTable ? <Spinner thickness='4px' size='lg' /> :
+                <>
+                {totalImagens == 0 ? <Text>Não exitem imagens para treinamento</Text> :
                 <TableContainer padding={'10px'}>
                   <Table variant='simple'>
                     <Thead>
@@ -214,6 +220,8 @@ export const GerenciarIA = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+                }        
+                </>        
               }
             </Flex>
             <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'} flexWrap={'wrap'}>

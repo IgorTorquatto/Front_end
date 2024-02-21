@@ -253,9 +253,6 @@ export const Historico = () => {
                         {/* Linha de Informações de Texto */}
                         <Flex style={{ flex: '0 0 50%' }} flexDirection='row' flexWrap='wrap'>
                           <div style={{ flex: '0 0 100%' }}>
-                            <Text fontWeight='bold' as='span'>Modelo: </Text>
-                            <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.modelo}</Text>
-                            <br />
                             <Text fontWeight='bold' as='span'>Classificação do Modelo: </Text>
                             <Text padding='0 0.5rem' as='span' fontWeight='regular'>{diagnostico?.resultado_modelo}</Text>
                           </div>

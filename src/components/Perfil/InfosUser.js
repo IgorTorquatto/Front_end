@@ -33,10 +33,6 @@ export const InfosUser = () => {
               <FaPhone />
               <strong>Telefone:</strong> {telefone_mask(user.data.pessoa.telefone)}
             </div>
-            <div>
-              <FaBriefcase />
-              <strong>Cargo:</strong> {user.data.pessoa.cargo}
-            </div>
           </div>
           <div className="column">
               <div>
@@ -47,13 +43,13 @@ export const InfosUser = () => {
                 <FaRegIdCard />
                 <strong>CPF:</strong> {cpf_mask(user.data.pessoa.cpf)}
               </div>
+              <div>
+                <FaBriefcase />
+                <strong>Cargo:</strong> {user.data.pessoa.cargo}
+              </div>
               <div className="teste">
                 <FaCalendarAlt />
                 <strong>Especialidade:</strong> {user.data.especialidade}
-              </div>
-              <div>
-                <FaBuilding />
-                <strong>Clínica:</strong> {user.data.pessoa.clinica}
               </div>
           </div>
         </div>

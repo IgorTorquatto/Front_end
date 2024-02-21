@@ -18,7 +18,8 @@ import { Box, Divider, Button, Spinner, Flex, Text, useDisclosure, Modal, ModalO
   ModalHeader,
   ModalBody,
   ModalCloseButton,
-  Input, } from "@chakra-ui/react";
+  Input,
+  useToast, } from "@chakra-ui/react";
 
 import { api } from "../../services/api";
 import { useSelector } from "react-redux";
@@ -33,6 +34,7 @@ export const ClinicaDados = () => {
   const [gerenciando, setGerenciando] = useState(false)
   const [Confirmacao, setConfirmacao] = useState('')
   const [funcionarParaRemover, setFuncionarioParaRemover] = useState(null)
+  const toast = useToast()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -55,8 +57,25 @@ export const ClinicaDados = () => {
   const [isEditing, setIsEditing] = useState(false); 
   const [isManaging, setIsManaging] = useState(false);
 
+  const excluirFuncionario = async () => {
+    await api.delete(`/medico/${funcionarParaRemover.id}`)
+  }
+
   const removeMedico = async () => {
-    alert("Not working yet");
+    excluirFuncionario().then(() => {
+      loadFuncionarios()
+      toast({
+        title: 'Funcionário excluido',
+        status: 'success',
+        duration: 3000
+      })
+    }).catch(() => {
+      toast({
+        title: 'Funcionário não excluido',
+        status: 'error',
+        duration: 3000
+      })
+    })
     onClose();
   }
 
@@ -198,7 +217,7 @@ export const ClinicaDados = () => {
       <ModalCloseButton />
       <ModalBody w='100%'>
         <Box>
-          <Text>Para confirmar a desassociação do médico, digite o crm "<b>{funcionarParaRemover?.crm}</b>" e clique em "<b>Remover</b>"</Text>
+          <Text>Para confirmar a desassociação do médico, digite  "<b>{funcionarParaRemover?.crm.slice(0, 3)}</b>" e clique em "<b>Remover</b>"</Text>
           <Input 
             bgColor={'white'} 
             onChange={(e) => { setConfirmacao(e.target.value) }}
@@ -209,7 +228,7 @@ export const ClinicaDados = () => {
           <Button 
             colorScheme="red" 
             onClick={removeMedico}
-            isDisabled={Confirmacao !== funcionarParaRemover?.crm}
+            isDisabled={Confirmacao !== funcionarParaRemover?.crm.slice(0, 3)}
             >Remover</Button>  
         </Box>
       </ModalBody>

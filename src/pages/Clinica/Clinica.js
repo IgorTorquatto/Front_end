@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Clinica.css";
-import { Menu, MenuItem, useDisclosure } from "@chakra-ui/react";
+import { Menu, MenuItem } from "@chakra-ui/react";
 import { MdOutlineExitToApp } from "react-icons/md";
 import { FaKey, FaUserMd, FaChartBar, FaRobot } from "react-icons/fa";
-import { Avatar } from "@chakra-ui/react";
 import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +14,6 @@ export const Clinica = () => {
   //Variables
   const history = useNavigate();
   const dispactch = useDispatch();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: user } = useSelector((state) => state.tokens);
   const {historico, handleHistorico } = useHistorico()
 
