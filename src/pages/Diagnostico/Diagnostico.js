@@ -4,7 +4,7 @@ import { NavbarComp } from '../../components/Header/NavbarComp'
 import './Diagnostico.css';
 import DiagnosticaLogoBW from '../../assets/logo d bw.png'
 import { useEffect, useState } from 'react';
-import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner, Flex, Input, Center } from '@chakra-ui/react'
+import { Box, Text, Button, Textarea, Checkbox, Radio, RadioGroup, Stack, Select as SelectChakra, Spinner, Flex, Input, Center, useToast } from '@chakra-ui/react'
 import Select from 'react-select';
 import { api } from '../../services/api.ts'
 import { AiOutlineInfoCircle } from 'react-icons/ai';
@@ -48,10 +48,10 @@ export const Diagnostico = () => {
 
   const { data: user } = useSelector((state) => state.tokens);
   const { clinica } = useClinica()
+  const toast = useToast()
 
   const models = [
     { value: '1', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
-    { value: '2', label: 'Pneumonia - Crianças de até 5 anos' },
   ]
 
   async function loadPatients() {
@@ -220,7 +220,7 @@ export const Diagnostico = () => {
 
 
     const diagnostico = {
-      modelo: selectedModel.label,
+      modelo: clinica.modelo_id,
       raio_x: uploadedImage,
       id_medico: user.data.id,
       id_clinica: clinica.id,
@@ -253,23 +253,32 @@ export const Diagnostico = () => {
       setError(true)
       return
     }
-    const formData = new FormData();
-    formData.append('image', uploadedImageData);
-    setLoadingLaudo(true)
-    await api.post(`/predict/${selectedModel.value}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      }
-    }).then(({ data }) => {
-      setLoadingLaudo(false)
-      console.log(data)
-      var imageData = data.image;
-      setImageCam(imageData)
-      setPredictionLabel(data.predictions[0])
-      setPrediction(+data.predictions[1])
-    }).catch(({ err }) => {
-      console.log(err)
-    })
+
+    if (clinica.modelo_id) {
+      const formData = new FormData();
+      formData.append('image', uploadedImageData);
+      setLoadingLaudo(true)
+      await api.post(`/predict/${clinica.modelo_id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }).then(({ data }) => {
+        setLoadingLaudo(false)
+        var imageData = data.image;
+        setImageCam(imageData)
+        setPredictionLabel(data.predictions[0])
+        setPrediction(+data.predictions[1])
+      }).catch(({ err }) => {
+        console.log(err)
+      })
+    } else {
+      toast({
+        title: `A clínida ${clinica.nome} não possui modelos`,
+        status: 'error',
+        isClosable: true,
+        duration: 4000
+      })
+    }
   }
 
   const handlePatient = (patient) => {

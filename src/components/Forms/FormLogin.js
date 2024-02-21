@@ -100,12 +100,12 @@ export const FormLogin = () => {
     <>
       <form className="custom-formcomp" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group mt-2 ">
-          <label htmlFor="exampleFormControl1">Endereço de e-mail ou CNPJ</label>
+          <label htmlFor="exampleFormControl1">Endereço de e-mail</label>
           <input
             type="text"
             className="form-control formcomp-input"
             id="exampleFormControl1"
-            placeholder="Insira o e-mail ou CNPJ"
+            placeholder="Insira o e-mail"
             {...register("data")}
           />
           <div
@@ -149,12 +149,6 @@ export const FormLogin = () => {
           isLoading={onLoading}
         >Entrar</Button>
       </form>
-
-      <div className="form-login-text">
-        <p className="login-register-now">
-          Ainda não tem uma conta? <Link to="/cadastro">Cadastre-se agora</Link>
-        </p>
-      </div>
     </>
   );
 };

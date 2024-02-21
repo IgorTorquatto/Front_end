@@ -1,11 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { ClinicaDados } from "../components/Clinica/ClinicaDados";
-import { ClinicaAlterarSenha } from "../components/Clinica/ClinicaAlterarSenha";
-import { CadastrarMedico } from "../components/Clinica/CadastrarMedico";
-import { Estatisticas } from "../components/Clinica/Estatisticas";
-import { GerenciarIA } from "../components/Clinica/GerenciarIA";
 import { useSelector } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
 import { api } from '../services/api';
 const ClinicaContext = createContext();
 

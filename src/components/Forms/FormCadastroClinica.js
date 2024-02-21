@@ -21,14 +21,12 @@ const schema = yup.object({
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
 }).required();
 
-export const FormCadastroClinica = () => {
+export const FormCadastroClinica = ({reLoadClinicas}) => {
 
   const { register, handleSubmit, formState: { errors }, } = useForm({
     resolver: yupResolver(schema)
   });
 
-  const history = useNavigate()
-  const dispactch = useDispatch();
   const toast = useToast();
 
   const [onLoading, setOnLoading] = useState(false);
@@ -45,12 +43,7 @@ export const FormCadastroClinica = () => {
     }
     await toast.promise(
       apiUnAuth.post('/clinica', clinica).then(({ data }) => {
-      const login = {
-        email: user.email,
-        senha: user.senha
-      }
-      dispactch(loadSession(login))
-      history('/clinica')
+      reLoadClinicas()
     }).catch(({ error }) => {
       throw error;
     }),
@@ -170,12 +163,6 @@ export const FormCadastroClinica = () => {
           isLoading={onLoading}
         >Cadastrar</Button>
       </form>
-
-      <div className="form-cadastro-text mt-3">
-        <p className="cadastro-login-link">
-          Já possui conta? <Link to="/login">Entrar agora</Link>
-        </p>
-      </div>
     </>
   );
 };
