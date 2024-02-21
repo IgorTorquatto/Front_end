@@ -242,11 +242,7 @@ export const GerenciarIA = () => {
 
       <div className='gerenciarIA-model-details'>
         <Stack spacing={4} w={'90%'}>
-          {
-            modelos.map((modelo, index) => {
-              return <CardModelo modelo={modelo} />
-            })
-          }
+          <CardModelo modelos={modelos} />
         </Stack>
       </div>
       <Modal isOpen={isOpen} onClose={onClose}>

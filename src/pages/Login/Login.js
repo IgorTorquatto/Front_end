@@ -23,7 +23,7 @@ export const Login = () => {
           </div>
           <div className="login-section">
             <div className="login-welcome">
-              <h2>Seja Bem-Vindo</h2>
+              <h2>Seja bem-vindo</h2>
             </div>
             <div className="login-form">
               <FormLogin />
