@@ -16,6 +16,7 @@ import { Button, useToast} from '@chakra-ui/react';
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   cnpj: yup.string().required('Informe um CRM válido'),
+  email: yup.string().required('Informe um email válido'),
   senha: yup.string().min(8, 'A senha deve conter 8 caracteres').required('Digite uma senha'),
   confirmarSenha: yup.string().required('Digite sua senha novamente').oneOf([yup.ref("senha")], 'As senhas devem ser iguais')
 }).required();
@@ -38,14 +39,14 @@ export const FormCadastroClinica = () => {
 
     const clinica = {
       cnpj: user.cnpj,
+      email: user.email,
       nome: user.nome,
       senha: user.senha,
     }
     await toast.promise(
       apiUnAuth.post('/clinica', clinica).then(({ data }) => {
       const login = {
-        email: null,
-        cnpj: user.cnpj,
+        email: user.email,
         senha: user.senha
       }
       dispactch(loadSession(login))
@@ -113,6 +114,21 @@ export const FormCadastroClinica = () => {
           <div className={errors.cnpj ? 'showerror errorDiv' : 'hideerror errorDiv'}>
             <AiOutlineInfoCircle />
             <p>{errors.cnpj?.message}</p>
+          </div>
+        </div>
+
+        <div className="form-group mt-2 ">
+          <label htmlFor="FormControlInputCPF">Email</label>
+          <input
+            type="text"
+            className="form-control formcomp-input"
+            id="FormControlInputCPF"
+            placeholder="Insira um Email"
+            {...register("email")}
+          />
+          <div className={errors.email ? 'showerror errorDiv' : 'hideerror errorDiv'}>
+            <AiOutlineInfoCircle />
+            <p>{errors.email?.message}</p>
           </div>
         </div>
 

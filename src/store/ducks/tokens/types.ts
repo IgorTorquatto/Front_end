@@ -39,6 +39,11 @@ export interface TokenData {
   logged: boolean,
 }
 
+export interface ReturnData {
+  data: User,
+  token: string,
+}
+
 /**
  * State type
  */

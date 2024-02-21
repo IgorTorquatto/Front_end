@@ -1,14 +1,10 @@
 import { action } from 'typesafe-actions';
-import { TokenData, TokensTypes, User } from './types';
+import { ReturnData, TokenData, TokensTypes, User } from './types';
 
-type Inputs = {
-    email: string,
-    password: string,
-};
 
 export const editProfile = (data: User) => action(TokensTypes.EDIT_PROFILE, { data });
 
-export const loadSession = (data: Inputs) => action(TokensTypes.LOAD_SESSION, { data });
+export const loadSession = (data: ReturnData) => action(TokensTypes.LOAD_SESSION, { data });
 
 export const loadLogout = () => action(TokensTypes.LOAD_LOGOUT);
 

@@ -36,21 +36,20 @@ function* edit({ payload }: ReturnType<typeof editProfile>) {
 export function* load({ payload }: ReturnType<typeof loadSession>) {
   try {
     const { data } = payload
-    // var response = data as any
-    let response: TokenStateFromback = yield call(apiUnAuth.post, `/login`, data)
+
     var user: TokenData = {
-      ...response.data,
+      ...data,
       logged: true
     }
     localStorage.setItem(
       "@token",
-      response.data.token
+      data.token
     );
     yield put(loadSessionSucess(user));
     window.location.reload()
-    if(response.data.data.crm){
+    if(data.data.crm){
       window.location.pathname = '/diagnostico'
-    }else if(response.data.data.cnpj){
+    }else if(data.data.cnpj){
       window.location.pathname = '/clinica'
     }else{
       window.location.pathname = '/administracao'

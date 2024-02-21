@@ -51,7 +51,7 @@ export const GerenciarIA = () => {
 
   const STATUS_REQUISITADO = 'Requisitado'
   const STATUS_EXECUCAO = 'Em_Execucao'
-  const STATUS_CONCLUIDO = 'Concluído'
+  const STATUS_CONCLUIDO = 'Concluido'
   const STATUS_ACEITO = 'Aceito'
   const STATUS_FINALIZADO = 'Finalizado'
   const LIMITE_IMAGENS = 100
@@ -78,7 +78,6 @@ export const GerenciarIA = () => {
   const loadModelosClinca = async () => {
     await api.get(`/modelo`).then(({ data }) => {
       setModelos(data.data)
-      console.log(data.data)
     }).catch(()=>{
       
     })
