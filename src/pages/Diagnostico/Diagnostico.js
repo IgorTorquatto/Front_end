@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { NavbarComp } from '../../components/Header/NavbarComp'
 
 import './Diagnostico.css';
@@ -41,6 +41,7 @@ export const Diagnostico = () => {
   const [resultReal, setResultReal] = useState(null);
   const [laudoError, setLaudoError] = useState(false);
   const [obsState, setobsState] = useState(true);
+  const selectPaciente = useRef()
 
   const [pageLoading, setPageLoading] = useState(false);
 
@@ -77,6 +78,7 @@ export const Diagnostico = () => {
       loadPatients().then(() => {
         setPageLoading(false)
       })
+      selectPaciente.current.setValue('')
     }
   }, [clinica])
 
@@ -270,6 +272,11 @@ export const Diagnostico = () => {
         setPrediction(+data.predictions[1])
       }).catch(({ err }) => {
         console.log(err)
+        setLoadingLaudo(false)
+        toast({
+          title: 'Erro ao efetuar predição',
+          status: 'error'
+        })
       })
     } else {
       toast({
@@ -385,6 +392,7 @@ export const Diagnostico = () => {
               <Box w='100%' >
                 <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O PACIENTE</Text>
                 <Select
+                  ref={selectPaciente}
                   value={selectedPatient}
                   onChange={handlePatient}
                   options={patients}

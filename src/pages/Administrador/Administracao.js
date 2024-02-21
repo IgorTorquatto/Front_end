@@ -6,9 +6,15 @@ import { FaCog } from "react-icons/fa";
 import { DiagnosticaLogo } from "../../components/Logo/DiagnosticaLogo";
 import { GerenciarClinicas } from "../../components/Administracao/GerenciarClinicas";
 import { GerenciarModelos } from "../../components/Administracao/GerenciarModelos";
+import { ArrowBackIcon } from "@chakra-ui/icons";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loadLogout } from "../../store/ducks/tokens/actions";
 
 export const Administracao = () => {
   const [componenteAtual, setComponenteAtual] = useState("FormDetalhesIA");
+  const dispactch = useDispatch();
+  const history = useNavigate();
 
   const renderizarComponente = () => {
     switch (componenteAtual) {
@@ -44,6 +50,17 @@ export const Administracao = () => {
                 onClick={() => setComponenteAtual("GerenciarClinicas")}
               >
                 Gerenciar Clínicas
+              </MenuItem>
+              <hr />
+
+              <MenuItem
+                icon={<ArrowBackIcon />}
+                onClick={() => {
+                  dispactch(loadLogout());
+                  history('/home'); 
+                }}
+              >
+                Sair
               </MenuItem>
               <hr />
               

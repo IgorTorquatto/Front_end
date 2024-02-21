@@ -71,9 +71,9 @@ export const FormLogin = () => {
             throw error;
           }),
           {
-            loading: { title: 'Login em andamento.', description: 'Por favor, aguarde.' },
-            success: { title: 'Login realizado com sucesso!', description: '', duration: 6000, isClosable: true },
-            error: { title: 'Email ou senha incorretos.', description: 'Por favor, tente novamente.', duration: 6000, isClosable: true },
+            loading: { title: 'Login em andamento', description: 'Por favor, aguarde' },
+            success: { title: 'Login realizado com sucesso', duration: 6000, isClosable: true },
+            error: { title: 'Email ou senha incorretos', description: 'Por favor, tente novamente', duration: 6000, isClosable: true },
           });
       } else {
         const login = {
