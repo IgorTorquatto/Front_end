@@ -5,12 +5,12 @@ import { useSelector } from "react-redux";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 export const BarAtendimentos = (args) => {
-    
+
     const { data: user } = useSelector((state) => state.tokens);
     const [labels, setLabels] = useState([])
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(false)
-    
+
     const optionsPacientes = {
         responsive: true,
         plugins: {
@@ -25,19 +25,21 @@ export const BarAtendimentos = (args) => {
         },
     };
 
-    async function loadBarPacientes(){
+    async function loadBarPacientes() {
         setIsLoading(true)
-        await api.post(`/diagnostico/atendimentos/${args.anoRef}`, {'clinica_id': user.data.id}).then( ({ data }) => {
+        await api.post(`/diagnostico/atendimentos/${args.anoRef}`, { 'clinica_id': user.data.id }).then(({ data }) => {
             setLabels(data.labels)
             setData(data.data)
             setIsLoading(false)
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
     useEffect(() => {
         loadBarPacientes()
     }, [])
-    
+
     const dataPacientes = {
         labels,
         datasets: [
@@ -53,7 +55,7 @@ export const BarAtendimentos = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner thickness='4px' size='lg'/> :
+            {isLoading ? <Spinner thickness='4px' size='lg' /> :
                 <Bar options={optionsPacientes} data={dataPacientes} />
             }
         </Flex>

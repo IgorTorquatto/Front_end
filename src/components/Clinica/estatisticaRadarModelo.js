@@ -27,13 +27,15 @@ export const RadarModeloMedico = (args) => {
         },
     };
 
-    async function loadRadarModeloMedico(){
+    async function loadRadarModeloMedico() {
         setIsLoading(true)
-        await api.post(`/diagnostico/diagnosticos/classificacoes`, {'clinica_id': user.data.id}).then( ({ data }) => {
+        await api.post(`/diagnostico/diagnosticos/classificacoes`, { 'clinica_id': user.data.id }).then(({ data }) => {
             setLabels(data.labels)
             setData(data.data)
             setClasses(data.classes)
             setIsLoading(false)
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -63,8 +65,8 @@ export const RadarModeloMedico = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner thickness='4px' size='lg'/> :
-                <Radar options={optionsModelo} data={dataModelo}/>
+            {isLoading ? <Spinner thickness='4px' size='lg' /> :
+                <Radar options={optionsModelo} data={dataModelo} />
             }
         </Flex>
     )

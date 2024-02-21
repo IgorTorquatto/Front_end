@@ -26,8 +26,8 @@ export const FormDetalhesIA = () => {
     const onSubmit = async (ficha) => {
 
         const fichaModelo = {
-            nome: ficha.cnpj,
-            cnpj: ficha.nome,
+            nome: ficha.nome,
+            cnpj: ficha.cnpj,
             precisao: ficha.precisao,
             acuracia: ficha.acuracia,
             f1score: ficha.f1score,

@@ -6,7 +6,7 @@ import { Flex, Spinner } from "@chakra-ui/react";
 
 
 export const PieClassificacao = (args) => {
-    
+
     const { data: user } = useSelector((state) => state.tokens);
     const [labels, setLabels] = useState([])
     const [data, setData] = useState([])
@@ -25,19 +25,21 @@ export const PieClassificacao = (args) => {
         },
     };
 
-    async function loadPieClassificacao(){
+    async function loadPieClassificacao() {
         setIsLoading(true)
-        await api.post(`/diagnostico/classificacoes/modelo`, {'clinica_id': user.data.id}).then( ({ data }) => {
+        await api.post(`/diagnostico/classificacoes/modelo`, { 'clinica_id': user.data.id }).then(({ data }) => {
             setLabels(data.labels)
             setData(data.data)
             setIsLoading(false)
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
     useEffect(() => {
         loadPieClassificacao()
     }, [])
-    
+
     const dataClassificacao = {
         labels,
         datasets: [
@@ -51,7 +53,7 @@ export const PieClassificacao = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner thickness='4px' size='lg'/> :
+            {isLoading ? <Spinner thickness='4px' size='lg' /> :
                 <Pie options={optionsClassificacao} data={dataClassificacao} />
             }
         </Flex>
