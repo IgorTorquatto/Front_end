@@ -23,7 +23,7 @@ import {
   ModalCloseButton,
   Text,
   Spinner,
-  
+
 } from '@chakra-ui/react'
 import { api } from '../../services/api';
 import { useSelector } from 'react-redux';
@@ -39,7 +39,7 @@ export const GerenciarIA = () => {
 
   const [classes, setClasses] = useState([])
   const [numCasos, setNumCasos] = useState([])
-  const [idsDiagnosticos, setIdsDiagnosticos] = useState([])  
+  const [idsDiagnosticos, setIdsDiagnosticos] = useState([])
   const [modelos, setModelos] = useState([])
   const [solicitado, setSolicitado] = useState(true)
   const [solicitacao, setSolicitacao] = useState(null)
@@ -58,28 +58,28 @@ export const GerenciarIA = () => {
 
   const loadImagensTreinamento = async () => {
     setIsLoadingTable(true)
-    await api.post(`/diagnostico/imagens/treinamento`, {'clinica_id': user.data.id}).then(({ data }) => {
+    await api.post(`/diagnostico/imagens/treinamento`, { 'clinica_id': user.data.id }).then(({ data }) => {
       setClasses(data.classes)
       setNumCasos(data.data)
       setTotalImagens(data.data.at(-1))
       setIdsDiagnosticos(data.ids)
       setIsLoadingTable(false)
-    }).catch( () => {
+    }).catch((error) => {
+      console.log(error)
     })
   }
 
   const updateDiagnosticos = async () => {
     await api.put(`/diagnostico/update_usada`, idsDiagnosticos).then(({ data }) => {
-      console.log("update", data)
     }).catch(() => {
     })
   }
-    
+
   const loadModelosClinca = async () => {
     await api.get(`/modelo`).then(({ data }) => {
       setModelos(data.data)
-    }).catch(()=>{
-      
+    }).catch((error) => {
+      console.log(error)
     })
   }
 
@@ -98,25 +98,29 @@ export const GerenciarIA = () => {
             encerrarSolicitacao().then(() => {
               setSolicitado(false)
             }).catch(() => {
-    
+
             })
           }
           break
         }
       }
 
+    }).catch((error) => {
+      console.log(error)
     })
   }
 
   const encerrarSolicitacao = async () => {
     solicitacao.status = STATUS_FINALIZADO
-    await api.put(`/requisicao/${solicitacao.id}`, solicitacao)
+    await api.put(`/requisicao/${solicitacao.id}`, solicitacao).catch((error) => {
+      console.log(error)
+    })
   }
 
   useEffect(() => {
     loadImagensTreinamento().then(() => { })
     loadModelosClinca().then(() => { })
-    loadExisteSolicitacao().then(() => {})
+    loadExisteSolicitacao().then(() => { })
   }, [])
 
   const loadCriarSolicitacao = async () => {
@@ -124,25 +128,25 @@ export const GerenciarIA = () => {
       quantidade_imagens: totalImagens,
       id_clinica: user.data.id,
       data_hora: new Date(),
-    } 
+    }
     const data_email = {
       nome: user.data.nome,
       cnpj: user.data.cnpj,
       total_imagens: totalImagens,
       doenca: classes
     }
-    
-    await api.post('/requisicao', data_requisicao).then(()=>{
+
+    await api.post('/requisicao', data_requisicao).then(() => {
       loadImagensTreinamento().then(() => { })
       updateDiagnosticos()
-      loadExisteSolicitacao().then(() => {})
-    }).catch( (e) => { console.log(e)} )
-    await api.post('/email/requisicao', data_email).catch( (e) => { console.log(e)} )
+      loadExisteSolicitacao().then(() => { })
+    }).catch((e) => { console.log(e) })
+    await api.post('/email/requisicao', data_email).catch((e) => { console.log(e) })
   }
 
   function handleSocitacaoTreinamento() {
     onClose()
-    
+
     if (totalImagens < LIMITE_IMAGENS) {
       toast({
         title: 'Solicitação não enviada',
@@ -159,12 +163,13 @@ export const GerenciarIA = () => {
       loadCriarSolicitacao().then(() => {
         setLoadingButton(false)
         setSolicitado(true)
+        loadImagensTreinamento()
       }),
       {
         success: { title: 'Solitação enviada', description: 'Atualizações no modelo serão realizadas nas próximas semanas', duration: 6000 },
         error: { title: 'Falha', description: 'Solicitação não enviada', duration: 6000 },
         loading: { title: `Solicitando treinamento`, description: 'Por favor espere' },
-    })
+      })
   }
 
   return (
@@ -174,58 +179,58 @@ export const GerenciarIA = () => {
       </div>
 
       <div className='gerenciarIA-image-bank' >
-        <Flex bg={'white'} shadow={'sm'} gap={4} padding={'10px'} borderRadius={'10px'}  width={'100%'} flexDirection={'row'} flexWrap={'wrap'} >
+        <Flex bg={'white'} shadow={'sm'} gap={4} padding={'10px'} borderRadius={'10px'} width={'100%'} flexDirection={'row'} flexWrap={'wrap'} >
           <Flex w={'100%'} alignContent={'center'} justifyContent={'center'}>
             <h4>Existem {totalImagens} imagens disponíveis para treinamento</h4>
           </Flex>
           <Flex w={'100%'} alignContent={'center'} justifyContent={'space-around'}>
             <Flex w='50%' justifyContent={'center'}>
-              { isLoadingTable ? <Spinner thickness='4px' size='lg'/> :
-              <TableContainer padding={'10px'}>
-                <Table variant='simple'>
-                  <Thead>
-                    <Tr>
-                      <Th>Diagnóstico</Th>
-                      <Th>Número de imagens</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    <Tr>
-                      <Td>{classes[0]}</Td>
-                      <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[0]} </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>{classes[1]}</Td>
-                      <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[1]} </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>{classes[2]}</Td>
-                      <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[2]} </Td>
-                    </Tr>
-                    <Tr>
-                      <Td>{classes[3]}</Td>
-                      <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[3]} </Td>
-                    </Tr>
-                  </Tbody>
-                </Table>
-              </TableContainer>
+              {isLoadingTable ? <Spinner thickness='4px' size='lg' /> :
+                <TableContainer padding={'10px'}>
+                  <Table variant='simple'>
+                    <Thead>
+                      <Tr>
+                        <Th>Diagnóstico</Th>
+                        <Th>Número de imagens</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td>{classes[0]}</Td>
+                        <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[0]} </Td>
+                      </Tr>
+                      <Tr>
+                        <Td>{classes[1]}</Td>
+                        <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[1]} </Td>
+                      </Tr>
+                      <Tr>
+                        <Td>{classes[2]}</Td>
+                        <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[2]} </Td>
+                      </Tr>
+                      <Tr>
+                        <Td>{classes[3]}</Td>
+                        <Td textAlign={'center'} fontWeight={'500'} color={'green.600'} > {numCasos[3]} </Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
               }
             </Flex>
-            <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'}  flexWrap={'wrap'}>
-                <h3>Solicitar novo treinamento</h3>
-                <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={solicitado} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
-                { solicitacaoStatus === STATUS_REQUISITADO &&
-                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> ainda <span color='blue'>não atendida</span></Text> 
-                }
-                { solicitacaoStatus === STATUS_ACEITO &&
-                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> <span color='blue'>foi aceita</span> e logo entrará em execução</Text> 
-                }
-                { solicitacaoStatus === STATUS_EXECUCAO &&
-                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> está <span color='blue'>em execução</span></Text> 
-                }
-                { solicitacaoStatus === STATUS_CONCLUIDO &&
-                  <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> <span color='green'>foi concluída</span>. Um novo modelo deve estar disponível</Text>
-                }
+            <Flex w="30%" alignContent={'center'} textAlign={'center'} justifyContent={'center'} flexWrap={'wrap'}>
+              <h3>Solicitar novo treinamento</h3>
+              <Button colorScheme='blue' w={'md'} isLoading={loadingButton} isDisabled={solicitado} onClick={onOpen}><Icon as={RepeatIcon} /></Button>
+              {solicitacaoStatus === STATUS_REQUISITADO &&
+                <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> ainda <span color='blue'>não atendida</span></Text>
+              }
+              {solicitacaoStatus === STATUS_ACEITO &&
+                <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> <span color='blue'>foi aceita</span> e logo entrará em execução</Text>
+              }
+              {solicitacaoStatus === STATUS_EXECUCAO &&
+                <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> está <span color='blue'>em execução</span></Text>
+              }
+              {solicitacaoStatus === STATUS_CONCLUIDO &&
+                <Text fontWeight={'500'} title={solicitacao.data_hora} mt={4}>*Solicitação realizada em <b>{solicitacao.data_hora}</b> <span color='green'>foi concluída</span>. Um novo modelo deve estar disponível</Text>
+              }
             </Flex>
           </Flex>
         </Flex>
@@ -246,7 +251,7 @@ export const GerenciarIA = () => {
           <ModalHeader>Solicitar novo treinamento</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Ao clicar em "Solicitar", será feita uma requisição para que se use as novas imagens no treinamento de um modelo.  
+            Ao clicar em "Solicitar", será feita uma requisição para que se use as novas imagens no treinamento de um modelo.
           </ModalBody>
 
           <ModalFooter>

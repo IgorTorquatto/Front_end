@@ -25,13 +25,15 @@ export const LineDoencas = (args) => {
         },
     };
 
-    async function loadLineDoencas(){
+    async function loadLineDoencas() {
         setIsLoading(true)
-        await api.post(`/diagnostico/diagnosticos/${args.anoRef}`, {'clinica_id': user.data.id}).then( ({ data }) => {
+        await api.post(`/diagnostico/diagnosticos/${args.anoRef}`, { 'clinica_id': user.data.id }).then(({ data }) => {
             setLabels(data.labels)
             setData(data.data)
             setLines(data.lines)
             setIsLoading(false)
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -69,7 +71,7 @@ export const LineDoencas = (args) => {
 
         return datasets
     }
-    
+
     const dataDoenca = {
         labels,
         datasets: datasets_objects(),
@@ -77,8 +79,8 @@ export const LineDoencas = (args) => {
 
     return (
         <Flex justifyContent='center' alignItems='center' h={'100%'}>
-            { isLoading ? <Spinner thickness='4px' size='lg'/> :
-                <Line options={optionsDoenca} data={dataDoenca}/>
+            {isLoading ? <Spinner thickness='4px' size='lg' /> :
+                <Line options={optionsDoenca} data={dataDoenca} />
             }
         </Flex>
     )

@@ -95,24 +95,19 @@ export const Diagnostico = () => {
     if (file) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        // Cria uma nova imagem
         const img = new Image();
         img.src = event.target.result;
 
         img.onload = () => {
-          // Cria um canvas
           const canvas = document.createElement('canvas');
           const context = canvas.getContext('2d');
           canvas.width = img.width;
           canvas.height = img.height;
 
-          // Desenha a imagem no canvas
           context.drawImage(img, 0, 0, img.width, img.height);
 
-          // Converte o conteúdo do canvas para JPEG
           const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.9);
 
-          // Atualiza o estado com a imagem JPEG
           setUploadedImage(jpegDataUrl);
         };
       };
@@ -175,22 +170,16 @@ export const Diagnostico = () => {
   }
 
   function downloadPDF(pdfDataUri) {
-    // Seu PDF em formato Data URI (substitua isso pelo seu próprio Data URI)
 
-    // Cria um link <a> temporário
     var link = document.createElement('a');
     link.href = pdfDataUri;
 
-    // Define o atributo 'download' para indicar que é um download
-    link.download = 'seu_arquivo.pdf';
+    link.download = `laduo_${patient?.pessoa?.nome}_${dayjs().format("DD/MM/YYYY")}.pdf`;
 
-    // Adiciona o link ao documento
     document.body.appendChild(link);
 
-    // Simula um clique no link para iniciar o download
     link.click();
 
-    // Remove o link do documento
     document.body.removeChild(link);
   }
 
@@ -235,7 +224,9 @@ export const Diagnostico = () => {
     }
 
     await api.post(`/diagnostico`, diagnostico).then(({ data }) => {
-      downloadPDF(data.data.laudo_medico)
+      if(downloadLaudo)
+        downloadPDF(data.data.laudo_medico)
+
       history('/historico')
     }).catch(({ err }) => {
       console.log(err)
@@ -336,9 +327,6 @@ export const Diagnostico = () => {
 
     doc.addImage(DiagnosticaLogoBW, 'PNG', 45, 140, 120, 72)
 
-
-    // Para não deixar o texto escapar do PDF
-
     const maxWidth = 160;
     const text = `${observacoes}`;
     const lines = doc.splitTextToSize(text, maxWidth);
@@ -367,15 +355,10 @@ export const Diagnostico = () => {
     doc.setFont('helvetica', 'italic');
     doc.text('*O nível de ativação representa as regiões da imagem mais cruciais para a \nclassificação.', 20, 285);
 
-    // Converte o PDF para base64'
     const pdfDataUri = doc.output('datauristring');
 
-    // Atualizar o número de páginas para exibição no visor de PDF
     setPdfDataUri(pdfDataUri)
 
-    // Exibe o PDF diretamente na página
-    // const pdfContainer = document.getElementById('pdf-container');
-    // pdfContainer.innerHTML = `<embed src="${pdfDataUri}" width="100%" height="500px" type="application/pdf" />`;
   };
 
   return (
