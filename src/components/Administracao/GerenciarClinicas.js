@@ -19,7 +19,7 @@ export const GerenciarClinicas = () => {
 
   const excluirClinica = async (id) => {
     setIsExcluirLoading(true)
-    await api.delete(`/clinca/${id}`).then(({ data }) => {
+    await api.delete(`/clinica/${id}`).then(({ data }) => {
       toast({
         title: 'Clínica excluida com sucesso',
         status: 'success',
