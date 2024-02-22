@@ -216,10 +216,6 @@ export const Diagnostico = () => {
       setError(true)
       return
     }
-    if (selectedModel === null) {
-      setError(true)
-      return
-    }
     if (uploadedImageData === null) {
       setError(true)
       return
@@ -249,7 +245,7 @@ export const Diagnostico = () => {
       })
     } else {
       toast({
-        title: `A clínida ${clinica.nome} não possui modelos`,
+        title: `A clínida ${clinica.nome} não possui modelo`,
         status: 'error',
         isClosable: true,
         duration: 4000
@@ -277,7 +273,7 @@ export const Diagnostico = () => {
     const doc = new jsPDF();
     doc.setFontSize(22);
     doc.setFont('helvetica', 'bold');
-    doc.text('D.IAgnóstica - Seu assistente em diagnósticos', 20, 20);
+    doc.text(`${clinica.nome}`, 20, 20);
 
 
 
@@ -317,7 +313,7 @@ export const Diagnostico = () => {
     doc.rect(15, 245, 180, 20);
     doc.setFontSize(16);
     doc.setFont('helvetica', 'italic');
-    doc.text(`D.IAgnóstica, seu assistente em diagnósticos.\nUniversidade Federal do Cariri - grupodiagnosticatic@gmail.com`, 20, 254);
+    doc.text(`${clinica.nome}\n${clinica.email}`, 20, 254);
 
     doc.addPage();
 
@@ -366,13 +362,9 @@ export const Diagnostico = () => {
 
               <Box w='100%' mt='2rem'>
                 <Text lineHeight='0.2rem' fontWeight='bold'>SELECIONE O TIPO DE EXAME</Text>
-                <Select
-                  value={selectedModel}
-                  onChange={setSelectedModel}
-                  options={models}
-                  isSearchable
-                  placeholder="Digite para buscar..."
-                />
+                <SelectChakra bg={'white'}>
+                  {models.map((model, index) => {return <option value={model.value}>{model.label}</option>})}
+                </SelectChakra>
 
 
               </Box>

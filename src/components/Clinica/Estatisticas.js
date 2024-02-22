@@ -34,6 +34,8 @@ ChartJS.register(
 );
 
 export const Estatisticas = () => {
+  const data = new Date()
+
   return (
     <div class="container">
       <div class="tituloPagina">
@@ -42,7 +44,7 @@ export const Estatisticas = () => {
       </div>
 
       <div class="barAtendimentos dashboard">
-        <BarAtendimentos anoRef={2024} />
+        <BarAtendimentos anoRef={data.getFullYear()} />
       </div>
 
       <div class="pieClassificacao dashboard">
@@ -50,7 +52,7 @@ export const Estatisticas = () => {
       </div>
       
       <div class="lineDoencas dashboard">
-        <LineDoencas anoRef={2024} />
+        <LineDoencas anoRef={data.getFullYear()} />
       </div>
       
       <div class="info1 dashboard">

@@ -38,10 +38,7 @@ export function ClinicaProvider({ children }) {
 
     let clinica = clinicas.find(clinica => clinica.id === clinicaId)
     const clinicaString = JSON.stringify(clinica);
-    localStorage.setItem(
-      "@Clinica",
-      clinicaString
-    );
+
     setClinica(clinica)
   }
 

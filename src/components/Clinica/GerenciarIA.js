@@ -170,8 +170,8 @@ export const GerenciarIA = () => {
         loadImagensTreinamento()
       }),
       {
-        success: { title: 'Solitação enviada', description: 'Atualizações no modelo serão realizadas nas próximas semanas', duration: 6000 },
-        error: { title: 'Falha', description: 'Solicitação não enviada', duration: 6000 },
+        success: { title: 'Solitação enviada', description: 'Atualizações no modelo serão realizadas nas próximas semanas', isClosable: true, duration: 4000 },
+        error: { title: 'Falha', description: 'Solicitação não enviada', duration: 4000, isClosable: true },
         loading: { title: `Solicitando treinamento`, description: 'Por favor espere' },
       })
   }
@@ -245,7 +245,7 @@ export const GerenciarIA = () => {
       </div>
 
       <div className='gerenciarIA-top'>
-        <h2>Modelos</h2>
+        <h2>Inteligências Artificiais</h2>
       </div>
 
       <div className='gerenciarIA-model-details'>

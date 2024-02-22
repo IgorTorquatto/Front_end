@@ -10,6 +10,7 @@ export const PieClassificacao = (args) => {
     const { data: user } = useSelector((state) => state.tokens);
     const [labels, setLabels] = useState([])
     const [data, setData] = useState([])
+    const [modelo, setModelo] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
     const optionsClassificacao = {
@@ -20,19 +21,23 @@ export const PieClassificacao = (args) => {
             },
             title: {
                 display: true,
-                text: 'Classificações realizadas pelo modelo [nome]',
+                text: `Classificações realizadas pelo modelo ${modelo}`,
             },
         },
     };
 
     async function loadPieClassificacao() {
         setIsLoading(true)
-        await api.post(`/diagnostico/classificacoes/modelo`, { 'clinica_id': user.data.id }).then(({ data }) => {
-            setLabels(data.labels)
-            setData(data.data)
+        await api.post(`/diagnostico/classificacoes`, { 'clinica_id': user.data.id, 'modelo_id': user.data.modelo_id }).then(({ data }) => {
+            if (data.result == 1){
+                setLabels(data.labels)
+                setData(data.data)
+                setModelo(data.modelo)
+            }
             setIsLoading(false)
         }).catch((error) => {
             console.log(error)
+            setIsLoading(false)
         })
     }
 
