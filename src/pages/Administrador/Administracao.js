@@ -10,6 +10,7 @@ import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { loadLogout } from "../../store/ducks/tokens/actions";
+import { GerenciarSolicitacoes } from "../../components/Administracao/GerenciarSolicitacoes";
 
 export const Administracao = () => {
   const [componenteAtual, setComponenteAtual] = useState("FormDetalhesIA");
@@ -22,6 +23,8 @@ export const Administracao = () => {
         return <GerenciarClinicas />;
       case "GerenciarModelos":
         return <GerenciarModelos />
+      case "GerenciarSolicitacoes":
+        return <GerenciarSolicitacoes />
       default:
         return <GerenciarModelos />;
     }
@@ -50,6 +53,14 @@ export const Administracao = () => {
                 onClick={() => setComponenteAtual("GerenciarClinicas")}
               >
                 Gerenciar Clínicas
+              </MenuItem>
+              <hr />
+
+              <MenuItem
+                icon={<FaCog />}
+                onClick={() => setComponenteAtual("GerenciarSolicitacoes")}
+              >
+                Gerenciar Solicitações
               </MenuItem>
               <hr />
 
