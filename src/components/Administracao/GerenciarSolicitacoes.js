@@ -1,7 +1,6 @@
 import { Button, Flex, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Table, Td, Text, Th, Tr, useDisclosure, useToast } from '@chakra-ui/react'
 import React, { useEffect, useRef, useState } from 'react'
 import { api } from '../../services/api'
-
 const STATUS = ['Requisitado', 'Em_Execucao', 'Concluido', 'Aceito', 'Finalizado']
 
 export const GerenciarSolicitacoes = () => {
@@ -60,7 +59,8 @@ export const GerenciarSolicitacoes = () => {
 
   function handleAtualizarSolicitacao() {
     let solicitacao = Object.assign({}, solicitacaoSelected)
-    solicitacao.status = selectSolicitacao.current.value
+    solicitacao.status = selectSolicitacao.current.value.toUpperCase()
+    solicitacao.data_hora = new Date()
     setIsLoading(true)
     atualizarSolicitacao(solicitacao).then(() => {
         loadSolicitacoes()
