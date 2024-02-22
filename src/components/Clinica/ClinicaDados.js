@@ -58,7 +58,7 @@ export const ClinicaDados = () => {
   const [isManaging, setIsManaging] = useState(false);
 
   const excluirFuncionario = async () => {
-    await api.delete(`/medico/${funcionarParaRemover.id}`)
+    await api.delete(`/clinica/${user.data.id}/medico/${funcionarParaRemover.id}` ).catch((error)=>console.log(error))
   }
 
   const removeMedico = async () => {
