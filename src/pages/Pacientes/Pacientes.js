@@ -66,7 +66,7 @@ yup.setLocale({
 const schema = yup.object({
   nome: yup.string().required('Informe seu nome'),
   telefone: yup.string().required('Informe um telefone valido'),
-  cpf: yup.string().length(14).required('Informe um cpf valido'),
+  cpf: yup.string().max(14).required('Informe um cpf valido'),
   data_nascimento: yup.string().required('Informe uma data de nascimento valida'),
   sexo: yup.string().required('Informe o sexo do paciente'),
   tipo_sanguineo: yup.string().length(3).required('Informe um tipo sanguineo valido'),

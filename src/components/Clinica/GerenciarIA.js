@@ -96,29 +96,29 @@ export const GerenciarIA = () => {
 
       for (let i = 0; i < data.data.length; i++) {
         if (data.data.at(i).status !== STATUS_FINALIZADO) {
+          setSolicitado(true)
           setSolicitacao(data.data.at(i))
           setSolicitacaoStatus(data.data.at(i).status)
           if (data.data.at(i).status === STATUS_CONCLUIDO) {
             encerrarSolicitacao().then(() => {
               setSolicitado(false)
             }).catch(() => {
-
+  
             })
           }
-          break
+          return
         }
       }
-
+      console.log(data.data)
+      setSolicitacao(false)
     }).catch((error) => {
       console.log(error)
     })
   }
 
   const encerrarSolicitacao = async () => {
-    solicitacao.status = STATUS_FINALIZADO
-    await api.put(`/requisicao/${solicitacao.id}`, solicitacao).catch((error) => {
-      console.log(error)
-    })
+    solicitacao.status = STATUS_FINALIZADO.toUpperCase()
+    await api.put(`/requisicao/${solicitacao.id}`, solicitacao)
   }
 
   useEffect(() => {
@@ -245,7 +245,7 @@ export const GerenciarIA = () => {
       </div>
 
       <div className='gerenciarIA-top'>
-        <h2>Inteligências Artificiais</h2>
+        <h2>Inteligências artificiais</h2>
       </div>
 
       <div className='gerenciarIA-model-details'>

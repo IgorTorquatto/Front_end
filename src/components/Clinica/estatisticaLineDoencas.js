@@ -28,12 +28,15 @@ export const LineDoencas = (args) => {
     async function loadLineDoencas() {
         setIsLoading(true)
         await api.post(`/diagnostico/diagnosticos/${args.anoRef}`, { 'clinica_id': user.data.id }).then(({ data }) => {
-            setLabels(data.labels)
-            setData(data.data)
-            setLines(data.lines)
+            if (data.result == 1) {
+                setLabels(data.labels)
+                setData(data.data)
+                setLines(data.lines)
+            }
             setIsLoading(false)
         }).catch((error) => {
             console.log(error)
+            setIsLoading(false)
         })
     }
 
@@ -57,7 +60,7 @@ export const LineDoencas = (args) => {
     const datasets_objects = () => {
         let datasets = []
         let i = 0
-        data.forEach((data) => {
+        data?.forEach((data) => {
             datasets.push(
                 {
                     label: lines[i],

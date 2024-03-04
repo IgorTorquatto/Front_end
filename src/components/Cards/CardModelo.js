@@ -34,9 +34,7 @@ export const CardModelo = ({modelos}) => {
             })
         })
     }
-
-    console.log(modelos)
-
+    
     return (
         <>
         {
@@ -49,7 +47,7 @@ export const CardModelo = ({modelos}) => {
                             <Heading size='md' w={'60%'}> {modelo.nome} </Heading>
         
                             <Flex w={'40%'} flexDirection={'row'} justifyContent={'flex-end'} justifyItems={'right'}>
-                                <Button isLoading={loadingButton} value={modelo.id} onClick={(event) => handleSelecionarModeloPadrao(event.target.value)} isDisabled={modeloSelected === modelo.id}>Selecionar</Button>
+                                <Button colorScheme="blue" isLoading={loadingButton} value={modelo.id} onClick={(event) => handleSelecionarModeloPadrao(event.target.value)} isDisabled={modeloSelected === modelo.id}>Selecionar</Button>
                             </Flex>
                         </Flex>
                     </CardHeader>
@@ -70,7 +68,7 @@ export const CardModelo = ({modelos}) => {
                 </Card>
             )
         })
-        : <Text>Não exitem modelos</Text>
+        : <Text>Não exitem inteligências artificiais</Text>
         }
         </>
 

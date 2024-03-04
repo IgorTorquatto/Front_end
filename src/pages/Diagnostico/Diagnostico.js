@@ -38,7 +38,7 @@ export const Diagnostico = () => {
   const [observacoes, setObservacoes] = useState('Seu laudo vem aqui...');
   const [loadingLaudo, setLoadingLaudo] = useState(false)
   const [resultLaudo, setResultLaudo] = useState(null)
-  const [resultReal, setResultReal] = useState(null);
+  const [resultReal, setResultReal] = useState("PNEUMONIA");
   const [laudoError, setLaudoError] = useState(false);
   const [obsState, setobsState] = useState(true);
   const selectPaciente = useRef()
@@ -52,7 +52,7 @@ export const Diagnostico = () => {
   const toast = useToast()
 
   const models = [
-    { value: '1', label: 'Pneumonia, Covid, Tuberculose - mapa de calor' },
+    { value: '1', label: 'Pneumonia, Covid-19, Tuberculose - mapa de calor' },
   ]
 
   async function loadPatients() {
@@ -467,11 +467,11 @@ export const Diagnostico = () => {
                         <Flex>
                           <Center w={'60%'}>
                             <SelectChakra bg={'white'} onChange={(e) => setResultReal(e.target.value)}>
-                              <option value={"PNEUMONIA"}>Pneumonia</option>
-                              <option value={"TURBECULOSE"}>Tuberculose</option>
-                              <option value={"COVID"}>COVID-19</option>
-                              <option value={"NORMAL"}>Normal</option>
-                              <option value={"OUTRO"}>Outro</option>
+                              <option value={"PNEUMONIA"} disabled={predictionLabel === "PNEUMONIA"}>Pneumonia</option>
+                              <option value={"TUBERCULOSE"} disabled={predictionLabel === "TUBERCULOSE"}>Tuberculose</option>
+                              <option value={"COVID19"} disabled={predictionLabel === "COVID19"}>Covid-19</option>
+                              <option value={"NORMAL"} disabled={predictionLabel === "NORMAL"}>Normal</option>
+                              <option>Outro</option>
                             </SelectChakra>
                           </Center>
 
