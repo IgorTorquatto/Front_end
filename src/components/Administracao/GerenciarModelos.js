@@ -66,9 +66,9 @@ export const GerenciarModelos = () => {
       <h2>Modelos  <span style={{cursor: 'pointer', color: 'green'}} onClick={onOpen}>[+]</span></h2>
       <Table bg={'white'}>
         <Tr>
-          <Th>Nome</Th>
-          <Th>Arquivo</Th>
-          <Th>CNPJ</Th>
+          <Th>Nome do modelo</Th>
+          <Th>Nome do arquivo</Th>
+          <Th>CNPJ da clínica</Th>
           <Th></Th>
         </Tr>
         {
