@@ -471,13 +471,13 @@ export const Diagnostico = () => {
                               <option value={"TUBERCULOSE"} disabled={predictionLabel === "TUBERCULOSE"}>Tuberculose</option>
                               <option value={"COVID19"} disabled={predictionLabel === "COVID19"}>Covid-19</option>
                               <option value={"NORMAL"} disabled={predictionLabel === "NORMAL"}>Normal</option>
-                              <option>Outro</option>
+                              <option value={"OUTRO"}>Outro</option>
                             </SelectChakra>
                           </Center>
 
-                          {resultReal == "OUTRO" &&
+                          {resultReal === "OUTRO" &&
                             <Center w={'35%'} ml={'0.5rem'}>
-                              <Input bg={'white'} placeholder='Digite aqui o dignóstico' onChange={(e) => setOutroLaudo(e.target.value)} />
+                              <Input bg={'white'} placeholder='Digite aqui o diagnóstico' onChange={(e) => setOutroLaudo(e.target.value)} />
                             </Center>
                           }
                         </Flex>

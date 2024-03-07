@@ -89,28 +89,28 @@ export const GerenciarIA = () => {
 
   const loadExisteSolicitacao = async () => {
     await api.get(`/requisicao?id_clinica=${user.data.id}`).then(({ data }) => {
-      if (data.data.length == 0) {
+      let solicitacoesArray = []
+      for (let i = 0; i < data.data.length; i++) {
+        if (data.data.at(i).status === STATUS_FINALIZADO) {
+          continue
+        }
+        solicitacoesArray.push(data.data.at(i))
+      } 
+      if (solicitacoesArray.length === 0) {
         setSolicitado(false)
         return
       }
-
-      for (let i = 0; i < data.data.length; i++) {
-        if (data.data.at(i).status !== STATUS_FINALIZADO) {
-          setSolicitado(true)
-          setSolicitacao(data.data.at(i))
-          setSolicitacaoStatus(data.data.at(i).status)
-          if (data.data.at(i).status === STATUS_CONCLUIDO) {
-            encerrarSolicitacao().then(() => {
-              setSolicitado(false)
-            }).catch(() => {
-  
-            })
-          }
-          return
-        }
+      
+      setSolicitado(true)
+      setSolicitacao(solicitacoesArray.at(0))
+      setSolicitacaoStatus(solicitacoesArray.at(0).status)
+      if (solicitacoesArray.at(0).status === STATUS_CONCLUIDO) {
+        encerrarSolicitacao().then(() => {
+          setSolicitado(false)
+        }).catch((e) => {
+          console.log(e)
+        })
       }
-      console.log(data.data)
-      setSolicitacao(false)
     }).catch((error) => {
       console.log(error)
     })
